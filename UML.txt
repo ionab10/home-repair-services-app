@@ -1,0 +1,41 @@
+class User{
+  String id;
+  String firstName;
+  String lastName;
+  String username;
+  String password;
+  String email;
+}
+
+class Administrator {
+  isA User;
+
+}
+
+class Homeowner {
+  isA User;
+  String address;
+  String phoneNum;
+}
+
+class ServiceProvider {
+  isA User;
+  String phoneNum;
+  * -- * Service;
+}
+
+class Service {
+  String name;
+  String type;
+  double ratePerHour;
+  * -- 1 Administrator creates;
+}
+
+class Job {
+  Date date;
+  double fee;
+  int rating;
+  * -- 1 Homeowner;
+  * -- 1 ServiceProvider;
+}
+
