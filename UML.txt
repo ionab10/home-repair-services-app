@@ -28,7 +28,7 @@ class Service {
   String name;
   String type;
   double ratePerHour;
-  * -- 1 Administrator creates;
+  10…* -- 1 Administrator creates;
 }
 
 class Job {
