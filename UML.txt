@@ -1,4 +1,4 @@
-class User{
+﻿class Account{
   String id;
   String firstName;
   String lastName;
@@ -8,18 +8,18 @@ class User{
 }
 
 class Administrator {
-  isA User;
+  isA Account;
 
 }
 
 class Homeowner {
-  isA User;
+  isA Account;
   String address;
   String phoneNum;
 }
 
 class ServiceProvider {
-  isA User;
+  isA Account;
   String phoneNum;
   * -- * Service;
 }
