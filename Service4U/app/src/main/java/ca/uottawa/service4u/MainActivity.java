@@ -149,7 +149,7 @@ public class MainActivity extends AppCompatActivity implements
             mDetailTextView.setText("TO DO");
 
 
-            //if (user.getCustomClaims().get("user_type").equals("admin")) {
+            if (user.getCustomClaims().get("user_type").equals("admin")) {
                 findViewById(R.id.allUsersList).setVisibility(View.VISIBLE);
             //} else {
             //    findViewById(R.id.allUsersList).setVisibility(View.GONE);
