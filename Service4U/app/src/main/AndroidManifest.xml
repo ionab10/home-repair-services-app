@@ -21,7 +21,7 @@
             android:label="@string/title_activity_create_account"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".WelcomeActivity" />
-        <activity android:name=".VerifyEmailActivity"></activity>
+        <activity android:name=".MyAccountActivity"></activity>
     </application>
 
 </manifest>

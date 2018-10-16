@@ -125,14 +125,13 @@
                 android:theme="@style/ThemeOverlay.MyDarkButton" />
 
             <Button
-                android:id="@+id/verifyEmailButton2"
+                android:id="@+id/myAccountButton"
                 style="@style/Widget.AppCompat.Button.Colored"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
                 android:layout_weight="1.0"
-                android:onClick="sendEmailVerification"
-                android:text="@string/verify_email"
+                android:text="@string/my_account"
                 android:theme="@style/ThemeOverlay.MyDarkButton" />
 
         </LinearLayout>

@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity implements
         findViewById(R.id.emailSignInButton).setOnClickListener(this);
         findViewById(R.id.emailCreateAccountButton).setOnClickListener(this);
         findViewById(R.id.signOutButton).setOnClickListener(this);
-        findViewById(R.id.verifyEmailButton2).setOnClickListener(this);
+        findViewById(R.id.myAccountButton).setOnClickListener(this);
 
         // [START initialize_auth]
         // Initialize Firebase Auth
@@ -71,9 +71,9 @@ public class MainActivity extends AppCompatActivity implements
         startActivityForResult (intent,0);
     }
 
-    private void verifyEmail() {
+    private void myAccount() {
         //Application Context and Activity
-        Intent intent = new Intent(getApplicationContext(), VerifyEmailActivity.class);
+        Intent intent = new Intent(getApplicationContext(), MyAccountActivity.class);
         startActivityForResult (intent,0);
     }
 
@@ -145,9 +145,8 @@ public class MainActivity extends AppCompatActivity implements
 
     private void updateUI(FirebaseUser user) {
         if (user != null) {
-            mStatusTextView.setText(getString(R.string.emailpassword_status_fmt,
-                    user.getEmail(), user.isEmailVerified()));
-            mDetailTextView.setText(getString(R.string.firebase_status_fmt, user.getUid()));
+            mStatusTextView.setText("You are signed in as ");
+            mDetailTextView.setText("TO DO");
 
 
             //if (user.getCustomClaims().get("user_type").equals("admin")) {
@@ -177,8 +176,8 @@ public class MainActivity extends AppCompatActivity implements
         int i = v.getId();
         if (i == R.id.emailCreateAccountButton) {
             createAccount();
-        } else if (i == R.id.verifyEmailButton2) {
-            verifyEmail();
+        } else if (i == R.id.myAccountButton) {
+            myAccount();
         } else if (i == R.id.emailSignInButton) {
             signIn(mEmailField.getText().toString(), mPasswordField.getText().toString());
         } else if (i == R.id.signOutButton) {
