@@ -100,6 +100,7 @@ public class CreateAccountActivity extends AppCompatActivity {
             ((EditText) findViewById(R.id.fieldEmail2)).setError(null);
         }
 
+        //require 6 length
         String password = ((EditText) findViewById(R.id.fieldPassword2)).getText().toString();
         if (TextUtils.isEmpty(password)) {
             ((EditText) findViewById(R.id.fieldPassword2)).setError("Required.");
