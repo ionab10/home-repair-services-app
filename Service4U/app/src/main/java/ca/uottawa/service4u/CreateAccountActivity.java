@@ -65,7 +65,6 @@ public class CreateAccountActivity extends AppCompatActivity {
                             String userType = findViewById(R.id.userTypeRadio).toString();
 
                             /* add custom claims to authorize database
-
                             //requires Firebase Admin SDK
                             Map<String, Object> claims = user.getCustomClaims();
                             claims.put("user_type", userType);
@@ -75,9 +74,9 @@ public class CreateAccountActivity extends AppCompatActivity {
 
                             addUserToDatabase(user);
 
+                            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                            startActivityForResult (intent,0);
 
-                            findViewById(R.id.createAccountForm).setVisibility(View.GONE);
-                            findViewById(R.id.verifyEmailButton).setVisibility(View.VISIBLE);
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "createUserWithEmail:failure", task.getException());
@@ -123,40 +122,6 @@ public class CreateAccountActivity extends AppCompatActivity {
         return valid;
     }
 
-    public void sendEmailVerification(View view) {
-        // Disable button
-        findViewById(R.id.verifyEmailButton).setEnabled(false);
-
-        // Send verification email
-        // [START send_email_verification]
-        final FirebaseUser user = mAuth.getCurrentUser();
-        user.sendEmailVerification()
-                .addOnCompleteListener(this, new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        // [START_EXCLUDE]
-                        // Re-enable button
-                        findViewById(R.id.verifyEmailButton).setEnabled(true);
-
-                        if (task.isSuccessful()) {
-                            Toast.makeText(CreateAccountActivity.this,
-                                    "Verification email sent to " + user.getEmail(),
-                                    Toast.LENGTH_SHORT).show();
-
-                            findViewById(R.id.createAccountForm).setVisibility(View.VISIBLE);
-                            findViewById(R.id.verifyEmailButton).setVisibility(View.GONE);
-
-                        } else {
-                            Log.e(TAG, "sendEmailVerification", task.getException());
-                            Toast.makeText(CreateAccountActivity.this,
-                                    "Failed to send verification email.",
-                                    Toast.LENGTH_SHORT).show();
-                        }
-                        // [END_EXCLUDE]
-                    }
-                });
-        // [END send_email_verification]
-    }
 
     public void addUserToDatabase(FirebaseUser user){
         //use the data in the fields to add user to database

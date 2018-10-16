@@ -47,6 +47,7 @@ public class MainActivity extends AppCompatActivity implements
         findViewById(R.id.emailSignInButton).setOnClickListener(this);
         findViewById(R.id.emailCreateAccountButton).setOnClickListener(this);
         findViewById(R.id.signOutButton).setOnClickListener(this);
+        findViewById(R.id.verifyEmailButton2).setOnClickListener(this);
 
         // [START initialize_auth]
         // Initialize Firebase Auth
@@ -67,6 +68,12 @@ public class MainActivity extends AppCompatActivity implements
     private void createAccount() {
         //Application Context and Activity
         Intent intent = new Intent(getApplicationContext(), CreateAccountActivity.class);
+        startActivityForResult (intent,0);
+    }
+
+    private void verifyEmail() {
+        //Application Context and Activity
+        Intent intent = new Intent(getApplicationContext(), VerifyEmailActivity.class);
         startActivityForResult (intent,0);
     }
 
@@ -142,6 +149,13 @@ public class MainActivity extends AppCompatActivity implements
                     user.getEmail(), user.isEmailVerified()));
             mDetailTextView.setText(getString(R.string.firebase_status_fmt, user.getUid()));
 
+
+            //if (user.getCustomClaims().get("user_type").equals("admin")) {
+                findViewById(R.id.allUsersList).setVisibility(View.VISIBLE);
+            //} else {
+            //    findViewById(R.id.allUsersList).setVisibility(View.GONE);
+            //}
+
             findViewById(R.id.emailPasswordButtons).setVisibility(View.GONE);
             findViewById(R.id.emailPasswordFields).setVisibility(View.GONE);
             findViewById(R.id.signedInButtons).setVisibility(View.VISIBLE);
@@ -151,6 +165,7 @@ public class MainActivity extends AppCompatActivity implements
             mStatusTextView.setText(R.string.signed_out);
             mDetailTextView.setText(null);
 
+            findViewById(R.id.allUsersList).setVisibility(View.GONE);
             findViewById(R.id.emailPasswordButtons).setVisibility(View.VISIBLE);
             findViewById(R.id.emailPasswordFields).setVisibility(View.VISIBLE);
             findViewById(R.id.signedInButtons).setVisibility(View.GONE);
@@ -162,6 +177,8 @@ public class MainActivity extends AppCompatActivity implements
         int i = v.getId();
         if (i == R.id.emailCreateAccountButton) {
             createAccount();
+        } else if (i == R.id.verifyEmailButton2) {
+            verifyEmail();
         } else if (i == R.id.emailSignInButton) {
             signIn(mEmailField.getText().toString(), mPasswordField.getText().toString());
         } else if (i == R.id.signOutButton) {

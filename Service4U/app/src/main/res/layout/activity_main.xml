@@ -34,6 +34,11 @@
             style="@style/ThemeOverlay.MyTextDetail"
             tools:text="Firebase User ID: 123456789abc" />
 
+        <include
+            android:id="@+id/allUsersList"
+            layout="@layout/all_users"
+            android:visibility="gone"/>
+
     </LinearLayout>
 
 
@@ -108,7 +113,7 @@
             android:paddingLeft="16dp"
             android:paddingRight="16dp"
             android:visibility="gone"
-            android:weightSum="1.0">
+            android:weightSum="2.0">
 
             <Button
                 android:id="@+id/signOutButton"
@@ -117,6 +122,17 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1.0"
                 android:text="@string/sign_out"
+                android:theme="@style/ThemeOverlay.MyDarkButton" />
+
+            <Button
+                android:id="@+id/verifyEmailButton2"
+                style="@style/Widget.AppCompat.Button.Colored"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:layout_weight="1.0"
+                android:onClick="sendEmailVerification"
+                android:text="@string/verify_email"
                 android:theme="@style/ThemeOverlay.MyDarkButton" />
 
         </LinearLayout>
