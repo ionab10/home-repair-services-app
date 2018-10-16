@@ -1,4 +1,4 @@
-﻿class Account{
+class Account{
   String id;
   String firstName;
   String lastName;
@@ -20,8 +20,10 @@ class Homeowner {
 
 class ServiceProvider {
   isA Account;
+  int rating;
+  boolean available;
   String phoneNum;
-  * -- * Service;
+  1...* -- * Service;
 }
 
 class Service {
