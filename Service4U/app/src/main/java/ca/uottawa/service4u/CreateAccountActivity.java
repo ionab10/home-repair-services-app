@@ -27,7 +27,7 @@ public class CreateAccountActivity extends AppCompatActivity {
     private static final String TAG = "EmailPassword";
 
     // [START declare_auth]
-    public FirebaseAuth mAuth;
+    private FirebaseAuth mAuth;
     // [END declare_auth]
 
     @Override
