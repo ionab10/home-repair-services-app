@@ -1,46 +1,88 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MyAccountActivity">
+    android:background="@color/grey_100"
+    android:orientation="vertical"
+    android:weightSum="4">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="3"
+        android:gravity="center_horizontal"
         android:orientation="vertical"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="0dp">
+      >
 
         <TextView
             android:id="@+id/firebaseUID"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:textColor="@color/common_google_signin_btn_text_dark_focused"
+            android:theme="@style/ThemeOverlay.MyTitleText"  />
 
         <TextView
             android:id="@+id/emailVerified"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/common_google_signin_btn_text_dark_focused"
+            android:theme="@style/ThemeOverlay.MyTextDetail" />
 
         <TextView
-            android:id="@+id/textView3"
-            android:layout_width="match_parent"
+            android:id="@+id/dateCreated"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="TextView" />
-
-        <Button
-            android:id="@+id/verifyEmailButton"
-            style="@style/Widget.AppCompat.Button.Colored"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:onClick="sendEmailVerification"
-            android:text="@string/verify_email"
-            android:theme="@style/ThemeOverlay.MyDarkButton"
-            tools:layout_editor_absoluteY="37dp" />
-
+            android:textColor="@color/common_google_signin_btn_text_dark_focused"
+            android:theme="@style/ThemeOverlay.MyTextDetail"/>
+        <include
+            android:id="@+id/allUsersList"
+            layout="@layout/all_users"
+            android:visibility="gone" />
     </LinearLayout>
 
-</android.support.constraint.ConstraintLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@color/grey_300"
+        android:gravity="center_vertical">
+        <LinearLayout
+            android:id="@+id/verifyAndReturnLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp">
+
+            <Button
+                android:id="@+id/returnToMain"
+                style="@style/Widget.AppCompat.Button.Colored"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:onClick="onClick"
+                android:shadowColor="@color/colorAccent"
+                android:text="main page"
+                android:textIsSelectable="false"
+                android:theme="@style/ThemeOverlay.MyDarkButton"
+                tools:layout_editor_absoluteY="37dp" />
+
+            <Button
+                android:id="@+id/verifyEmailButton"
+                style="@style/Widget.AppCompat.Button.Colored"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_gravity="bottom"
+                android:onClick="sendEmailVerification"
+                android:text="@string/verify_email"
+                android:theme="@style/ThemeOverlay.MyDarkButton"
+                tools:layout_editor_absoluteY="37dp" />
+        </LinearLayout>
+    </RelativeLayout>
+
+</LinearLayout>
+

@@ -8,11 +8,12 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
+import android.content.Intent;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.FirebaseUserMetadata;
 
 public class MyAccountActivity extends AppCompatActivity {
 
@@ -33,6 +34,7 @@ public class MyAccountActivity extends AppCompatActivity {
         ((TextView) findViewById(R.id.emailVerified)).setText(getString(R.string.emailpassword_status_fmt,
                 user.getEmail(), user.isEmailVerified()));
         ((TextView) findViewById(R.id.firebaseUID)).setText(getString(R.string.firebase_status_fmt, user.getUid()));
+        ((TextView) findViewById(R.id.dateCreated)).setText(getString(R.string.meta_firebase_ui,Long.toString(user.getMetadata().getCreationTimestamp())));
     }
 
     public void sendEmailVerification(View view) {
@@ -48,23 +50,31 @@ public class MyAccountActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<Void> task) {
                         // [START_EXCLUDE]
                         // Re-enable button
-                        findViewById(R.id.verifyEmailButton).setEnabled(true);
+
 
                         if (task.isSuccessful()) {
                             Toast.makeText(MyAccountActivity.this,
                                     "Verification email sent to " + user.getEmail(),
                                     Toast.LENGTH_SHORT).show();
-
+                            View b = findViewById(R.id.verifyEmailButton);
+                            b.setVisibility(View.GONE);
 
                         } else {
                             Log.e(TAG, "sendEmailVerification", task.getException());
                             Toast.makeText(MyAccountActivity.this,
                                     "Failed to send verification email.",
                                     Toast.LENGTH_SHORT).show();
+                            findViewById(R.id.verifyEmailButton).setEnabled(true);
                         }
                         // [END_EXCLUDE]
                     }
                 });
         // [END send_email_verification]
     }
+    public void onClick(View view){
+        Intent i = new Intent(this, MainActivity.class); //dont write package context android will do that
+        startActivity(i);
+    }
 }
+
+

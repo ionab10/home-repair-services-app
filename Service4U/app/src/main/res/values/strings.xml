@@ -59,7 +59,7 @@
 
     <string name="firebase_status_fmt">Firebase User: %s</string>
     <string name="firebase_user_management">Firebase User Management</string>
-
+    <string name="meta_firebase_ui">Date Account was created: %s</string>
     <string name="google_status_fmt">Google User: %s</string>
     <string name="google_title_text">Google Sign In</string>
 
