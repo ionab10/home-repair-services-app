@@ -109,6 +109,7 @@ public class MainActivity extends AppCompatActivity implements
                             Log.d(TAG, "signInWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
 
+                            /*
                             //get userType
                             databaseUsers.child(user.getUid()).child("userType").addValueEventListener(new ValueEventListener() {
                                 @Override
@@ -125,7 +126,7 @@ public class MainActivity extends AppCompatActivity implements
                                     // Failed to read value
                                     Log.w(dbTAG, "Failed to read value.", error.toException());
                                 }
-                            });
+                            });*/
 
                             updateUI(user);
 
@@ -181,9 +182,8 @@ public class MainActivity extends AppCompatActivity implements
         if (user != null) {
 
             String displayName = user.getDisplayName();
-            mStatusTextView.setText("You are signed in as ");
+            mStatusTextView.setText(String.format("You are signed in as %s",userType));
             mDetailTextView.setText("Username: "+displayName);
-            
 
 
             if (userType.equals("admin")) {
