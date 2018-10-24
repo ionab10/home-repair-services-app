@@ -16,6 +16,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserInfo;
+
 
 
 public class MainActivity extends AppCompatActivity implements
@@ -145,8 +147,9 @@ public class MainActivity extends AppCompatActivity implements
 
     private void updateUI(FirebaseUser user) {
         if (user != null) {
+            String displayName = user.getDisplayName();
             mStatusTextView.setText("You are signed in as ");
-            mDetailTextView.setText("TO DO");
+            mDetailTextView.setText("Username: "+displayName);
 
 
             //if (user.getCustomClaims().get("user_type").equals("admin")) {
@@ -162,7 +165,7 @@ public class MainActivity extends AppCompatActivity implements
 
         } else {
             mStatusTextView.setText(R.string.signed_out);
-            mDetailTextView.setText(null);
+            mDetailTextView.setText("Please sign in OR make a new account");
 
             findViewById(R.id.allUsersList).setVisibility(View.GONE);
             findViewById(R.id.emailPasswordButtons).setVisibility(View.VISIBLE);

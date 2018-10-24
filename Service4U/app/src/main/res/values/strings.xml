@@ -91,5 +91,5 @@
     <string name="admin">Administrator</string>
     <string name="service_provider">Service Provider</string>
     <string name="homeowner">Homeowner</string>
-    <string name="welcome">Welcome</string>
+    <string name="welcome">Welcome to S4U</string>
 </resources>
