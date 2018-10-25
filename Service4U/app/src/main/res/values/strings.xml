@@ -83,7 +83,7 @@
 
     <string name="id_fmt">User ID: %s</string>
     <string name="email_fmt">Email: %s</string>
-    <string name="title_activity_create_account">CreateAccountActivity</string>
+    <string name="title_activity_create_account">Create Account</string>
 
     <string name="action_settings">Settings</string>
     <string name="admin">Administrator</string>
@@ -97,4 +97,5 @@
     <string name="user_type">User type</string>
     <string name="phone_title_text">Phone number (optional for admins)</string>
     <string name="address_title_text">Address (required for homeowners)</string>
+
 </resources>
