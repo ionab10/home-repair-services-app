@@ -82,16 +82,16 @@ public class MainActivity extends AppCompatActivity implements
 
         if (user != null) {
             //get userType
-            databaseUsers.child(user.getUid()).child("userType").addValueEventListener(new ValueEventListener() {
+            databaseUsers.child(user.getUid()).addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     // This method is called once with the initial value and again
                     // whenever data at this location is updated.
-                    String userType = dataSnapshot.getValue(String.class);
-                    Log.d(dbTAG, "Value is: " + userType);
+                    User appUser = dataSnapshot.getValue(User.class);
+                    Log.d(dbTAG, "Value is: " + appUser.getuserType());
 
                     FirebaseUser user = mAuth.getCurrentUser();
-                    updateUI(user, userType);
+                    updateUI(user, appUser);
                 }
 
                 @Override
@@ -183,15 +183,13 @@ public class MainActivity extends AppCompatActivity implements
         return valid;
     }
 
-    private void updateUI(FirebaseUser user, String userType) {
+    private void updateUI(FirebaseUser user, User appUser) {
         if (user != null) {
 
-            String displayName = user.getDisplayName();
-            mStatusTextView.setText(String.format("You are signed in as %s",userType));
-            mDetailTextView.setText("Username: "+displayName);
+            mStatusTextView.setText(String.format("Hello %s %s", appUser.getfirstName(), appUser.getlastName()));
+            mDetailTextView.setText(String.format("You are signed in as %s",appUser.getuserType()));
 
-
-            if (userType.equals("admin")) {
+            if (appUser.getuserType().equals("admin")) {
                 findViewById(R.id.allUsersList).setVisibility(View.VISIBLE);
             } else {
                 findViewById(R.id.allUsersList).setVisibility(View.GONE);

@@ -23,6 +23,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 
@@ -36,8 +37,6 @@ public class CreateAccountActivity extends AppCompatActivity {
 
     // [START declare_auth]
 
-    private FirebaseAuth mAuth;
-    public DatabaseReference databaseProcducts;
 
     protected FirebaseAuth mAuth;
     protected FirebaseDatabase database;
@@ -67,11 +66,7 @@ public class CreateAccountActivity extends AppCompatActivity {
 
         String email = ((EditText) findViewById(R.id.fieldEmail2)).getText().toString();
         String password = ((EditText) findViewById(R.id.fieldPassword2)).getText().toString();
-        String username = ((EditText) findViewById(R.id.fieldUsername)).getText().toString().trim();
-        String[] arrayName = username.split(" ", 2);
-        final String firstName = arrayName[0];
-        final String lastName = arrayName[1];
-        final String phoneNumber = ((EditText) findViewById(R.id.fieldPhone)).getText().toString();
+
         // [START create_user_with_email]
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -82,47 +77,27 @@ public class CreateAccountActivity extends AppCompatActivity {
                             Log.d(TAG, "createUserWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
 
-
-                            String userType = "none";
-                            //this is wrong -- get user type from checked radio
-                            //String userType = findViewById(R.id.userTypeRadio).toString();
-                            RadioButton admin, homeOwner, serviceProvider;
-                            admin = (RadioButton) findViewById(R.id.radioButton);
-                            homeOwner = (RadioButton) findViewById(R.id.radioButton2);
-                            serviceProvider = (RadioButton) findViewById(R.id.radioButton3);
-                            if(admin.isChecked()){
-                                userType = "admin";
-                            }
-                            if(homeOwner.isChecked()){
-                                userType = "home owner";
-                            }
-                            if(serviceProvider.isChecked()){
-                                userType = "service provider";
-                            }
-
-                            /* add custom claims to authorize database
-                            //requires Firebase Admin SDK
-                            Map<String, Object> claims = user.getCustomClaims();
-                            claims.put("user_type", userType);
-
-                            mAuth.setCustomUserClaims(user.getUid(), claims);
-                            */
-
-
                             addUserToDatabase(user);
 
                             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                             startActivityForResult (intent,0);
-                            String id = databaseProcducts.push().getKey();
-                            User user_1 = new User(firstName, lastName, userType, phoneNumber);
-                            //databaseProcducts.child(id).setValue(user_1);
+
                             Toast.makeText(CreateAccountActivity.this, "Account creation complete.",
                                     Toast.LENGTH_SHORT).show();
                         } else {
                             // If sign in fails, display a message to the user.
-                            Log.w(TAG, "createUserWithEmail:failure", task.getException());
-                            Toast.makeText(CreateAccountActivity.this, "Account creation failed.",
-                                    Toast.LENGTH_SHORT).show();
+                            Exception e = task.getException();
+                            Log.w(TAG, "createUserWithEmail:failure", e);
+                            String exMessage = e.getMessage();
+
+                            if (exMessage.equals("The email address is badly formatted.")) {
+                                ((EditText) findViewById(R.id.fieldEmail2)).setError("Invalid Email Address");
+                            } else if (exMessage.equals("The given password is invalid. [ Password should be at least 6 characters ]")) {
+                                ((EditText) findViewById(R.id.fieldPassword2)).setError("Password must be at least 6 characters");
+                            } else {
+                                Toast.makeText(CreateAccountActivity.this, "Account creation failed.",
+                                        Toast.LENGTH_SHORT).show();
+                            }
                         }
                     }
                 });
@@ -138,24 +113,16 @@ public class CreateAccountActivity extends AppCompatActivity {
             ((EditText) findViewById(R.id.fieldEmail2)).setError("Required.");
             valid = false;
         } else {
-            Pattern pattern = Pattern.compile("[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}");
-            Matcher match = pattern.matcher(email);
-            if(!match.matches()){
-                ((EditText) findViewById(R.id.fieldEmail2)).setError("Invalid Email Address");
-                valid = false;
-            }
-            else{
-                ((EditText) findViewById(R.id.fieldEmail2)).setError(null);
-            }
-
+            ((EditText) findViewById(R.id.fieldEmail2)).setError(null);
         }
+
         String username = ((EditText) findViewById(R.id.fieldUsername)).getText().toString();
         if (TextUtils.isEmpty(username)) {
             ((EditText) findViewById(R.id.fieldUsername)).setError("Required.");
             valid = false;
         }
         else {
-                ((EditText) findViewById(R.id.fieldUsername)).setError(null);
+            ((EditText) findViewById(R.id.fieldUsername)).setError(null);
         }
 
         //require 6 length
@@ -164,15 +131,8 @@ public class CreateAccountActivity extends AppCompatActivity {
             ((EditText) findViewById(R.id.fieldPassword2)).setError("Required.");
             valid = false;
         }
-
         else {
-            if(password.length()<= 6){
-                ((EditText) findViewById(R.id.fieldPassword2)).setError("Requires at least 6 characters");
-                valid = false;
-            }
-            else {
-                ((EditText) findViewById(R.id.fieldPassword2)).setError(null);
-            }
+            ((EditText) findViewById(R.id.fieldPassword2)).setError(null);
         }
 
 
@@ -206,13 +166,38 @@ public class CreateAccountActivity extends AppCompatActivity {
         //do not add password to database as it's already stored in Firebase's Authentication
         String userid = user.getUid();
 
-        String email = user.getEmail();
+        //String email = user.getEmail();
 
-        String userType = findViewById(R.id.userTypeRadio).toString();  //wrong
-        databaseUsers.child(userid).child("userType").setValue(userType);
+        //get name
+        String username = ((EditText) findViewById(R.id.fieldUsername)).getText().toString().trim();
+        String[] arrayName = username.split(" ", 2);
+        String firstName = arrayName[0];
+        String lastName = arrayName[1];
 
-        String phone = findViewById(R.id.fieldPhone).toString();
-        databaseUsers.child(userid).child("phone").setValue(userType);
+        //get phone
+        String phoneNumber = ((EditText) findViewById(R.id.fieldPhone)).getText().toString();
+
+        //get usertype
+        String userType = "none";
+        //this is wrong -- get user type from checked radio
+        //String userType = findViewById(R.id.userTypeRadio).toString();
+        RadioButton admin, homeOwner, serviceProvider;
+        admin = (RadioButton) findViewById(R.id.radioButton);
+        homeOwner = (RadioButton) findViewById(R.id.radioButton2);
+        serviceProvider = (RadioButton) findViewById(R.id.radioButton3);
+        if(admin.isChecked()){
+            userType = "admin";
+        }
+        if(homeOwner.isChecked()){
+            userType = "home owner";
+        }
+        if(serviceProvider.isChecked()){
+            userType = "service provider";
+        }
+
+        //add new user
+        User newUser = new User(firstName, lastName, userType, phoneNumber);
+        databaseUsers.child(userid).setValue(newUser);
     }
 
 }

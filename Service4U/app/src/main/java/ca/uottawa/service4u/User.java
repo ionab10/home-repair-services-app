@@ -6,6 +6,13 @@ public class User{
 	private String userType;
 	private String phoneNumber;
 
+	public User(){
+		this.firstName = "";
+		this.lastName = "";
+		this.userType = null;
+		this.phoneNumber = "";
+	}
+
 	public User(String firstName, String lastName, String userType, String phoneNumber){
 		this.firstName = firstName;
 		this.lastName = lastName;

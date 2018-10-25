@@ -47,13 +47,13 @@ public class MyAccountActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // This method is called once with the initial value and again
                 // whenever data at this location is updated.
-                ServiceAppUser appUser = dataSnapshot.getValue(ServiceAppUser.class);
-                Log.d(dbTAG, "App user is: " + appUser.firstName);
+                User appUser = dataSnapshot.getValue(User.class);
+                Log.d(dbTAG, "App user is: " + appUser.getfirstName());
 
-                ((TextView) findViewById(R.id.firstName)).setText(String.format("First name: %s", appUser.firstName));
-                ((TextView) findViewById(R.id.lastName)).setText(String.format("Last name: %s", appUser.lastName));
-                ((TextView) findViewById(R.id.accountType)).setText(String.format("Account type: %s", appUser.userType));
-                ((TextView) findViewById(R.id.phoneNumber)).setText(String.format("Phone: %s", appUser.phone));
+                ((TextView) findViewById(R.id.firstName)).setText(String.format("First name: %s", appUser.getfirstName()));
+                ((TextView) findViewById(R.id.lastName)).setText(String.format("Last name: %s", appUser.getlastName()));
+                ((TextView) findViewById(R.id.accountType)).setText(String.format("Account type: %s", appUser.getuserType()));
+                ((TextView) findViewById(R.id.phoneNumber)).setText(String.format("Phone: %s", appUser.getphoneNumber()));
 
             }
 

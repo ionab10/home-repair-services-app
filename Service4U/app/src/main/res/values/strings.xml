@@ -92,4 +92,10 @@
     <string name="service_provider">Service Provider</string>
     <string name="homeowner">Homeowner</string>
     <string name="welcome">Welcome to S4U</string>
+    <string name="email">Email</string>
+    <string name="name">Name (first and last)</string>
+    <string name="confirm_password">Confirm password</string>
+    <string name="password">Password</string>
+    <string name="user_type">User type</string>
+    <string name="phone">Phone number</string>
 </resources>
