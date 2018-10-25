@@ -24,6 +24,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity implements
@@ -40,6 +42,7 @@ public class MainActivity extends AppCompatActivity implements
     FirebaseAuth mAuth;
     FirebaseDatabase database;
     DatabaseReference databaseUsers;
+    List<User> allUsers;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -63,6 +66,7 @@ public class MainActivity extends AppCompatActivity implements
         mAuth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
         databaseUsers = database.getReference("Users");
+        allUsers = new ArrayList<>();
 
     }
 
@@ -70,6 +74,34 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public void onStart() {
         super.onStart();
+
+        databaseUsers.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                allUsers.clear();
+
+                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()){
+                    User appUser = postSnapshot.getValue(User.class);
+                    allUsers.add(appUser);
+                }
+
+                String userList = "";
+                for (User appUser : allUsers){
+                    userList = userList + " "
+                            + appUser.getfirstName() + " "
+                            + appUser.getlastName() + " ("
+                            + appUser.getuserType() + ")\n";
+                }
+
+                ((TextView)findViewById(R.id.usersList)).setText(userList);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
         currentUser();
 
     }
@@ -202,6 +234,8 @@ public class MainActivity extends AppCompatActivity implements
         } else {
             mStatusTextView.setText(R.string.signed_out);
             mDetailTextView.setText("Please sign in OR make a new account");
+
+            mPasswordField.setText("");
 
             findViewById(R.id.allUsersList).setVisibility(View.GONE);
             findViewById(R.id.emailPasswordButtons).setVisibility(View.VISIBLE);

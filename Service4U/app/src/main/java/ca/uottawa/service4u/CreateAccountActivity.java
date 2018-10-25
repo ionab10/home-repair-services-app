@@ -117,6 +117,7 @@ public class CreateAccountActivity extends AppCompatActivity {
         }
     }
 
+
     private boolean validateForm() {
         boolean valid = true;
 
@@ -135,10 +136,7 @@ public class CreateAccountActivity extends AppCompatActivity {
 
         String password = ((EditText) findViewById(R.id.fieldPassword2)).getText().toString();
         String password2 = ((EditText) findViewById(R.id.fieldPassword3)).getText().toString();
-        if (TextUtils.isEmpty(password2)) {
-            ((EditText) findViewById(R.id.fieldPassword3)).setError("Required.");
-            valid = false;
-        } else if (!password.equals(password2)){
+        if (!password.equals(password2)){
             ((EditText) findViewById(R.id.fieldPassword3)).setError("Passwords must match.");
             valid = false;
         } else {
