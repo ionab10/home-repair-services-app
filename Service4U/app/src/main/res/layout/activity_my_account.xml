@@ -66,6 +66,13 @@
             android:textColor="@color/common_google_signin_btn_text_dark_focused"
             android:theme="@style/ThemeOverlay.MyTextDetail" />
 
+        <TextView
+            android:id="@+id/address"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/common_google_signin_btn_text_dark_focused"
+            android:theme="@style/ThemeOverlay.MyTextDetail" />
+
         <include
             android:id="@+id/allUsersList"
             layout="@layout/all_users"

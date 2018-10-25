@@ -97,5 +97,7 @@
     <string name="user_type">User type</string>
     <string name="phone_title_text">Phone number (optional for admins)</string>
     <string name="address_title_text">Address (required for homeowners)</string>
+    <string name="first_name">First name</string>
+    <string name="last_name">Last name</string>
 
 </resources>

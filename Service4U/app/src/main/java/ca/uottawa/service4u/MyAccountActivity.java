@@ -54,6 +54,7 @@ public class MyAccountActivity extends AppCompatActivity {
                 ((TextView) findViewById(R.id.lastName)).setText(String.format("Last name: %s", appUser.getlastName()));
                 ((TextView) findViewById(R.id.accountType)).setText(String.format("Account type: %s", appUser.getuserType()));
                 ((TextView) findViewById(R.id.phoneNumber)).setText(String.format("Phone: %s", appUser.getphoneNumber()));
+                ((TextView) findViewById(R.id.address)).setText(String.format("Address: %s", appUser.getAddress()));
 
             }
 

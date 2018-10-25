@@ -94,6 +94,8 @@ public class CreateAccountActivity extends AppCompatActivity {
                                 ((EditText) findViewById(R.id.fieldEmail2)).setError("Invalid Email Address");
                             } else if (exMessage.equals("The given password is invalid. [ Password should be at least 6 characters ]")) {
                                 ((EditText) findViewById(R.id.fieldPassword2)).setError("Password must be at least 6 characters");
+                            } else if (exMessage.equals("The email address is already in use by another account.")) {
+                                ((EditText) findViewById(R.id.fieldEmail2)).setError("Account already exists with this email");
                             } else {
                                 Toast.makeText(CreateAccountActivity.this, "Account creation failed.",
                                         Toast.LENGTH_SHORT).show();
@@ -104,39 +106,34 @@ public class CreateAccountActivity extends AppCompatActivity {
         // [END create_user_with_email]
     }
 
+    private boolean fieldIsEmpty(EditText et) {
+        String value = et.getText().toString();
+        if (TextUtils.isEmpty(value)) {
+            et.setError("Required.");
+            return false;
+        } else {
+            et.setError(null);
+            return true;
+        }
+    }
 
     private boolean validateForm() {
         boolean valid = true;
 
-        String email = ((EditText) findViewById(R.id.fieldEmail2)).getText().toString();
-        if (TextUtils.isEmpty(email)) {
-            ((EditText) findViewById(R.id.fieldEmail2)).setError("Required.");
-            valid = false;
-        } else {
-            ((EditText) findViewById(R.id.fieldEmail2)).setError(null);
-        }
-
-        String username = ((EditText) findViewById(R.id.fieldUsername)).getText().toString();
-        if (TextUtils.isEmpty(username)) {
-            ((EditText) findViewById(R.id.fieldUsername)).setError("Required.");
+        if (!fieldIsEmpty(((EditText) findViewById(R.id.fieldEmail2)))){
             valid = false;
         }
-        else {
-            ((EditText) findViewById(R.id.fieldUsername)).setError(null);
+        if (!fieldIsEmpty(((EditText) findViewById(R.id.fieldFirstName)))){
+            valid = false;
+        }
+        if (!fieldIsEmpty(((EditText) findViewById(R.id.fieldLastName)))){
+            valid = false;
+        }
+        if (!fieldIsEmpty(((EditText) findViewById(R.id.fieldPassword2)))){
+            valid = false;
         }
 
-        //require 6 length
         String password = ((EditText) findViewById(R.id.fieldPassword2)).getText().toString();
-        if (TextUtils.isEmpty(password)) {
-            ((EditText) findViewById(R.id.fieldPassword2)).setError("Required.");
-            valid = false;
-        }
-        else {
-            ((EditText) findViewById(R.id.fieldPassword2)).setError(null);
-        }
-
-
-
         String password2 = ((EditText) findViewById(R.id.fieldPassword3)).getText().toString();
         if (TextUtils.isEmpty(password2)) {
             ((EditText) findViewById(R.id.fieldPassword3)).setError("Required.");
@@ -159,7 +156,7 @@ public class CreateAccountActivity extends AppCompatActivity {
             ((EditText) findViewById(R.id.fieldPhone)).setError(null);
         }
 
-        RadioButton homeowner = (RadioButton) findViewById(R.id.radioButton3);
+        RadioButton homeowner = (RadioButton) findViewById(R.id.radioButton2);
         String address = ((EditText) findViewById(R.id.fieldAddress)).getText().toString();
         if (TextUtils.isEmpty(address) && homeowner.isChecked()) {
             ((EditText) findViewById(R.id.fieldAddress)).setError("Required for homeowners.");
@@ -182,10 +179,8 @@ public class CreateAccountActivity extends AppCompatActivity {
         //String email = user.getEmail();
 
         //get name
-        String username = ((EditText) findViewById(R.id.fieldUsername)).getText().toString().trim();
-        String[] arrayName = username.split(" ", 2);
-        String firstName = arrayName[0];
-        String lastName = arrayName[1];
+        String firstName = ((EditText) findViewById(R.id.fieldFirstName)).getText().toString().trim();
+        String lastName = ((EditText) findViewById(R.id.fieldLastName)).getText().toString().trim();
 
         //get phone
         String phoneNumber = ((EditText) findViewById(R.id.fieldPhone)).getText().toString();
