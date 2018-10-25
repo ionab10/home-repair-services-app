@@ -11,5 +11,5 @@ public class ServiceAppUser {
     public String firstName;
     public String lastName;
     public String userType;
-
+    public String phone;
 }

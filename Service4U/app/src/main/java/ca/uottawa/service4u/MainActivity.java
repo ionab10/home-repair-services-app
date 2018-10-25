@@ -18,8 +18,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserInfo;
 
-
-
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -42,8 +40,6 @@ public class MainActivity extends AppCompatActivity implements
     FirebaseAuth mAuth;
     FirebaseDatabase database;
     DatabaseReference databaseUsers;
-
-    String userType = "";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -74,12 +70,42 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public void onStart() {
         super.onStart();
-        // Check if user is signed in (non-null) and update UI accordingly.
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        updateUI(currentUser);
+
+        currentUser();
 
     }
     // [END on_start_check_user]
+
+    public void currentUser(){
+        // Check if user is signed in (non-null) and update UI accordingly.
+        FirebaseUser user = mAuth.getCurrentUser();
+
+        if (user != null) {
+            //get userType
+            databaseUsers.child(user.getUid()).child("userType").addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    // This method is called once with the initial value and again
+                    // whenever data at this location is updated.
+                    String userType = dataSnapshot.getValue(String.class);
+                    Log.d(dbTAG, "Value is: " + userType);
+
+                    FirebaseUser user = mAuth.getCurrentUser();
+                    updateUI(user, userType);
+                }
+
+                @Override
+                public void onCancelled(DatabaseError error) {
+                    // Failed to read value
+                    Log.w(dbTAG, "Failed to read value.", error.toException());
+                }
+            });
+
+        }
+        else {
+            updateUI(null, null);
+        }
+    }
 
     private void createAccount() {
         //Application Context and Activity
@@ -107,28 +133,7 @@ public class MainActivity extends AppCompatActivity implements
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithEmail:success");
-                            FirebaseUser user = mAuth.getCurrentUser();
-
-                            /*
-                            //get userType
-                            databaseUsers.child(user.getUid()).child("userType").addValueEventListener(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(DataSnapshot dataSnapshot) {
-                                    // This method is called once with the initial value and again
-                                    // whenever data at this location is updated.
-                                    String value = dataSnapshot.getValue(String.class);
-                                    Log.d(dbTAG, "Value is: " + value);
-                                    userType = value;  //this doesn't work
-                                }
-
-                                @Override
-                                public void onCancelled(DatabaseError error) {
-                                    // Failed to read value
-                                    Log.w(dbTAG, "Failed to read value.", error.toException());
-                                }
-                            });*/
-
-                            updateUI(user);
+                            currentUser();
 
                             //Intent intent = new Intent(getApplicationContext(), WelcomeActivity.class);
                             //startActivityForResult (intent,0);
@@ -138,7 +143,7 @@ public class MainActivity extends AppCompatActivity implements
                             Log.w(TAG, "signInWithEmail:failure", task.getException());
                             Toast.makeText(MainActivity.this, "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
-                            updateUI(null);
+                            updateUI(null, null);
                         }
 
                         // [START_EXCLUDE]
@@ -153,7 +158,7 @@ public class MainActivity extends AppCompatActivity implements
 
     private void signOut() {
         mAuth.signOut();
-        updateUI(null);
+        updateUI(null, null);
     }
 
     private boolean validateForm() {
@@ -178,7 +183,7 @@ public class MainActivity extends AppCompatActivity implements
         return valid;
     }
 
-    private void updateUI(FirebaseUser user) {
+    private void updateUI(FirebaseUser user, String userType) {
         if (user != null) {
 
             String displayName = user.getDisplayName();
