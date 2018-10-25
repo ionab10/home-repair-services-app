@@ -5,19 +5,22 @@ public class User{
 	private String lastName;
 	private String userType;
 	private String phoneNumber;
+    private String address;
 
 	public User(){
 		this.firstName = "";
 		this.lastName = "";
 		this.userType = null;
 		this.phoneNumber = "";
+        this.address = "";
 	}
 
-	public User(String firstName, String lastName, String userType, String phoneNumber){
+	public User(String firstName, String lastName, String userType, String phoneNumber, String address){
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.userType = userType;
 		this.phoneNumber = phoneNumber;
+        this.address = address;
 	}
 
 
@@ -40,6 +43,8 @@ public class User{
 		return phoneNumber;
 	}
 
-
+    public String getAddress(){
+        return address;
+    }
 
 }

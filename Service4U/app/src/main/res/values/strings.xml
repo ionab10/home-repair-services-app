@@ -75,8 +75,6 @@
     <string name="status_email_sent">Link sent, check your email to continue.</string>
     <string name="status_link_found">Link received, enter email to sign in.</string>
 
-    <string name="phone_title_text">Phone Number</string>
-
     <string name="twitter_status_fmt">Twitter User: %s</string>
     <string name="twitter_title_text">Twitter Login</string>
 
@@ -97,5 +95,6 @@
     <string name="confirm_password">Confirm password</string>
     <string name="password">Password</string>
     <string name="user_type">User type</string>
-    <string name="phone">Phone number</string>
+    <string name="phone_title_text">Phone number (optional for admins)</string>
+    <string name="address_title_text">Address (required for homeowners)</string>
 </resources>

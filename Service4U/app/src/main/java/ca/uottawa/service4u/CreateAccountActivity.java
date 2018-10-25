@@ -148,14 +148,27 @@ public class CreateAccountActivity extends AppCompatActivity {
             ((EditText)findViewById(R.id.fieldPassword3)).setError(null);
         }
 
+        //phone number required for service providers and homeowners
+        RadioButton admin = (RadioButton) findViewById(R.id.radioButton);
         String phoneNumber = ((EditText) findViewById(R.id.fieldPhone)).getText().toString();
-        if (TextUtils.isEmpty(phoneNumber)) {
-            ((EditText) findViewById(R.id.fieldPhone)).setError("Required.");
+        if (TextUtils.isEmpty(phoneNumber) && !admin.isChecked()) {
+            ((EditText) findViewById(R.id.fieldPhone)).setError("Required unless admin.");
             valid = false;
         }
         else {
             ((EditText) findViewById(R.id.fieldPhone)).setError(null);
         }
+
+        RadioButton homeowner = (RadioButton) findViewById(R.id.radioButton3);
+        String address = ((EditText) findViewById(R.id.fieldAddress)).getText().toString();
+        if (TextUtils.isEmpty(address) && homeowner.isChecked()) {
+            ((EditText) findViewById(R.id.fieldAddress)).setError("Required for homeowners.");
+            valid = false;
+        }
+        else {
+            ((EditText) findViewById(R.id.fieldAddress)).setError(null);
+        }
+
 
         return valid;
     }
@@ -179,8 +192,6 @@ public class CreateAccountActivity extends AppCompatActivity {
 
         //get usertype
         String userType = "none";
-        //this is wrong -- get user type from checked radio
-        //String userType = findViewById(R.id.userTypeRadio).toString();
         RadioButton admin, homeOwner, serviceProvider;
         admin = (RadioButton) findViewById(R.id.radioButton);
         homeOwner = (RadioButton) findViewById(R.id.radioButton2);
@@ -189,14 +200,17 @@ public class CreateAccountActivity extends AppCompatActivity {
             userType = "admin";
         }
         if(homeOwner.isChecked()){
-            userType = "home owner";
+            userType = "homeowner";
         }
         if(serviceProvider.isChecked()){
             userType = "service provider";
         }
 
+        //get address
+        String address = ((EditText) findViewById(R.id.fieldAddress)).getText().toString();
+
         //add new user
-        User newUser = new User(firstName, lastName, userType, phoneNumber);
+        User newUser = new User(firstName, lastName, userType, phoneNumber, address);
         databaseUsers.child(userid).setValue(newUser);
     }
 

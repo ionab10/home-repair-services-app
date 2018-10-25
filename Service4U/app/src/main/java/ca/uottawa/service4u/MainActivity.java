@@ -70,7 +70,6 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public void onStart() {
         super.onStart();
-
         currentUser();
 
     }
