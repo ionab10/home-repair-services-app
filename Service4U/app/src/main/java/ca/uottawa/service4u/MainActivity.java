@@ -16,21 +16,30 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserInfo;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 
 
 public class MainActivity extends AppCompatActivity implements
         View.OnClickListener{
 
     private static final String TAG = "EmailPassword";
+    private static final String dbTAG = "Database";
 
     private TextView mStatusTextView;
     private TextView mDetailTextView;
     private EditText mEmailField;
     private EditText mPasswordField;
 
-    // [START declare_auth]
-    private FirebaseAuth mAuth;
-    // [END declare_auth]
+    FirebaseAuth mAuth;
+    FirebaseDatabase database;
+    DatabaseReference databaseUsers;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -49,21 +58,54 @@ public class MainActivity extends AppCompatActivity implements
         findViewById(R.id.signOutButton).setOnClickListener(this);
         findViewById(R.id.myAccountButton).setOnClickListener(this);
 
-        // [START initialize_auth]
-        // Initialize Firebase Auth
+
+        // Initialize Firebase
         mAuth = FirebaseAuth.getInstance();
-        // [END initialize_auth]
+        database = FirebaseDatabase.getInstance();
+        databaseUsers = database.getReference("Users");
+
     }
 
     // [START on_start_check_user]
     @Override
     public void onStart() {
         super.onStart();
-        // Check if user is signed in (non-null) and update UI accordingly.
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        updateUI(currentUser);
+
+        currentUser();
+
     }
     // [END on_start_check_user]
+
+    public void currentUser(){
+        // Check if user is signed in (non-null) and update UI accordingly.
+        FirebaseUser user = mAuth.getCurrentUser();
+
+        if (user != null) {
+            //get userType
+            databaseUsers.child(user.getUid()).child("userType").addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    // This method is called once with the initial value and again
+                    // whenever data at this location is updated.
+                    String userType = dataSnapshot.getValue(String.class);
+                    Log.d(dbTAG, "Value is: " + userType);
+
+                    FirebaseUser user = mAuth.getCurrentUser();
+                    updateUI(user, userType);
+                }
+
+                @Override
+                public void onCancelled(DatabaseError error) {
+                    // Failed to read value
+                    Log.w(dbTAG, "Failed to read value.", error.toException());
+                }
+            });
+
+        }
+        else {
+            updateUI(null, null);
+        }
+    }
 
     private void createAccount() {
         //Application Context and Activity
@@ -91,9 +133,7 @@ public class MainActivity extends AppCompatActivity implements
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithEmail:success");
-                            FirebaseUser user = mAuth.getCurrentUser();
-
-                            updateUI(user);
+                            currentUser();
 
                             //Intent intent = new Intent(getApplicationContext(), WelcomeActivity.class);
                             //startActivityForResult (intent,0);
@@ -103,7 +143,7 @@ public class MainActivity extends AppCompatActivity implements
                             Log.w(TAG, "signInWithEmail:failure", task.getException());
                             Toast.makeText(MainActivity.this, "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
-                            updateUI(null);
+                            updateUI(null, null);
                         }
 
                         // [START_EXCLUDE]
@@ -118,7 +158,7 @@ public class MainActivity extends AppCompatActivity implements
 
     private void signOut() {
         mAuth.signOut();
-        updateUI(null);
+        updateUI(null, null);
     }
 
     private boolean validateForm() {
@@ -143,17 +183,19 @@ public class MainActivity extends AppCompatActivity implements
         return valid;
     }
 
-    private void updateUI(FirebaseUser user) {
+    private void updateUI(FirebaseUser user, String userType) {
         if (user != null) {
-            mStatusTextView.setText("You are signed in as ");
-            mDetailTextView.setText("TO DO");
+
+            String displayName = user.getDisplayName();
+            mStatusTextView.setText(String.format("You are signed in as %s",userType));
+            mDetailTextView.setText("Username: "+displayName);
 
 
-            //if (user.getCustomClaims().get("user_type").equals("admin")) {
+            if (userType.equals("admin")) {
                 findViewById(R.id.allUsersList).setVisibility(View.VISIBLE);
-            //} else {
-            //    findViewById(R.id.allUsersList).setVisibility(View.GONE);
-            //}
+            } else {
+                findViewById(R.id.allUsersList).setVisibility(View.GONE);
+            }
 
             findViewById(R.id.emailPasswordButtons).setVisibility(View.GONE);
             findViewById(R.id.emailPasswordFields).setVisibility(View.GONE);
@@ -162,7 +204,7 @@ public class MainActivity extends AppCompatActivity implements
 
         } else {
             mStatusTextView.setText(R.string.signed_out);
-            mDetailTextView.setText(null);
+            mDetailTextView.setText("Please sign in OR make a new account");
 
             findViewById(R.id.allUsersList).setVisibility(View.GONE);
             findViewById(R.id.emailPasswordButtons).setVisibility(View.VISIBLE);

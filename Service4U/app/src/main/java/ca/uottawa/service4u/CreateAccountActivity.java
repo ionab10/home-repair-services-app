@@ -26,13 +26,23 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 
+import com.google.firebase.database.FirebaseDatabase;
+
+
 public class CreateAccountActivity extends AppCompatActivity {
 
     private static final String TAG = "EmailPassword";
+    private static final String dbTAG = "Database";
 
     // [START declare_auth]
+
     private FirebaseAuth mAuth;
     public DatabaseReference databaseProcducts;
+
+    protected FirebaseAuth mAuth;
+    protected FirebaseDatabase database;
+    protected DatabaseReference databaseUsers;
+
     // [END declare_auth]
 
     @Override
@@ -45,6 +55,8 @@ public class CreateAccountActivity extends AppCompatActivity {
         // [START initialize_auth]
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
+        database = FirebaseDatabase.getInstance();
+        databaseUsers = database.getReference("Users");
         // [END initialize_auth]
     }
 
@@ -70,6 +82,7 @@ public class CreateAccountActivity extends AppCompatActivity {
                             Log.d(TAG, "createUserWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
 
+
                             String userType = "none";
                             //this is wrong -- get user type from checked radio
                             //String userType = findViewById(R.id.userTypeRadio).toString();
@@ -94,6 +107,7 @@ public class CreateAccountActivity extends AppCompatActivity {
 
                             mAuth.setCustomUserClaims(user.getUid(), claims);
                             */
+
 
                             addUserToDatabase(user);
 
@@ -190,10 +204,15 @@ public class CreateAccountActivity extends AppCompatActivity {
     public void addUserToDatabase(FirebaseUser user){
         //use the data in the fields to add user to database
         //do not add password to database as it's already stored in Firebase's Authentication
-        user.getUid();
-        user.getEmail();
-        findViewById(R.id.userTypeRadio);
-        findViewById(R.id.fieldPhone);
+        String userid = user.getUid();
+
+        String email = user.getEmail();
+
+        String userType = findViewById(R.id.userTypeRadio).toString();  //wrong
+        databaseUsers.child(userid).child("userType").setValue(userType);
+
+        String phone = findViewById(R.id.fieldPhone).toString();
+        databaseUsers.child(userid).child("phone").setValue(userType);
     }
 
 }
