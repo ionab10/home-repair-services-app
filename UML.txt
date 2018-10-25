@@ -9,6 +9,9 @@ class Account{
 
 class Administrator {
   isA Account;
+  
+  void addService (){};
+  void updateService (){};
 
 }
 
@@ -16,21 +19,28 @@ class Homeowner {
   isA Account;
   String address;
   String phoneNum;
+  
+  List findService (){};
+  void bookService (){};
+  void rateJob (){};
 }
 
 class ServiceProvider {
   isA Account;
   int rating;
-  boolean available;
+  List availability;
   String phoneNum;
-  1...* -- * Service;
+  1..* -- * Service;
+  
+  void updateAvailability (){};
+  void acceptJob (){};
 }
 
 class Service {
   String name;
   String type;
   double ratePerHour;
-  10…* -- 1 Administrator creates;
+  10..* -- 1 Administrator creates;
 }
 
 class Job {
@@ -40,4 +50,3 @@ class Job {
   * -- 1 Homeowner;
   * -- 1 ServiceProvider;
 }
-
