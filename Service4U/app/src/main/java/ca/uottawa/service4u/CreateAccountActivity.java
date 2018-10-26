@@ -117,6 +117,19 @@ public class CreateAccountActivity extends AppCompatActivity {
         }
     }
 
+    private boolean fieldIsName(EditText et) {
+        String value = et.getText().toString();
+        if (TextUtils.isEmpty(value)) {
+            et.setError("Required.");
+            return false;
+        } else if (!value.matches("[A-Za-z\\s-]+")) {
+            et.setError("Contains invalid characters.");
+            return false;
+        } else {
+            et.setError(null);
+            return true;
+        }
+    }
 
     private boolean validateForm() {
         boolean valid = true;
@@ -124,10 +137,10 @@ public class CreateAccountActivity extends AppCompatActivity {
         if (!fieldIsEmpty(((EditText) findViewById(R.id.fieldEmail2)))){
             valid = false;
         }
-        if (!fieldIsEmpty(((EditText) findViewById(R.id.fieldFirstName)))){
+        if (!fieldIsName(((EditText) findViewById(R.id.fieldFirstName)))){
             valid = false;
         }
-        if (!fieldIsEmpty(((EditText) findViewById(R.id.fieldLastName)))){
+        if (!fieldIsName(((EditText) findViewById(R.id.fieldLastName)))){
             valid = false;
         }
         if (!fieldIsEmpty(((EditText) findViewById(R.id.fieldPassword2)))){
@@ -135,6 +148,13 @@ public class CreateAccountActivity extends AppCompatActivity {
         }
 
         String password = ((EditText) findViewById(R.id.fieldPassword2)).getText().toString();
+        if (password.contains(" ")){
+            ((EditText) findViewById(R.id.fieldPassword2)).setError("Passwords cannot contain spaces.");
+            valid = false;
+        } else {
+            ((EditText)findViewById(R.id.fieldPassword2)).setError(null);
+        }
+
         String password2 = ((EditText) findViewById(R.id.fieldPassword3)).getText().toString();
         if (!password.equals(password2)){
             ((EditText) findViewById(R.id.fieldPassword3)).setError("Passwords must match.");
@@ -143,8 +163,14 @@ public class CreateAccountActivity extends AppCompatActivity {
             ((EditText)findViewById(R.id.fieldPassword3)).setError(null);
         }
 
+        if (!((RadioButton)findViewById(R.id.adminRadioBtn)).isChecked() &&
+                !((RadioButton)findViewById(R.id.serviceProvRadioBtn)).isChecked() &&
+                !((RadioButton)findViewById(R.id.homeownerRadioBtn)).isChecked()){
+            ((TextView) findViewById(R.id.userTypeText)).setError("Required.");
+        }
+
         //phone number required for service providers and homeowners
-        RadioButton admin = (RadioButton) findViewById(R.id.radioButton);
+        RadioButton admin = (RadioButton) findViewById(R.id.adminRadioBtn);
         String phoneNumber = ((EditText) findViewById(R.id.fieldPhone)).getText().toString();
         if (TextUtils.isEmpty(phoneNumber) && !admin.isChecked()) {
             ((EditText) findViewById(R.id.fieldPhone)).setError("Required unless admin.");
@@ -154,7 +180,7 @@ public class CreateAccountActivity extends AppCompatActivity {
             ((EditText) findViewById(R.id.fieldPhone)).setError(null);
         }
 
-        RadioButton homeowner = (RadioButton) findViewById(R.id.radioButton2);
+        RadioButton homeowner = (RadioButton) findViewById(R.id.homeownerRadioBtn);
         String address = ((EditText) findViewById(R.id.fieldAddress)).getText().toString();
         if (TextUtils.isEmpty(address) && homeowner.isChecked()) {
             ((EditText) findViewById(R.id.fieldAddress)).setError("Required for homeowners.");
@@ -163,7 +189,6 @@ public class CreateAccountActivity extends AppCompatActivity {
         else {
             ((EditText) findViewById(R.id.fieldAddress)).setError(null);
         }
-
 
         return valid;
     }
@@ -186,9 +211,9 @@ public class CreateAccountActivity extends AppCompatActivity {
         //get usertype
         String userType = "none";
         RadioButton admin, homeOwner, serviceProvider;
-        admin = (RadioButton) findViewById(R.id.radioButton);
-        homeOwner = (RadioButton) findViewById(R.id.radioButton2);
-        serviceProvider = (RadioButton) findViewById(R.id.radioButton3);
+        admin = (RadioButton) findViewById(R.id.adminRadioBtn);
+        homeOwner = (RadioButton) findViewById(R.id.homeownerRadioBtn);
+        serviceProvider = (RadioButton) findViewById(R.id.serviceProvRadioBtn);
         if(admin.isChecked()){
             userType = "admin";
         }
