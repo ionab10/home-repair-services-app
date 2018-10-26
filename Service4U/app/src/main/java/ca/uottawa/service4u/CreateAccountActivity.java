@@ -167,6 +167,10 @@ public class CreateAccountActivity extends AppCompatActivity {
                 !((RadioButton)findViewById(R.id.serviceProvRadioBtn)).isChecked() &&
                 !((RadioButton)findViewById(R.id.homeownerRadioBtn)).isChecked()){
             ((TextView) findViewById(R.id.userTypeText)).setError("Required.");
+            valid = false;
+        }
+        else {
+            ((TextView) findViewById(R.id.userTypeText)).setError(null);
         }
 
         //phone number required for service providers and homeowners
