@@ -36,13 +36,6 @@ class ServiceProvider {
   void acceptJob (){};
 }
 
-class Service {
-  String name;
-  String type;
-  double ratePerHour;
-  10..* -- 1 Administrator creates;
-}
-
 class Job {
   Date date;
   double fee;
@@ -50,3 +43,12 @@ class Job {
   * -- 1 Homeowner;
   * -- 1 ServiceProvider;
 }
+
+class Service {
+  String name;
+  String type;
+  double ratePerHour;
+  10..* -- 1 Administrator creates;
+}
+
+
