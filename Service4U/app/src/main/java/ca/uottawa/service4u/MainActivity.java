@@ -221,9 +221,20 @@ public class MainActivity extends AppCompatActivity implements
             if (appUser.getuserType().equals("admin")) {
                 findViewById(R.id.allUsersList).setVisibility(View.VISIBLE);
                 findViewById(R.id.servicesBtn).setVisibility(View.VISIBLE);
-            } else {
+                findViewById(R.id.homeownerBtns).setVisibility(View.GONE);
+                findViewById(R.id.serviceProviderBtn).setVisibility(View.GONE);
+
+            } else if (appUser.getuserType().equals("homeowner")) {
                 findViewById(R.id.allUsersList).setVisibility(View.GONE);
                 findViewById(R.id.servicesBtn).setVisibility(View.GONE);
+                findViewById(R.id.homeownerBtns).setVisibility(View.VISIBLE);
+                findViewById(R.id.serviceProviderBtn).setVisibility(View.GONE);
+
+            } else if (appUser.getuserType().equals("service provider")) {
+                findViewById(R.id.allUsersList).setVisibility(View.GONE);
+                findViewById(R.id.servicesBtn).setVisibility(View.GONE);
+                findViewById(R.id.homeownerBtns).setVisibility(View.GONE);
+                findViewById(R.id.serviceProviderBtn).setVisibility(View.VISIBLE);
             }
 
             findViewById(R.id.emailPasswordButtons).setVisibility(View.GONE);

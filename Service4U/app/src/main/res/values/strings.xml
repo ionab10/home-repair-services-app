@@ -107,5 +107,7 @@
     <string name="services">Services</string>
     <string name="delete">Delete</string>
     <string name="update">update</string>
+    <string name="book_job">Book Service</string>
+    <string name="my_jobs">My Jobs</string>
 
 </resources>
