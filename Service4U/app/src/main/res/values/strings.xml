@@ -91,7 +91,7 @@
     <string name="homeowner">Homeowner</string>
     <string name="welcome">Welcome to S4U</string>
     <string name="email">Email</string>
-    <string name="name">Name (first and last)</string>
+    <string name="name">Name:</string>
     <string name="confirm_password">Confirm password</string>
     <string name="password">Password</string>
     <string name="user_type">User type</string>
@@ -101,5 +101,11 @@
     <string name="last_name">Last name</string>
     <string name="users">Users:</string>
     <string name="password_hint">at least 6 characters</string>
+    <string name="start">Start</string>
+    <string name="title_activity_services">ServicesActivity</string>
+    <string name="done">Done</string>
+    <string name="services">Services</string>
+    <string name="delete">Delete</string>
+    <string name="update">update</string>
 
 </resources>

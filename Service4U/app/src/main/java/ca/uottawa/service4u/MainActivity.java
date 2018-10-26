@@ -60,6 +60,7 @@ public class MainActivity extends AppCompatActivity implements
         findViewById(R.id.emailCreateAccountButton).setOnClickListener(this);
         findViewById(R.id.signOutButton).setOnClickListener(this);
         findViewById(R.id.myAccountButton).setOnClickListener(this);
+        findViewById(R.id.startButton).setOnClickListener(this);
 
 
         // Initialize Firebase
@@ -166,9 +167,6 @@ public class MainActivity extends AppCompatActivity implements
                             Log.d(TAG, "signInWithEmail:success");
                             currentUser();
 
-                            //Intent intent = new Intent(getApplicationContext(), WelcomeActivity.class);
-                            //startActivityForResult (intent,0);
-
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithEmail:failure", task.getException());
@@ -244,6 +242,11 @@ public class MainActivity extends AppCompatActivity implements
         }
     }
 
+    public void welcome(){
+        Intent intent = new Intent(getApplicationContext(), ServicesActivity.class);
+        startActivityForResult (intent,0);
+    }
+
     @Override
     public void onClick(View v) {
         int i = v.getId();
@@ -255,6 +258,8 @@ public class MainActivity extends AppCompatActivity implements
             signIn(mEmailField.getText().toString(), mPasswordField.getText().toString());
         } else if (i == R.id.signOutButton) {
             signOut();
+        } else if (i == R.id.startButton) {
+            welcome();
         }
     }
 
