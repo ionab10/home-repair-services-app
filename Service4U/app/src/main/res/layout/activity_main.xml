@@ -133,12 +133,12 @@
             android:visibility="gone">
 
             <Button
-                android:id="@+id/startButton"
+                android:id="@+id/servicesBtn"
                 style="@style/Widget.AppCompat.Button.Colored"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1.0"
-                android:text="@string/start"
+                android:text="@string/services"
                 android:theme="@style/ThemeOverlay.MyDarkButton" />
 
             <LinearLayout

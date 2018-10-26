@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity implements
         findViewById(R.id.emailCreateAccountButton).setOnClickListener(this);
         findViewById(R.id.signOutButton).setOnClickListener(this);
         findViewById(R.id.myAccountButton).setOnClickListener(this);
-        findViewById(R.id.startButton).setOnClickListener(this);
+        findViewById(R.id.servicesBtn).setOnClickListener(this);
 
 
         // Initialize Firebase
@@ -220,8 +220,10 @@ public class MainActivity extends AppCompatActivity implements
 
             if (appUser.getuserType().equals("admin")) {
                 findViewById(R.id.allUsersList).setVisibility(View.VISIBLE);
+                findViewById(R.id.servicesBtn).setVisibility(View.VISIBLE);
             } else {
                 findViewById(R.id.allUsersList).setVisibility(View.GONE);
+                findViewById(R.id.servicesBtn).setVisibility(View.GONE);
             }
 
             findViewById(R.id.emailPasswordButtons).setVisibility(View.GONE);
@@ -258,7 +260,7 @@ public class MainActivity extends AppCompatActivity implements
             signIn(mEmailField.getText().toString(), mPasswordField.getText().toString());
         } else if (i == R.id.signOutButton) {
             signOut();
-        } else if (i == R.id.startButton) {
+        } else if (i == R.id.servicesBtn) {
             welcome();
         }
     }
