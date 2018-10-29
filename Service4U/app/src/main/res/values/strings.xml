@@ -110,4 +110,11 @@
     <string name="book_job">Book Service</string>
     <string name="my_jobs">My Jobs</string>
 
+    <string-array name="service_type_array">
+        <item>Painting</item>
+        <item>Logistics</item>
+        <item>IT</item>
+        <item>Cable/Internet</item>
+    </string-array>
+
 </resources>

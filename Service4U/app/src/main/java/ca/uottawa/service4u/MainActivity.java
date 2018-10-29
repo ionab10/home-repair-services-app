@@ -120,7 +120,7 @@ public class MainActivity extends AppCompatActivity implements
                     // This method is called once with the initial value and again
                     // whenever data at this location is updated.
                     User appUser = dataSnapshot.getValue(User.class);
-                    Log.d(dbTAG, "Value is: " + appUser.getuserType());
+                    Log.d(dbTAG, "User type is: " + appUser.getuserType());
 
                     FirebaseUser user = mAuth.getCurrentUser();
                     updateUI(user, appUser);
@@ -156,6 +156,9 @@ public class MainActivity extends AppCompatActivity implements
         if (!validateForm()) {
             return;
         }
+
+        mStatusTextView.setText("Signing in...");
+        mDetailTextView.setText("Please wait.");
 
         // [START sign_in_with_email]
         mAuth.signInWithEmailAndPassword(email, password)

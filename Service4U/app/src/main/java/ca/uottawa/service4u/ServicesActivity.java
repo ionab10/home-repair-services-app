@@ -11,9 +11,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,21 +26,25 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class ServicesActivity extends AppCompatActivity {
     private static final String dbTAG = "Database";
 
     private EditText sNameField;
-    private EditText sTypeField;
+    private Spinner sTypeField;
     private EditText sRateField;
-
 
     ListView listViewServices;
     DatabaseReference databaseServices;
     List<Service> services;
 
+    String currentServiceType;
+
     String currentServiceId;
+
+    List<String> serviceTypesArray;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,11 +56,21 @@ public class ServicesActivity extends AppCompatActivity {
         databaseServices = FirebaseDatabase.getInstance().getReference("Services");
 
         services = new ArrayList<>();
+        serviceTypesArray = Arrays.asList(getResources().getStringArray(R.array.service_type_array));
 
         // Views
         sNameField = findViewById(R.id.nameField);
         sTypeField = findViewById(R.id.typeField);
         sRateField = findViewById(R.id.rateField);
+        listViewServices = (ListView) findViewById(R.id.listViewServices);
+
+        //Service Type spinner
+        ArrayAdapter<CharSequence> serviceTypeAdapter = ArrayAdapter.createFromResource(this,
+                R.array.service_type_array, android.R.layout.simple_spinner_item);
+        // Create an ArrayAdapter using the string array and a default spinner layout
+        serviceTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        sTypeField.setAdapter(serviceTypeAdapter);
+        currentServiceType = serviceTypeAdapter.getItem(0).toString();
 
         // Buttons
         findViewById(R.id.addServiceBtn).setOnClickListener(new View.OnClickListener() {
@@ -90,7 +106,21 @@ public class ServicesActivity extends AppCompatActivity {
             }
         });
 
-        listViewServices = (ListView) findViewById(R.id.listViewServices);
+        sTypeField.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view,
+                                       int position, long id) {
+                Log.v("item", (String) parent.getItemAtPosition(position));
+                currentServiceType = (String) parent.getItemAtPosition(position);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                Log.v("item", "none");
+            }
+        });
+
+
         listViewServices.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -135,8 +165,9 @@ public class ServicesActivity extends AppCompatActivity {
         findViewById(R.id.updateDeleteButtons).setVisibility(View.VISIBLE);
         findViewById(R.id.addServiceBtn).setVisibility(View.GONE);
 
+
         sNameField.setText(service.getName());
-        sTypeField.setText(service.getType());
+        sTypeField.setSelection(serviceTypesArray.indexOf(service.getType()));
         sRateField.setText(String.valueOf(service.getRatePerHour()));
     }
 
@@ -188,7 +219,8 @@ public class ServicesActivity extends AppCompatActivity {
         Service service = new Service();
 
         String name = sNameField.getText().toString();
-        String type = sTypeField.getText().toString();
+        String type = currentServiceType;
+
         double rate = Double.parseDouble(sRateField.getText().toString());
 
         service.setId(currentServiceId);
@@ -205,7 +237,7 @@ public class ServicesActivity extends AppCompatActivity {
         findViewById(R.id.editServiceLayout).setVisibility(View.GONE);
 
         sNameField.setText("");
-        sTypeField.setText("");
+        sTypeField.setSelection(-1);
         sRateField.setText("");
     }
 
