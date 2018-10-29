@@ -115,6 +115,7 @@
         <item>Logistics</item>
         <item>IT</item>
         <item>Cable/Internet</item>
+        <item>Misc</item>
     </string-array>
 
 </resources>
