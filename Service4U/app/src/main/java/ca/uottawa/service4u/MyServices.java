@@ -9,5 +9,14 @@ public class MyServices extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_services);
+
+
+        //TODO Read database for list of services and make checkboxes
+    }
+
+
+
+    public void associateServices(){
+        //databaseUsers.child(user.getUID()).child(“services”).setValue(listOfServices)
     }
 }
