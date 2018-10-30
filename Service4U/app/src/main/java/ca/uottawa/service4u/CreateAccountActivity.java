@@ -106,7 +106,7 @@ public class CreateAccountActivity extends AppCompatActivity {
         // [END create_user_with_email]
     }
 
-    private boolean fieldIsEmpty(EditText et) {
+    public boolean fieldIsEmpty(EditText et) {
         String value = et.getText().toString();
         if (TextUtils.isEmpty(value)) {
             et.setError("Required.");
@@ -117,7 +117,7 @@ public class CreateAccountActivity extends AppCompatActivity {
         }
     }
 
-    private boolean fieldIsName(EditText et) {
+    public boolean fieldIsName(EditText et) {
         String value = et.getText().toString();
         if (TextUtils.isEmpty(value)) {
             et.setError("Required.");

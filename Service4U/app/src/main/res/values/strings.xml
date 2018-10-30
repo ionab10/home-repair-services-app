@@ -109,6 +109,11 @@
     <string name="update">update</string>
     <string name="book_job">Book Service</string>
     <string name="my_jobs">My Jobs</string>
+    <string name="edit_account">Edit account details</string>
+    <string name="main_page">main page</string>
+    <string name="please_signin">Please sign in OR create a new account</string>
+    <string name="my_availability">My Availability</string>
+    <string name="my_services">My Services</string>
 
     <string-array name="service_type_array">
         <item>Painting</item>

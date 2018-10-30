@@ -20,11 +20,25 @@
             android:name=".CreateAccountActivity"
             android:label="@string/title_activity_create_account"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".MyAccountActivity" />
+        <activity
+            android:name=".MyAccountActivity"
+            android:label="My Account" />
         <activity
             android:name=".ServicesActivity"
             android:label="@string/title_activity_services"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".AvailabilityCalendar"
+            android:label="My Availability"/>
+        <activity
+            android:name=".MyServices"
+            android:label="My Services"/>
+        <activity
+            android:name=".MyJobs"
+            android:label="My Jobs"/>
+        <activity
+            android:name=".BookJob"
+            android:label="Book A Job"></activity>
     </application>
 
 </manifest>

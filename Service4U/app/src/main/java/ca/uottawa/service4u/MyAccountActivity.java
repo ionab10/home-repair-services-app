@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -13,7 +14,6 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.FirebaseUserMetadata;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -55,6 +55,20 @@ public class MyAccountActivity extends AppCompatActivity {
                 ((TextView) findViewById(R.id.accountType)).setText(String.format("Account type: %s", appUser.getuserType()));
                 ((TextView) findViewById(R.id.phoneNumber)).setText(String.format("Phone: %s", appUser.getphoneNumber()));
                 ((TextView) findViewById(R.id.address)).setText(String.format("Address: %s", appUser.getAddress()));
+
+                ((TextView) findViewById(R.id.editFirstName)).setText(appUser.getfirstName());
+                ((TextView) findViewById(R.id.editLastName)).setText(appUser.getlastName());
+                ((TextView) findViewById(R.id.editPhoneNumber)).setText(appUser.getphoneNumber());
+                ((TextView) findViewById(R.id.editAddress)).setText(appUser.getAddress());
+
+                if (appUser.getuserType().equals("service provider")){
+                    findViewById(R.id.availabilityBtn).setVisibility(View.VISIBLE);
+                    findViewById(R.id.myServicesBtn).setVisibility(View.VISIBLE);
+                } else {
+                    findViewById(R.id.availabilityBtn).setVisibility(View.GONE);
+                    findViewById(R.id.myServicesBtn).setVisibility(View.GONE);
+                }
+
 
             }
 
@@ -107,9 +121,82 @@ public class MyAccountActivity extends AppCompatActivity {
                 });
         // [END send_email_verification]
     }
-    public void onClick(View view){
+    public void returnToMain(View view){
         Intent i = new Intent(this, MainActivity.class); //dont write package context android will do that
         startActivity(i);
+    }
+
+    public void myAvailability(View view){
+        Intent i = new Intent(this, AvailabilityCalendar.class); //dont write package context android will do that
+        startActivity(i);
+    }
+
+    public void myServices(View view){
+        Intent i = new Intent(this, MyServices.class); //dont write package context android will do that
+        startActivity(i);
+    }
+
+
+    public void editAccountDetails(View view){
+        Button b = (Button) findViewById(R.id.editAccountBtn);
+
+        if (b.getText().toString().equals(getString(R.string.edit_account))) {
+
+            Log.w("debug", "edit account");
+
+            ((TextView) findViewById(R.id.firstName)).setText("First name:");
+            ((TextView) findViewById(R.id.lastName)).setText("Last name:");
+            ((TextView) findViewById(R.id.phoneNumber)).setText("Phone:");
+            ((TextView) findViewById(R.id.address)).setText("Address:");
+
+            findViewById(R.id.editFirstName).setVisibility(View.VISIBLE);
+            findViewById(R.id.editLastName).setVisibility(View.VISIBLE);
+            findViewById(R.id.editPhoneNumber).setVisibility(View.VISIBLE);
+            findViewById(R.id.editAddress).setVisibility(View.VISIBLE);
+
+            b.setText(R.string.done);
+        }
+        else if (b.getText().toString().equals(getString(R.string.done))) {
+            Log.w("debug", "done editing account");
+
+            if (!validateFields()) {
+                return;
+            }
+
+            String firstName = ((EditText)findViewById(R.id.editFirstName)).getText().toString();
+            String lastName = ((EditText)findViewById(R.id.editLastName)).getText().toString();
+            String phoneNumber = ((EditText)findViewById(R.id.editPhoneNumber)).getText().toString();
+            String address = ((EditText)findViewById(R.id.editAddress)).getText().toString();
+
+
+            FirebaseUser user = mAuth.getCurrentUser();
+            DatabaseReference dR = databaseUsers.child(user.getUid());
+            dR.child("firstName").setValue(firstName);
+            dR.child("lastName").setValue(lastName);
+            dR.child("phoneNumber").setValue(phoneNumber);
+            dR.child("address").setValue(address);
+
+            ((TextView) findViewById(R.id.firstName)).setText(String.format("First name: %s", firstName));
+            ((TextView) findViewById(R.id.lastName)).setText(String.format("Last name: %s", lastName));
+            ((TextView) findViewById(R.id.phoneNumber)).setText(String.format("Phone: %s", phoneNumber));
+            ((TextView) findViewById(R.id.address)).setText(String.format("Address: %s", address));
+
+            findViewById(R.id.editFirstName).setVisibility(View.GONE);
+            findViewById(R.id.editLastName).setVisibility(View.GONE);
+            findViewById(R.id.editPhoneNumber).setVisibility(View.GONE);
+            findViewById(R.id.editAddress).setVisibility(View.GONE);
+
+            b.setText(R.string.edit_account);
+        }
+
+
+    }
+
+    public boolean validateFields(){
+        //TODO
+
+
+        return true;
     }
 }
 

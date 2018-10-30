@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main_layout"
+    android:id="@+id/accountDetailsLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/grey_100"
@@ -13,42 +13,29 @@
         android:layout_height="0dp"
         android:layout_weight="3"
         android:gravity="center_horizontal"
-        android:orientation="vertical"
-      >
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/firebaseUID"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
+            android:gravity="left"
             android:textColor="@color/common_google_signin_btn_text_dark_focused"
-            android:theme="@style/ThemeOverlay.MyTitleText"  />
+            android:theme="@style/ThemeOverlay.MyTextDetail" />
 
         <TextView
             android:id="@+id/emailVerified"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="left"
             android:textColor="@color/common_google_signin_btn_text_dark_focused"
             android:theme="@style/ThemeOverlay.MyTextDetail" />
 
         <TextView
             android:id="@+id/dateCreated"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/common_google_signin_btn_text_dark_focused"
-            android:theme="@style/ThemeOverlay.MyTextDetail"/>
-
-        <TextView
-            android:id="@+id/firstName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/common_google_signin_btn_text_dark_focused"
-            android:theme="@style/ThemeOverlay.MyTextDetail" />
-
-        <TextView
-            android:id="@+id/lastName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:gravity="left"
             android:textColor="@color/common_google_signin_btn_text_dark_focused"
             android:theme="@style/ThemeOverlay.MyTextDetail" />
 
@@ -56,27 +43,122 @@
             android:id="@+id/accountType"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="left"
             android:textColor="@color/common_google_signin_btn_text_dark_focused"
             android:theme="@style/ThemeOverlay.MyTextDetail" />
 
-        <TextView
-            android:id="@+id/phoneNumber"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/common_google_signin_btn_text_dark_focused"
-            android:theme="@style/ThemeOverlay.MyTextDetail" />
+            android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/address"
+            <TextView
+                android:id="@+id/firstName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="left"
+                android:textColor="@color/common_google_signin_btn_text_dark_focused"
+                android:theme="@style/ThemeOverlay.MyTextDetail" />
+
+            <EditText
+                android:id="@+id/editFirstName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:visibility="gone" />
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/common_google_signin_btn_text_dark_focused"
-            android:theme="@style/ThemeOverlay.MyTextDetail" />
+            android:orientation="horizontal">
 
-        <include
-            android:id="@+id/allUsersList"
-            layout="@layout/all_users"
+            <TextView
+                android:id="@+id/lastName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="left"
+                android:textColor="@color/common_google_signin_btn_text_dark_focused"
+                android:theme="@style/ThemeOverlay.MyTextDetail" />
+
+            <EditText
+                android:id="@+id/editLastName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:visibility="gone" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/phoneNumber"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="left"
+                android:textColor="@color/common_google_signin_btn_text_dark_focused"
+                android:theme="@style/ThemeOverlay.MyTextDetail" />
+
+            <EditText
+                android:id="@+id/editPhoneNumber"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ems="10"
+                android:inputType="phone"
+                android:visibility="gone" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/address"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="left"
+                android:textColor="@color/common_google_signin_btn_text_dark_focused"
+                android:theme="@style/ThemeOverlay.MyTextDetail" />
+
+            <EditText
+                android:id="@+id/editAddress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ems="10"
+                android:inputType="textPostalAddress"
+                android:visibility="gone" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/availabilityBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="myAvailability"
+            android:visibility="gone"
+            android:text="@string/my_availability" />
+
+        <Button
+            android:id="@+id/myServicesBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="myServices"
+            android:text="@string/my_services"
             android:visibility="gone" />
+
     </LinearLayout>
 
     <RelativeLayout
@@ -85,39 +167,55 @@
         android:layout_weight="1"
         android:background="@color/grey_300"
         android:gravity="center_vertical">
+
         <LinearLayout
-            android:id="@+id/verifyAndReturnLayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingLeft="16dp"
-            android:paddingRight="16dp">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
             <Button
-                android:id="@+id/returnToMain"
-                style="@style/Widget.AppCompat.Button.Colored"
-                android:layout_width="0dp"
+                android:id="@+id/editAccountBtn"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:onClick="onClick"
-                android:shadowColor="@color/colorAccent"
-                android:text="main page"
-                android:textIsSelectable="false"
-                android:theme="@style/ThemeOverlay.MyDarkButton"
-                tools:layout_editor_absoluteY="37dp" />
+                android:layout_weight="1.0"
+                android:onClick="editAccountDetails"
+                android:text="@string/edit_account" />
 
-            <Button
-                android:id="@+id/verifyEmailButton"
-                style="@style/Widget.AppCompat.Button.Colored"
-                android:layout_width="0dp"
+            <LinearLayout
+                android:id="@+id/verifyAndReturnLayout"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_gravity="bottom"
-                android:onClick="sendEmailVerification"
-                android:text="@string/verify_email"
-                android:theme="@style/ThemeOverlay.MyDarkButton"
-                tools:layout_editor_absoluteY="37dp" />
+                android:layout_weight="1.0"
+                android:orientation="horizontal"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp">
+
+                <Button
+                    android:id="@+id/returnToMain"
+                    style="@style/Widget.AppCompat.Button.Colored"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:onClick="returnToMain"
+                    android:shadowColor="@color/colorAccent"
+                    android:text="@string/main_page"
+                    android:textIsSelectable="false"
+                    android:theme="@style/ThemeOverlay.MyDarkButton"
+                    tools:layout_editor_absoluteY="37dp" />
+
+                <Button
+                    android:id="@+id/verifyEmailButton"
+                    style="@style/Widget.AppCompat.Button.Colored"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:onClick="sendEmailVerification"
+                    android:text="@string/verify_email"
+                    android:theme="@style/ThemeOverlay.MyDarkButton"
+                    tools:layout_editor_absoluteY="37dp" />
+            </LinearLayout>
         </LinearLayout>
+
     </RelativeLayout>
 
 </LinearLayout>

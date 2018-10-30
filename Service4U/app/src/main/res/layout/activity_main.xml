@@ -48,7 +48,7 @@
             android:layout_width="200dp"
             android:layout_height="100dp"
             android:layout_weight="0.5"
-            android:text="Username: " />
+            android:text="@string/please_signin" />
 
 
 
@@ -132,33 +132,26 @@
             android:paddingRight="16dp"
             android:visibility="gone">
 
-            <Button
-                android:id="@+id/serviceProviderBtn"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1.0"
-                android:text="@string/my_jobs" />
 
             <LinearLayout
-                android:id="@+id/homeownerBtns"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1.0"
                 android:orientation="horizontal">
 
                 <Button
-                    android:id="@+id/homeownerJobsBtn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/my_jobs" />
-
-                <Button
                     android:id="@+id/bookJobBtn"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="@string/book_job" />
+
+                <Button
+                    android:id="@+id/myJobsBtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/my_jobs" />
             </LinearLayout>
 
             <Button

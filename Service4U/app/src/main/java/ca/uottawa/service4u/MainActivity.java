@@ -16,7 +16,6 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.UserInfo;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -61,6 +60,8 @@ public class MainActivity extends AppCompatActivity implements
         findViewById(R.id.signOutButton).setOnClickListener(this);
         findViewById(R.id.myAccountButton).setOnClickListener(this);
         findViewById(R.id.servicesBtn).setOnClickListener(this);
+        findViewById(R.id.myJobsBtn).setOnClickListener(this);
+        findViewById(R.id.bookJobBtn).setOnClickListener(this);
 
 
         // Initialize Firebase
@@ -224,20 +225,20 @@ public class MainActivity extends AppCompatActivity implements
             if (appUser.getuserType().equals("admin")) {
                 findViewById(R.id.allUsersList).setVisibility(View.VISIBLE);
                 findViewById(R.id.servicesBtn).setVisibility(View.VISIBLE);
-                findViewById(R.id.homeownerBtns).setVisibility(View.GONE);
-                findViewById(R.id.serviceProviderBtn).setVisibility(View.GONE);
+                findViewById(R.id.bookJobBtn).setVisibility(View.GONE);
+                findViewById(R.id.myJobsBtn).setVisibility(View.GONE);
 
             } else if (appUser.getuserType().equals("homeowner")) {
                 findViewById(R.id.allUsersList).setVisibility(View.GONE);
                 findViewById(R.id.servicesBtn).setVisibility(View.GONE);
-                findViewById(R.id.homeownerBtns).setVisibility(View.VISIBLE);
-                findViewById(R.id.serviceProviderBtn).setVisibility(View.GONE);
+                findViewById(R.id.bookJobBtn).setVisibility(View.VISIBLE);
+                findViewById(R.id.myJobsBtn).setVisibility(View.VISIBLE);
 
             } else if (appUser.getuserType().equals("service provider")) {
                 findViewById(R.id.allUsersList).setVisibility(View.GONE);
                 findViewById(R.id.servicesBtn).setVisibility(View.GONE);
-                findViewById(R.id.homeownerBtns).setVisibility(View.GONE);
-                findViewById(R.id.serviceProviderBtn).setVisibility(View.VISIBLE);
+                findViewById(R.id.bookJobBtn).setVisibility(View.GONE);
+                findViewById(R.id.myJobsBtn).setVisibility(View.VISIBLE);
             }
 
             findViewById(R.id.emailPasswordButtons).setVisibility(View.GONE);
@@ -247,7 +248,7 @@ public class MainActivity extends AppCompatActivity implements
 
         } else {
             mStatusTextView.setText(R.string.signed_out);
-            mDetailTextView.setText("Please sign in OR make a new account");
+            mDetailTextView.setText(R.string.please_signin);
 
             mPasswordField.setText("");
 
@@ -258,8 +259,18 @@ public class MainActivity extends AppCompatActivity implements
         }
     }
 
-    public void welcome(){
+    public void allServices(){
         Intent intent = new Intent(getApplicationContext(), ServicesActivity.class);
+        startActivityForResult (intent,0);
+    }
+
+    public void myJobs(){
+        Intent intent = new Intent(getApplicationContext(), MyJobs.class);
+        startActivityForResult (intent,0);
+    }
+
+    public void bookJob(){
+        Intent intent = new Intent(getApplicationContext(), BookJob.class);
         startActivityForResult (intent,0);
     }
 
@@ -275,7 +286,11 @@ public class MainActivity extends AppCompatActivity implements
         } else if (i == R.id.signOutButton) {
             signOut();
         } else if (i == R.id.servicesBtn) {
-            welcome();
+            allServices();
+        } else if (i == R.id.bookJobBtn) {
+            bookJob();
+        } else if (i == R.id.myJobsBtn) {
+            myJobs();
         }
     }
 
