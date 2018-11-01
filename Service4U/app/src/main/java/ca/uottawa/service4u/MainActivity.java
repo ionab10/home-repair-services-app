@@ -4,6 +4,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -69,6 +70,8 @@ public class MainActivity extends AppCompatActivity implements
         database = FirebaseDatabase.getInstance();
         databaseUsers = database.getReference("Users");
         allUsers = new ArrayList<>();
+
+        ((TextView)findViewById(R.id.usersList)).setMovementMethod(new ScrollingMovementMethod());
 
     }
 

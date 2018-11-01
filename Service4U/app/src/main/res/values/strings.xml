@@ -115,6 +115,7 @@
     <string name="my_availability">My Availability</string>
     <string name="my_services">My Services</string>
     <string name="update_availability">Update Availability</string>
+    <string name="back">Back</string>
 
     <string-array name="service_type_array">
         <item>Cable/Internet</item>

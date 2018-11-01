@@ -3,6 +3,7 @@ package ca.uottawa.service4u;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.CalendarView;
 import android.widget.Toast;
 
@@ -28,5 +29,10 @@ public class AvailabilityCalendar extends AppCompatActivity {
                 startActivityForResult (intent,0);
             }
         });
+    }
+
+    public void back(View view) {
+        Intent intent = new Intent(getApplicationContext(), MyAccountActivity.class);
+        startActivityForResult (intent,0);
     }
 }
