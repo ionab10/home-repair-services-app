@@ -117,17 +117,18 @@
     <string name="update_availability">Update Availability</string>
 
     <string-array name="service_type_array">
-        <item>Painting</item>
-        <item>Logistics</item>
-        <item>IT</item>
         <item>Cable/Internet</item>
-        <item>Plumbing</item>
         <item>Carpentry</item>
-        <item>Delivery</item>
-        <item>Interior Design</item>
         <item>Cleaning</item>
-        <item>Electrical Wiring</item>
+        <item>Delivery</item>
+        <item>Electrical</item>
+        <item>Interior Design</item>
+        <item>IT</item>
         <item>Landscaping</item>
+        <item>Logistics</item>
+        <item>Painting</item>
+        <item>Plumbing</item>
+        <item>Security</item>
         <item>Misc</item>
     </string-array>
 
