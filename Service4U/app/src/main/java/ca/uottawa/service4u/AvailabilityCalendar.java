@@ -22,6 +22,7 @@ public class AvailabilityCalendar extends AppCompatActivity {
 
                 Intent intent = new Intent(getApplicationContext(), AvailabilityActivity.class);
                 intent.putExtra("year", year);
+                month = month+1;    //months start at 0 instead of 1 for some weird reason
                 intent.putExtra("month", month);
                 intent.putExtra("dayOfMonth", dayOfMonth);
                 startActivityForResult (intent,0);

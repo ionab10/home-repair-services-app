@@ -46,7 +46,6 @@ public class AvailabilityActivity extends AppCompatActivity {
 
     ListView listTimeSlots;
     List<String> timeSlots;
-    List<String> timeIntervals;
 
     List<Long> availability;
 
@@ -56,26 +55,18 @@ public class AvailabilityActivity extends AppCompatActivity {
         setContentView(R.layout.activity_availability);
 
         Intent myIntent = getIntent(); // gets the previously created intent
-        year = myIntent.getIntExtra("year",0);
+        year = myIntent.getIntExtra("year",1);
         month= myIntent.getIntExtra("month",0);
-        dayOfMonth= myIntent.getIntExtra("dayOfMonth",0);
+        dayOfMonth= myIntent.getIntExtra("dayOfMonth",1);
 
         dateString = toDateString(dayOfMonth, month, year);
 
-        Toast.makeText(getApplicationContext(), dateString, Toast.LENGTH_SHORT).show();// TODO Auto-generated method stub
-
-
+        setTitle(dateString);
+        
         timeSlots = Arrays.asList(getResources().getStringArray(R.array.time_slots));
 
-
-        timeIntervals = new ArrayList<String>();
-        for (int i = 0; i < timeSlots.size()-1; i++){
-            timeIntervals.add(timeSlots.get(i) + " - " + timeSlots.get(i+1));
-        }
-
-
         listTimeSlots = (ListView) findViewById(R.id.listTimeSlots);
-        TimeSlotList timeSlotAdapter = new TimeSlotList(AvailabilityActivity.this, timeIntervals, availability, dateString);
+        TimeSlotList timeSlotAdapter = new TimeSlotList(AvailabilityActivity.this, timeSlots, availability, dateString);
         listTimeSlots.setAdapter(timeSlotAdapter);
 
 
@@ -108,7 +99,7 @@ public class AvailabilityActivity extends AppCompatActivity {
                 @Override
                 public void onCancelled(DatabaseError error) {
                     // Failed to read value
-                    Log.w(dbTAG, "Failed to read value.", error.toException());
+                    Log.e(dbTAG, "Failed to read value.", error.toException());
                 }
             });
 
@@ -122,12 +113,14 @@ public class AvailabilityActivity extends AppCompatActivity {
 
 
     private void updateForm(){
-        TimeSlotList timeSlotAdapter = new TimeSlotList(AvailabilityActivity.this, timeIntervals, availability, dateString);
+        Log.d("Form", "Updating form");
+        TimeSlotList timeSlotAdapter = new TimeSlotList(AvailabilityActivity.this, timeSlots, availability, dateString);
         listTimeSlots.setAdapter(timeSlotAdapter);
 
     }
 
     private String toDateString(int dayOfMonth, int month, int year){
+
         String str = "";
 
         if (dayOfMonth < 10){
@@ -171,7 +164,7 @@ public class AvailabilityActivity extends AppCompatActivity {
                     availability.remove(dt);
                 }
             } catch (Exception e){
-                Log.v("parser", "unable to parse date " + dtStr);
+                Log.e("parser", e.getMessage());
             }
 
 
