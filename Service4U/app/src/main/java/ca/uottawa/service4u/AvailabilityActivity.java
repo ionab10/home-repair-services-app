@@ -62,7 +62,7 @@ public class AvailabilityActivity extends AppCompatActivity {
         dateString = toDateString(dayOfMonth, month, year);
 
         setTitle(dateString);
-        
+
         timeSlots = Arrays.asList(getResources().getStringArray(R.array.time_slots));
 
         listTimeSlots = (ListView) findViewById(R.id.listTimeSlots);
