@@ -123,8 +123,8 @@ public class ServicesActivity extends AppCompatActivity {
 
         listViewServices.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
-            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Service service = services.get(i);
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, long l) {
+                Service service = services.get(position);
                 currentServiceId = service.getId();
                 updateDeleteService(service);
                 return true;

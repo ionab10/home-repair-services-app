@@ -12,6 +12,7 @@
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -28,16 +29,17 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".AvailabilityCalendar"
-            android:label="My Availability"/>
+            android:label="My Availability" />
         <activity
             android:name=".MyServices"
-            android:label="My Services"/>
+            android:label="My Services" />
         <activity
             android:name=".MyJobs"
-            android:label="My Jobs"/>
+            android:label="My Jobs" />
         <activity
             android:name=".BookJob"
-            android:label="Book A Job"></activity>
+            android:label="Book A Job" />
+        <activity android:name=".AvailabilityActivity"></activity>
     </application>
 
 </manifest>
