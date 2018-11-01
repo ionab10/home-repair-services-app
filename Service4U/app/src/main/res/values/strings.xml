@@ -121,8 +121,16 @@
         <item>Logistics</item>
         <item>IT</item>
         <item>Cable/Internet</item>
+        <item>Plumbing</item>
+        <item>Carpentry</item>
+        <item>Delivery</item>
+        <item>Interior Design</item>
+        <item>Cleaning</item>
+        <item>Electrical Wiring</item>
+        <item>Landscaping</item>
         <item>Misc</item>
     </string-array>
+
 
     <string-array name="time_slots">
         <item>06:00</item>
