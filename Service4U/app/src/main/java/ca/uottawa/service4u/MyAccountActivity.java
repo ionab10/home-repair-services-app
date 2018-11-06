@@ -3,6 +3,7 @@ package ca.uottawa.service4u;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -19,6 +20,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
 
 public class MyAccountActivity extends AppCompatActivity {
 
@@ -159,9 +161,11 @@ public class MyAccountActivity extends AppCompatActivity {
         else if (b.getText().toString().equals(getString(R.string.done))) {
             Log.w("debug", "done editing account");
 
+
             if (!validateFields()) {
                 return;
             }
+
 
             String firstName = ((EditText)findViewById(R.id.editFirstName)).getText().toString();
             String lastName = ((EditText)findViewById(R.id.editLastName)).getText().toString();
@@ -193,11 +197,61 @@ public class MyAccountActivity extends AppCompatActivity {
     }
 
     public boolean validateFields(){
-        //TODO
+
+        String firstName = ((EditText)findViewById(R.id.editFirstName)).getText().toString();
+        String lastName = ((EditText)findViewById(R.id.editLastName)).getText().toString();
+        String phoneNumber = ((EditText)findViewById(R.id.editPhoneNumber)).getText().toString();
+        String address = ((EditText)findViewById(R.id.editAddress)).getText().toString();
+        boolean validFlag = true;
 
 
-        return true;
+        if(TextUtils.isEmpty(firstName)){
+            ((EditText)findViewById(R.id.editFirstName)).setError("Required");
+            validFlag = false;
+        }
+
+        if(TextUtils.isEmpty(lastName)){
+            ((EditText)findViewById(R.id.editLastName)).setError("Required");
+            validFlag = false;
+        }
+        if(!firstName.matches("[a-zA-Z]+")){
+            ((EditText)findViewById(R.id.editFirstName)).setError("Invalid Name");
+            validFlag = false;
+        }
+
+        if(!lastName.matches("[a-zA-Z]+")){
+            ((EditText)findViewById(R.id.editLastName)).setError("Invalid Name");
+            validFlag = false;
+        }
+
+        if(TextUtils.isEmpty(phoneNumber)){
+            ((EditText)findViewById(R.id.editPhoneNumber)).setError("Required");
+            validFlag = false;
+        }
+        if(phoneNumber.length() != 10){
+            ((EditText)findViewById(R.id.editPhoneNumber)).setError("Invalid length");
+            validFlag = false;
+        }
+
+        if(!phoneNumber.matches("[0-9]+") ){
+            ((EditText)findViewById(R.id.editPhoneNumber)).setError("Invalid Phone Number");
+            validFlag = false;
+        }
+
+        if(TextUtils.isEmpty(address)){
+            ((EditText)findViewById(R.id.editAddress)).setError("Required");
+            validFlag = false;
+        }
+
+
+
+
+        return validFlag;
     }
+
+
+
+
 }
 
 
