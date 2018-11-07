@@ -6,14 +6,14 @@ public class Service {
     private String type;
     private double ratePerHour;
 
-    public void Service(){
+    public Service(){
         this.id = "";
         this.name = "";
         this.type = "";
         this.ratePerHour = 0;
     }
 
-    public void Service(String id, String name, String type, double ratePerHour){
+    public Service(String id, String name, String type, double ratePerHour){
         this.id = id;
         this.name = name;
         this.type = type;

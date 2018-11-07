@@ -6,11 +6,12 @@ import static org.junit.Assert.*;
 
 public class CircleCITest {
     MainActivity mA1=new MainActivity();
-    @Test
-    public void MainActivityMethodsTest(){
-        mA1.myJobs();
-        mA1.bookJob();
-        mA1.allServices();
 
+
+    @Test
+    public void ServiceTest(){
+
+        Service aS=new Service("1", "Virus Removal","IT", 15.5);
+        assertEquals("Checking id", "1", aS.getId());
     }
 }
