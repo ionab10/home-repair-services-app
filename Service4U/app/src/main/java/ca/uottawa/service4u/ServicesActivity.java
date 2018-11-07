@@ -171,15 +171,47 @@ public class ServicesActivity extends AppCompatActivity {
         sRateField.setText(String.valueOf(service.getRatePerHour()));
     }
 
-    private boolean validateFields(){
-        //TODO
+    private boolean validateFields(int addType){
 
-        return true;
+        //addType 0 for a regular add, 1 for update
+        double min = 10.0;
+        double max = 500.0;
+        boolean validFlag = true;
+        String name = sNameField.getText().toString();
+        String rateasString = sRateField.getText().toString();
+        double rate = Double.parseDouble(sRateField.getText().toString());
+
+        if(TextUtils.isEmpty(name)){
+            sNameField.setError("Required");
+            validFlag = false;
+        }
+
+        if(TextUtils.isEmpty(rateasString)){
+            sRateField.setError("Required");
+            validFlag = false;
+        }
+        if(rate<min || rate>max ){
+            sRateField.setError("Out of range");
+            validFlag = false;
+        }
+
+        if(addType ==0){
+            for(int i =0; i<services.size(); i++){
+                if(services.get(i).getName().equals(name)){
+                    sNameField.setError("A service by that name already exists");
+                    validFlag = false;
+                    return validFlag;
+                }
+            }
+        }
+
+
+        return validFlag;
     }
 
     private void updateService(String id) {
 
-        if (validateFields()) {
+        if (validateFields(1)) {
 
             Service service = readFields();
 
@@ -201,7 +233,7 @@ public class ServicesActivity extends AppCompatActivity {
 
     private void addService() {
 
-        if (validateFields()){
+        if (validateFields(0)){
 
             Service service = readFields();
             String id = databaseServices.push().getKey();
