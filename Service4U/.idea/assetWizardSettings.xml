@@ -23,7 +23,7 @@
                                           <PersistentState>
                                             <option name="values">
                                               <map>
-                                                <entry key="scalingPercent" value="137" />
+                                                <entry key="scalingPercent" value="180" />
                                               </map>
                                             </option>
                                           </PersistentState>
@@ -34,9 +34,8 @@
                                   <option name="values">
                                     <map>
                                       <entry key="backgroundLayerName" value="ic_launcher_background" />
-                                      <entry key="foregroundImage" value="$PROJECT_DIR$/../../../Screen Shot 2018-10-31 at 5.34.48 PM.png" />
-                                      <entry key="foregroundLayerName" value="ic_launcher_foreground" />
-                                      <entry key="outputName" value="app_logo1" />
+                                      <entry key="foregroundImage" value="$PROJECT_DIR$/../../Screen Shot 2018-11-07 at 5.58.23 PM.png" />
+                                      <entry key="outputName" value="logo_2" />
                                     </map>
                                   </option>
                                 </PersistentState>
