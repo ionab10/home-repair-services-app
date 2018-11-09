@@ -15,7 +15,7 @@ import java.util.List;
 
 public class TimeSlotList extends ArrayAdapter<String> {
 
-    private static final SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm");
+    private static final SimpleDateFormat datetimeFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm");
 
     private Activity context;
     private List<String> timeSlots;
@@ -51,7 +51,7 @@ public class TimeSlotList extends ArrayAdapter<String> {
 
         String dtStr = String.format("%s %s", dateString, timeSlots.get(position));
         try{
-            dt = dateFormat.parse(dtStr).getTime();
+            dt = datetimeFormat.parse(dtStr).getTime();
 
             cb.setChecked(false);
 

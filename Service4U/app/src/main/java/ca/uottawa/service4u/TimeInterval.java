@@ -1,7 +1,9 @@
 package ca.uottawa.service4u;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 public class TimeInterval {
     public long start;
@@ -17,12 +19,17 @@ public class TimeInterval {
 
 
     public boolean contains (long datetime){
-        if ((start <= datetime) && (datetime <= end)){
+        if ((start <= datetime) && (datetime < end)){
             return true;
         } else {
             return false;
         }
 
+    }
+
+    @Override
+    public String toString(){
+        return String.format("(%s,%s)", new Date(start).toString(), new Date(end).toString());
     }
 
 }

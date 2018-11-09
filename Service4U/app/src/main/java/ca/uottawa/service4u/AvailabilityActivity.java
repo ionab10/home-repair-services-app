@@ -28,13 +28,14 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
 public class AvailabilityActivity extends AppCompatActivity {
 
     private static final SimpleDateFormat datetimeFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm");
-    private static final SimpleDateFormat dateFormat = new SimpleDateFormat("dd-mm-yyyy");
+    private static final SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
 
     private static final String dbTAG = "Database";
 
@@ -62,7 +63,11 @@ public class AvailabilityActivity extends AppCompatActivity {
         month= myIntent.getIntExtra("month",0);
         dayOfMonth= myIntent.getIntExtra("dayOfMonth",1);
 
-        dateString = toDateString(dayOfMonth, month, year);
+        try {
+            dateString = dateFormat.format(dateFormat.parse(String.format("%s-%s-%s",dayOfMonth, month, year)));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 
         setTitle(dateString);
 
@@ -122,49 +127,61 @@ public class AvailabilityActivity extends AppCompatActivity {
 
     }
 
-    private String toDateString(int dayOfMonth, int month, int year){
-
-        String str = "";
-
-        if (dayOfMonth < 10){
-            str = str + "0" + String.valueOf(dayOfMonth);
-        } else {
-            str = str + String.valueOf(dayOfMonth);
-        }
-
-        str = str + "-";
-
-        if (month < 10){
-            str = str + "0" + String.valueOf(month);
-        } else {
-            str = str + String.valueOf(month);
-        }
-
-        str = str + "-";
-
-        str = str + String.valueOf(year);
-
-        return str;
-    }
 
     public void setAvailability(View view){
+        String dtStr;
+        long start = 0;
+        long dt;
+        boolean a = false; //available
 
-        long start;
+        //clear current date
+        for (TimeInterval ti : availability){
+            if (dateFormat.format(ti.start).equals(dateString)){
+                availability.remove(ti);
+            }
+        }
 
+        //add availability for current date
         for (int i = 0; i < listTimeSlots.getChildCount(); i++) {
             RelativeLayout ts = (RelativeLayout) listTimeSlots.getChildAt(i);
             CheckBox cb = (CheckBox) ts.getChildAt(1);
 
-            //clear current date
-            for (TimeInterval ti : availability){
-                if (dateFormat.format(ti.start).equals(dateString)){
-                    availability.remove(ti);
+
+
+            dtStr = String.format("%s %s", dateString, timeSlots.get(i));
+            try {
+                dt = datetimeFormat.parse(dtStr).getTime();
+
+
+                if (cb.isChecked() && !a){
+                    start = dt;
+                    a = true;
+
+                } else if (!cb.isChecked() && a) {
+                    a = false;
+                    availability.add(new TimeInterval(start,dt));
+
                 }
+
+            } catch (ParseException e) {
+                e.printStackTrace();
             }
 
-            //add availability for current date
-            //TODO
+        }
 
+        if (a) {
+            a = false;
+
+            dtStr = String.format("%s %s", dateString, timeSlots.get(listTimeSlots.getChildCount()));
+
+            try {
+                dt = datetimeFormat.parse(dtStr).getTime();
+
+                availability.add(new TimeInterval(start,dt));
+
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
 
         }
 
