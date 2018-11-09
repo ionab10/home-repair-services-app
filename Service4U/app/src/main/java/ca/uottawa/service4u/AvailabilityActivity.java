@@ -149,6 +149,8 @@ public class AvailabilityActivity extends AppCompatActivity {
 
     public void setAvailability(View view){
 
+        long start;
+
         for (int i = 0; i < listTimeSlots.getChildCount(); i++) {
             RelativeLayout ts = (RelativeLayout) listTimeSlots.getChildAt(i);
             CheckBox cb = (CheckBox) ts.getChildAt(1);

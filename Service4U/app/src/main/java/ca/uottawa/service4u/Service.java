@@ -1,13 +1,16 @@
 package ca.uottawa.service4u;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class Service {
-    public String id;
-    public String name;
-    public String type;
-    public double ratePerHour;
+    private String id;
+    private String name;
+    private String type;
+    private double ratePerHour;
 
     public Service(){
         this.id = "";
@@ -23,12 +26,36 @@ public class Service {
         this.ratePerHour = ratePerHour;
     }
 
-
-    public List<ServiceProvider> getAssociatedProviders(){
-        List<ServiceProvider> providers = new ArrayList<ServiceProvider>();
-
-        //TODO
-
-        return providers;
+    public String getId() {
+        return id;
     }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public double getRatePerHour() {
+        return ratePerHour;
+    }
+
+    public void setRatePerHour(double ratePerHour) {
+        this.ratePerHour = ratePerHour;
+    }
+
 }
