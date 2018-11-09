@@ -19,12 +19,12 @@ public class TimeSlotList extends ArrayAdapter<String> {
 
     private Activity context;
     private List<String> timeSlots;
-    private List<Long> availability;
+    private List<TimeInterval> availability;
     private String dateString;
     private List<String> timeIntervals;
 
 
-    public TimeSlotList(Activity context, List<String> timeSlots, List<Long> availability, String dateString) {
+    public TimeSlotList(Activity context, List<String> timeSlots, List<TimeInterval> availability, String dateString) {
         super(context, R.layout.layout_timeslot_list, timeSlots.subList(0,timeSlots.size()-1));
         this.context = context;
         this.timeSlots = timeSlots;
@@ -53,13 +53,15 @@ public class TimeSlotList extends ArrayAdapter<String> {
         try{
             dt = dateFormat.parse(dtStr).getTime();
 
-            if (availability.contains(dt)){
-                //Log.v("Form", "available " + dt);
-                cb.setChecked(true);
-            } else {
-                //Log.v("Form", "unavailable " + dt);
-                cb.setChecked(false);
+            cb.setChecked(false);
+
+            for (TimeInterval ti : availability){
+                if (ti.contains(dt)){
+                //Log.v("Form", "available " + ti);
+                    cb.setChecked(true);
+                }
             }
+
         } catch (Exception e){
             Log.e("parser", e.getMessage());
         }

@@ -1,10 +1,13 @@
 package ca.uottawa.service4u;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Service {
-    private String id;
-    private String name;
-    private String type;
-    private double ratePerHour;
+    public String id;
+    public String name;
+    public String type;
+    public double ratePerHour;
 
     public Service(){
         this.id = "";
@@ -20,35 +23,12 @@ public class Service {
         this.ratePerHour = ratePerHour;
     }
 
-    public String getId() {
-        return id;
-    }
 
-    public void setId(String id) {
-        this.id = id;
-    }
+    public List<ServiceProvider> getAssociatedProviders(){
+        List<ServiceProvider> providers = new ArrayList<ServiceProvider>();
 
-    public String getName() {
-        return name;
-    }
+        //TODO
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public double getRatePerHour() {
-        return ratePerHour;
-    }
-
-    public void setRatePerHour(double ratePerHour) {
-        this.ratePerHour = ratePerHour;
+        return providers;
     }
 }

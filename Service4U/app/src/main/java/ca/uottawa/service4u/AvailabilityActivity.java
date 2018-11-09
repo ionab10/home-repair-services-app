@@ -24,6 +24,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -32,7 +33,9 @@ import java.util.List;
 
 public class AvailabilityActivity extends AppCompatActivity {
 
-    private static final SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm");
+    private static final SimpleDateFormat datetimeFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm");
+    private static final SimpleDateFormat dateFormat = new SimpleDateFormat("dd-mm-yyyy");
+
     private static final String dbTAG = "Database";
 
     protected FirebaseAuth mAuth;
@@ -47,7 +50,7 @@ public class AvailabilityActivity extends AppCompatActivity {
     ListView listTimeSlots;
     List<String> timeSlots;
 
-    List<Long> availability;
+    List<TimeInterval> availability;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,7 +91,7 @@ public class AvailabilityActivity extends AppCompatActivity {
                     if (appUser.availability != null) {
                         availability = appUser.availability;
                     } else {
-                        availability = new ArrayList<Long>();
+                        availability = new ArrayList<>();
                     }
                     Log.d(dbTAG, "Availability: " + availability);
 
@@ -146,26 +149,19 @@ public class AvailabilityActivity extends AppCompatActivity {
 
     public void setAvailability(View view){
 
-        long dt;
-
         for (int i = 0; i < listTimeSlots.getChildCount(); i++) {
             RelativeLayout ts = (RelativeLayout) listTimeSlots.getChildAt(i);
             CheckBox cb = (CheckBox) ts.getChildAt(1);
 
-            String dtStr = String.format("%s %s", dateString, timeSlots.get(i));
-            try{
-                dt = dateFormat.parse(dtStr).getTime();
-
-                if (cb.isChecked()){
-                    if (!availability.contains(dt)) {
-                        availability.add(dt);
-                    }
-                } else {
-                    availability.remove(dt);
+            //clear current date
+            for (TimeInterval ti : availability){
+                if (dateFormat.format(ti.start).equals(dateString)){
+                    availability.remove(ti);
                 }
-            } catch (Exception e){
-                Log.e("parser", e.getMessage());
             }
+
+            //add availability for current date
+            //TODO
 
 
         }
