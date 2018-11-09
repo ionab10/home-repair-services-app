@@ -71,23 +71,46 @@ public class BookJob extends AppCompatActivity {
         return providers;
     }
 
-    public List<PotentialJob> findProviders(Service service, Map<Integer,List<TimeInterval>> availability, double hours, int urgency){
+    public List<TimeInterval> getTimeIntervalsForDate(Date date, Map<Integer,List<List<String>>> availability) {
+        List<TimeInterval> timeIntervals = new ArrayList<TimeInterval>();
+        long start;
+        long end;
+        String dtStr;
+
+        calendar.setTime(date);
+        List<List<String>> timeSlots = availability.get(calendar.get(Calendar.DAY_OF_WEEK));   //get availability for day of week
+
+        for (List<String> ts : timeSlots){
+
+            calendar.set(Calendar.HOUR_OF_DAY, Integer.parseInt(ts.get(0).split(":")[0]));
+            calendar.set(Calendar.MINUTE, Integer.parseInt(ts.get(0).split(":")[1]));
+            start = calendar.getTime().getTime();
+            calendar.set(Calendar.HOUR_OF_DAY, Integer.parseInt(ts.get(1).split(":")[0]));
+            calendar.set(Calendar.MINUTE, Integer.parseInt(ts.get(1).split(":")[1]));
+            end = calendar.getTime().getTime();
+
+            timeIntervals.add(new TimeInterval(start, end));
+        }
+
+        return timeIntervals;
+    }
+
+    public List<PotentialJob> findProviders(Service service, Map<Integer,List<List<String>>> availability, double hours, int urgency){
         List<PotentialJob> options = new ArrayList<PotentialJob>();
         List<ServiceProvider> providers = getAssociatedProviders(service);
 
         Date date = new Date(); //defaults to today
         long start = -1;
-        List<TimeInterval> timeSlots;
+        List<TimeInterval> timeIntervals;
 
         for (int i=0; i< urgency; i++) {
 
-            calendar.setTime(date);
-            timeSlots = availability.get(calendar.get(Calendar.DAY_OF_WEEK));   //get availability for day of week
+            timeIntervals = getTimeIntervalsForDate(date,availability);
 
             for (ServiceProvider p : providers) {
-                start = p.available(timeSlots,hours);
+                start = p.available(timeIntervals,hours);
                 if (start >= 0) {
-                    PotentialJob option = new PotentialJob(start, (long) (start + hours*60*60), p);
+                    PotentialJob option = new PotentialJob(start, (long) (start + hours*60*60*1000), p);
                     options.add(option);
                 }
             }

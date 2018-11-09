@@ -1,5 +1,6 @@
 package ca.uottawa.service4u;
 
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -30,6 +31,17 @@ public class TimeInterval {
     @Override
     public String toString(){
         return String.format("(%s,%s)", new Date(start).toString(), new Date(end).toString());
+    }
+
+    public TimeInterval intersection(TimeInterval ti){
+        long s1 = ti.start;
+        long e1 = ti.end;
+
+        return new TimeInterval(Math.max(start,s1), Math.min(end, e1));
+    }
+
+    public long length(){
+        return end - start;
     }
 
 }
