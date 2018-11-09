@@ -82,7 +82,7 @@ public class MainActivity extends AppCompatActivity implements
 
         databaseUsers.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 allUsers.clear();
 
                 for (DataSnapshot postSnapshot : dataSnapshot.getChildren()){
@@ -102,7 +102,7 @@ public class MainActivity extends AppCompatActivity implements
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {
+            public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
         });
@@ -120,7 +120,7 @@ public class MainActivity extends AppCompatActivity implements
             //get userType
             databaseUsers.child(user.getUid()).addValueEventListener(new ValueEventListener() {
                 @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     // This method is called once with the initial value and again
                     // whenever data at this location is updated.
                     User appUser = dataSnapshot.getValue(User.class);
@@ -131,7 +131,7 @@ public class MainActivity extends AppCompatActivity implements
                 }
 
                 @Override
-                public void onCancelled(DatabaseError error) {
+                public void onCancelled(@NonNull DatabaseError error) {
                     // Failed to read value
                     Log.w(dbTAG, "Failed to read value.", error.toException());
                 }
@@ -225,23 +225,27 @@ public class MainActivity extends AppCompatActivity implements
             mStatusTextView.setText(String.format("Hello %s %s", appUser.getfirstName(), appUser.getlastName()));
             mDetailTextView.setText(String.format("You are signed in as %s",appUser.getuserType()));
 
-            if (appUser.getuserType().equals("admin")) {
-                findViewById(R.id.allUsersList).setVisibility(View.VISIBLE);
-                findViewById(R.id.servicesBtn).setVisibility(View.VISIBLE);
-                findViewById(R.id.bookJobBtn).setVisibility(View.GONE);
-                findViewById(R.id.myJobsBtn).setVisibility(View.GONE);
+            switch (appUser.getuserType()) {
+                case "admin":
+                    findViewById(R.id.allUsersList).setVisibility(View.VISIBLE);
+                    findViewById(R.id.servicesBtn).setVisibility(View.VISIBLE);
+                    findViewById(R.id.bookJobBtn).setVisibility(View.GONE);
+                    findViewById(R.id.myJobsBtn).setVisibility(View.GONE);
 
-            } else if (appUser.getuserType().equals("homeowner")) {
-                findViewById(R.id.allUsersList).setVisibility(View.GONE);
-                findViewById(R.id.servicesBtn).setVisibility(View.GONE);
-                findViewById(R.id.bookJobBtn).setVisibility(View.VISIBLE);
-                findViewById(R.id.myJobsBtn).setVisibility(View.VISIBLE);
+                    break;
+                case "homeowner":
+                    findViewById(R.id.allUsersList).setVisibility(View.GONE);
+                    findViewById(R.id.servicesBtn).setVisibility(View.GONE);
+                    findViewById(R.id.bookJobBtn).setVisibility(View.VISIBLE);
+                    findViewById(R.id.myJobsBtn).setVisibility(View.VISIBLE);
 
-            } else if (appUser.getuserType().equals("service provider")) {
-                findViewById(R.id.allUsersList).setVisibility(View.GONE);
-                findViewById(R.id.servicesBtn).setVisibility(View.GONE);
-                findViewById(R.id.bookJobBtn).setVisibility(View.GONE);
-                findViewById(R.id.myJobsBtn).setVisibility(View.VISIBLE);
+                    break;
+                case "service provider":
+                    findViewById(R.id.allUsersList).setVisibility(View.GONE);
+                    findViewById(R.id.servicesBtn).setVisibility(View.GONE);
+                    findViewById(R.id.bookJobBtn).setVisibility(View.GONE);
+                    findViewById(R.id.myJobsBtn).setVisibility(View.VISIBLE);
+                    break;
             }
 
             findViewById(R.id.emailPasswordButtons).setVisibility(View.GONE);
