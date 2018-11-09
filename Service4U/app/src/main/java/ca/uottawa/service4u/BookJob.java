@@ -1,5 +1,6 @@
 package ca.uottawa.service4u;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -19,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -250,6 +252,16 @@ public class BookJob extends AppCompatActivity {
     }
 
     public void handleForm(View view){
+
+        Map<Integer,List<List<String>>> availability = new HashMap<>();
+
         //TODO
+
+        //List<PotentialJob> options = findProviders(currentService,availability,timeLength,currentUrgency);
+
+        Intent intent = new Intent(getApplicationContext(), JobOptionsActivity.class);
+        //intent.putExtra("options", options); //TODO
+        startActivityForResult (intent,0);
+
     }
 }
