@@ -4,14 +4,17 @@ class Account{
   String lastName;
   String username;
   String password;
+  String dateCreated;
   String email;
+  String type;
 }
 
 class Administrator {
   isA Account;
   
-  void addService (){};
-  void updateService (){};
+  void addServiceß(){};
+  void updateService(){};
+  void deleteService(){}
 
 }
 
