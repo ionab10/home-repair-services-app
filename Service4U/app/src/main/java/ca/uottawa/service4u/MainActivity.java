@@ -38,6 +38,7 @@ public class MainActivity extends AppCompatActivity implements
     private TextView mDetailTextView;
     private EditText mEmailField;
     private EditText mPasswordField;
+    private TextView userTypeTextView;
 
     FirebaseAuth mAuth;
     FirebaseDatabase database;
@@ -54,6 +55,7 @@ public class MainActivity extends AppCompatActivity implements
         mDetailTextView = findViewById(R.id.detail);
         mEmailField = findViewById(R.id.fieldEmail);
         mPasswordField = findViewById(R.id.fieldPassword);
+        userTypeTextView = findViewById(R.id.userTypeText);
 
         // Buttons
         findViewById(R.id.emailSignInButton).setOnClickListener(this);
@@ -224,6 +226,8 @@ public class MainActivity extends AppCompatActivity implements
 
             mStatusTextView.setText(String.format("Hello %s %s", appUser.getfirstName(), appUser.getlastName()));
             mDetailTextView.setText(String.format("You are signed in as %s",appUser.getuserType()));
+            userTypeTextView.setText(appUser.getuserType());
+
 
             if (appUser.getuserType().equals("admin")) {
                 findViewById(R.id.allUsersList).setVisibility(View.VISIBLE);
@@ -273,7 +277,8 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     public void bookJob(){
-        Intent intent = new Intent(getApplicationContext(), BookJob.class);
+        Intent intent = new Intent(getApplicationContext(), BookJobActivity.class);
+        intent.putExtra("userType", userTypeTextView.getText().toString());
         startActivityForResult (intent,0);
     }
 

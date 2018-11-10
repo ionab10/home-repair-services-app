@@ -58,4 +58,9 @@ public class Service {
         this.ratePerHour = ratePerHour;
     }
 
+    @Override
+    public String toString(){
+        return String.format("%s - %s",type,name);
+    }
+
 }

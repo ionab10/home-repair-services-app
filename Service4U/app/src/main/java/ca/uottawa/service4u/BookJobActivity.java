@@ -8,7 +8,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
-import android.widget.TextView;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -24,7 +23,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class BookJob extends AppCompatActivity {
+public class BookJobActivity extends AppCompatActivity {
 
     Calendar calendar = Calendar.getInstance();
 
@@ -110,17 +109,15 @@ public class BookJob extends AppCompatActivity {
 
                 //sort services by type and by name
                 Collections.sort(allServices, (Service s1, Service s2) ->{
-                    String str1 = String.format("%s - %s", s1.getType(), s1.getName());
-                    String str2 = String.format("%s - %s", s2.getType(), s2.getName());
-                    return str1.compareToIgnoreCase(str2);
+                    return s1.toString().compareToIgnoreCase(s2.toString());
                 });
 
                 for (Service s : allServices){
-                    serviceNames.add(String.format("%s - %s", s.getType(), s.getName()));
+                    serviceNames.add(s.toString());
                 }
 
                 //update
-                serviceAdapter = new ArrayAdapter(BookJob.this,android.R.layout.simple_spinner_item, serviceNames);
+                serviceAdapter = new ArrayAdapter(BookJobActivity.this,android.R.layout.simple_spinner_item, serviceNames);
                 serviceAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 serviceSpinner.setAdapter(serviceAdapter);
                 currentService = allServices.get(0);

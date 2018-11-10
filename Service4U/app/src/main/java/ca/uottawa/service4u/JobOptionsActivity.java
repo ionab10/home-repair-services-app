@@ -119,6 +119,17 @@ public class JobOptionsActivity extends AppCompatActivity {
             View rootView = inflater.inflate(R.layout.fragment_job_options, container, false);
             TextView textView = (TextView) rootView.findViewById(R.id.section_label);
             textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
+
+
+            /*
+            String id = databaseJobs.push().getKey();
+            job.setId(id);
+            databaseJobs.child(id).setValue(job);
+
+            Toast.makeText(this, "Job added", Toast.LENGTH_LONG).show();
+             */
+
+
             return rootView;
         }
     }

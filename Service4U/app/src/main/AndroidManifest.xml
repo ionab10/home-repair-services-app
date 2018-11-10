@@ -37,13 +37,16 @@
             android:name=".MyJobs"
             android:label="My Jobs" />
         <activity
-            android:name=".BookJob"
+            android:name=".BookJobActivity"
             android:label="Book A Job" />
         <activity android:name=".AvailabilityActivity" />
         <activity
             android:name=".JobOptionsActivity"
             android:label="@string/title_activity_job_options"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".JobActivity"
+            android:theme="@style/AppTheme.NoActionBar" ></activity>
     </application>
 
 </manifest>
