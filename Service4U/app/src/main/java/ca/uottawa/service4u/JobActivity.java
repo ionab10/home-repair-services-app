@@ -15,5 +15,15 @@ public class JobActivity extends AppCompatActivity {
 
         Intent myIntent = getIntent(); // gets the previously created intent
         jobID = myIntent.getStringExtra("jobID");
+        //TODO Job Details
     }
+
+    public void cancelJob() {
+        //todo
+    }
+
+    public void rateJob() {
+        //todo;;;;;;;
+    }
+
 }

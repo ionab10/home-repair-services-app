@@ -52,7 +52,7 @@ public class MyJobs extends AppCompatActivity {
 
         jobs = new ArrayList<Job>();
 
-        listMyJobs = findViewById(R.id.listTimeSlots);
+        listMyJobs = findViewById(R.id.listMyJobs);
         databaseJobs = database.getReference("Jobs");
 
         databaseJobs.addValueEventListener(new ValueEventListener() {

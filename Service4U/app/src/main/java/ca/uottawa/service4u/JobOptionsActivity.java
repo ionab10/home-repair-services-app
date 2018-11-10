@@ -17,7 +17,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class JobOptionsActivity extends AppCompatActivity {
 
@@ -91,7 +93,7 @@ public class JobOptionsActivity extends AppCompatActivity {
     /**
      * A placeholder fragment containing a simple view.
      */
-    public static class PlaceholderFragment extends Fragment {
+    public static class PlaceholderFragment extends Fragment{
         /**
          * The fragment argument representing the section number for this
          * fragment.
@@ -121,18 +123,32 @@ public class JobOptionsActivity extends AppCompatActivity {
             textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
 
 
-            /*
-            String id = databaseJobs.push().getKey();
-            job.setId(id);
-            databaseJobs.child(id).setValue(job);
+            //TODO job deez nuts
 
-            Toast.makeText(this, "Job added", Toast.LENGTH_LONG).show();
-             */
 
+
+            rootView.findViewById(R.id.bookJobBtn).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v)
+                {
+                    Job job = new Job();
+
+                    //TODO add job
+
+                /*
+                String id = databaseJobs.push().getKey();
+                job.setId(id);
+                databaseJobs.child(id).setValue(job);
+                */
+
+                }
+            });
 
             return rootView;
         }
+
     }
+
 
     /**
      * A {@link FragmentPagerAdapter} that returns a fragment corresponding to

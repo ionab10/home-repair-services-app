@@ -64,7 +64,7 @@ public class MainActivity extends AppCompatActivity implements
         findViewById(R.id.myAccountButton).setOnClickListener(this);
         findViewById(R.id.servicesBtn).setOnClickListener(this);
         findViewById(R.id.myJobsBtn).setOnClickListener(this);
-        findViewById(R.id.bookJobBtn).setOnClickListener(this);
+        findViewById(R.id.bookServiceBtn).setOnClickListener(this);
 
 
         // Initialize Firebase
@@ -295,7 +295,7 @@ public class MainActivity extends AppCompatActivity implements
             signOut();
         } else if (i == R.id.servicesBtn) {
             allServices();
-        } else if (i == R.id.bookJobBtn) {
+        } else if (i == R.id.bookServiceBtn) {
             bookJob();
         } else if (i == R.id.myJobsBtn) {
             myJobs();
