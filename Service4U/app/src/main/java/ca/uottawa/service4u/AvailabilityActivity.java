@@ -1,11 +1,14 @@
 package ca.uottawa.service4u;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Layout;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
@@ -13,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -194,4 +198,63 @@ public class AvailabilityActivity extends AppCompatActivity {
         Intent intent = new Intent(getApplicationContext(), AvailabilityCalendar.class);
         startActivityForResult (intent,0);
     }
+
+    public class TimeSlotList extends ArrayAdapter<String> {
+
+
+        private Activity context;
+        private List<String> timeSlots;
+        private List<TimeInterval> availability;
+        private String dateString;
+        private List<String> timeIntervals;
+
+
+        public TimeSlotList(Activity context, List<String> timeSlots, List<TimeInterval> availability, String dateString) {
+            super(context, R.layout.layout_timeslot_list, timeSlots.subList(0,timeSlots.size()-1));
+            this.context = context;
+            this.timeSlots = timeSlots;
+            this.availability = availability;
+            this.dateString = dateString;
+
+            timeIntervals = new ArrayList<String>();
+            for (int i = 0; i < this.timeSlots.size()-1; i++){
+                timeIntervals.add(this.timeSlots.get(i) + " - " + this.timeSlots.get(i+1));
+            }
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            LayoutInflater inflater = context.getLayoutInflater();
+            View listViewItem = inflater.inflate(R.layout.layout_timeslot_list, null, true);
+
+            TextView timeSlotText = (TextView) listViewItem.findViewById(R.id.timeSlotText);
+            String timeInterval = timeIntervals.get(position);
+            timeSlotText.setText(timeInterval);
+
+            CheckBox cb = (CheckBox) listViewItem.findViewById(R.id.timeSlotCheckBox);
+            long dt;
+
+            String dtStr = String.format("%s %s", dateString, timeSlots.get(position));
+            try{
+                dt = datetimeFormat.parse(dtStr).getTime();
+
+                cb.setChecked(false);
+
+                for (TimeInterval ti : availability){
+                    if (ti.contains(dt)){
+                        //Log.v("Form", "available " + ti);
+                        cb.setChecked(true);
+                    }
+                }
+
+            } catch (Exception e){
+                Log.e("parser", e.getMessage());
+            }
+
+            return listViewItem;
+        }
+
+
+    }
+
 }
