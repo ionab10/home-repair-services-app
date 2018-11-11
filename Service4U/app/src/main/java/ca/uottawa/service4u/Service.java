@@ -1,5 +1,7 @@
 package ca.uottawa.service4u;
 
+import android.util.Log;
+
 public class Service {
     private String id;
     private String name;
@@ -50,5 +52,20 @@ public class Service {
 
     public void setRatePerHour(double ratePerHour) {
         this.ratePerHour = ratePerHour;
+    }
+
+    @Override
+    public boolean equals(Object o){
+        try {
+            Service s = (Service) o;
+            return (this.getId().equals(s.getId()));
+        } catch (Exception e){
+            return (this == o);
+        }
+    }
+
+    @Override
+    public String toString(){
+        return String.format("%s - %s",type,name);
     }
 }

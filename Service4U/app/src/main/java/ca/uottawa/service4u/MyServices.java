@@ -120,7 +120,6 @@ public class MyServices extends AppCompatActivity {
             service = allServices.get(i);
 
             if (cb.isChecked()){
-
                 if (!myServices.contains(service)) {
                     myServices.add(service);
                 }
