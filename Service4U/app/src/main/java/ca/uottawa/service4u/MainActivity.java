@@ -229,23 +229,27 @@ public class MainActivity extends AppCompatActivity implements
             userTypeTextView.setText(appUser.getuserType());
 
 
-            if (appUser.getuserType().equals("admin")) {
-                findViewById(R.id.allUsersList).setVisibility(View.VISIBLE);
-                findViewById(R.id.servicesBtn).setVisibility(View.VISIBLE);
-                findViewById(R.id.bookJobBtn).setVisibility(View.GONE);
-                findViewById(R.id.myJobsBtn).setVisibility(View.GONE);
+            switch (appUser.getuserType()) {
+                case "admin":
+                    findViewById(R.id.allUsersList).setVisibility(View.VISIBLE);
+                    findViewById(R.id.servicesBtn).setVisibility(View.VISIBLE);
+                    findViewById(R.id.bookServiceBtn).setVisibility(View.GONE);
+                    findViewById(R.id.myJobsBtn).setVisibility(View.GONE);
 
-            } else if (appUser.getuserType().equals("homeowner")) {
-                findViewById(R.id.allUsersList).setVisibility(View.GONE);
-                findViewById(R.id.servicesBtn).setVisibility(View.GONE);
-                findViewById(R.id.bookJobBtn).setVisibility(View.VISIBLE);
-                findViewById(R.id.myJobsBtn).setVisibility(View.VISIBLE);
+                    break;
+                case "homeowner":
+                    findViewById(R.id.allUsersList).setVisibility(View.GONE);
+                    findViewById(R.id.servicesBtn).setVisibility(View.GONE);
+                    findViewById(R.id.bookServiceBtn).setVisibility(View.VISIBLE);
+                    findViewById(R.id.myJobsBtn).setVisibility(View.VISIBLE);
 
-            } else if (appUser.getuserType().equals("service provider")) {
-                findViewById(R.id.allUsersList).setVisibility(View.GONE);
-                findViewById(R.id.servicesBtn).setVisibility(View.GONE);
-                findViewById(R.id.bookJobBtn).setVisibility(View.GONE);
-                findViewById(R.id.myJobsBtn).setVisibility(View.VISIBLE);
+                    break;
+                case "service provider":
+                    findViewById(R.id.allUsersList).setVisibility(View.GONE);
+                    findViewById(R.id.servicesBtn).setVisibility(View.GONE);
+                    findViewById(R.id.bookServiceBtn).setVisibility(View.GONE);
+                    findViewById(R.id.myJobsBtn).setVisibility(View.VISIBLE);
+                    break;
             }
 
             findViewById(R.id.emailPasswordButtons).setVisibility(View.GONE);
