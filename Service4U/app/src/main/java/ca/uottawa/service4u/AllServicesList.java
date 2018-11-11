@@ -33,23 +33,22 @@ public class AllServicesList extends ArrayAdapter<Service> {
         Service service = allServices.get(position);
 
 
-
-        //TODO make text and checkboxes
-
-        CheckBox checkBox = (CheckBox) listViewItem.findViewById(R.id.checkBox);
-
+        CheckBox checkBox = (CheckBox) listViewItem.findViewById(R.id.serviceCB);
         checkBox.setText(service.getName());
 
-        //TODO if myServices contains service, set checked to true, else, set checked to false
+        TextView serviceTypeText = (TextView) listViewItem.findViewById(R.id.serviceTypeText);
+        serviceTypeText.setText(service.getType());
+
+        TextView serviceRateText = (TextView) listViewItem.findViewById(R.id.serviceRateText);
+        serviceRateText.setText(String.valueOf(service.getRatePerHour()));
+
+        checkBox.setChecked(false);
 
         if (myServices != null) {
             if (myServices.contains(service)) {
                 checkBox.setChecked(true);
             }
-        } else {
-            checkBox.setChecked(false);
         }
-
 
         return listViewItem;
     }

@@ -5,17 +5,11 @@
     android:orientation="horizontal">
 
     <CheckBox
-        android:id="@+id/checkBox"
-        android:layout_width="192dp"
+        android:id="@+id/serviceCB"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="0.5"
         android:clickable="true" />
-
-    <TextView
-        android:id="@+id/serviceNameText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="0.5" />
 
     <TextView
         android:id="@+id/serviceTypeText"

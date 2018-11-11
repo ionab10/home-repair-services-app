@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 
@@ -27,6 +28,7 @@ public class MyServices extends AppCompatActivity {
     protected FirebaseAuth mAuth;
     protected FirebaseDatabase database;
     protected DatabaseReference databaseUsers;
+    protected DatabaseReference databaseServices;
 
     List<Service> myServices;
     List<Service> allServices;
@@ -35,17 +37,37 @@ public class MyServices extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_my_services);
 
         listAllServices = (ListView) findViewById(R.id.listAllServices);
 
-        AllServicesList servicesAdapter = new AllServicesList(MyServices.this, allServices, myServices);
-        listAllServices.setAdapter(servicesAdapter);
-
         mAuth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
         databaseUsers = database.getReference("Users");
+        databaseServices = database.getReference("Services");
+
+        allServices = new ArrayList<Service>();
+        myServices = new ArrayList<Service>();
+
+
+        databaseServices.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                allServices.clear();
+
+                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()){
+                    Service service = postSnapshot.getValue(Service.class);
+                    allServices.add(service);
+                }
+
+                updateForm();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
         FirebaseUser user = mAuth.getCurrentUser();
 
@@ -65,8 +87,7 @@ public class MyServices extends AppCompatActivity {
                     }
                     Log.d(dbTAG, "Services: " + myServices.toString());
 
-
-
+                    updateForm();
                 }
 
                 @Override
@@ -77,8 +98,6 @@ public class MyServices extends AppCompatActivity {
             });
 
         }
-
-        updateForm();
 
     }
 
@@ -95,8 +114,8 @@ public class MyServices extends AppCompatActivity {
         Service service;
 
         for (int i = 0; i < listAllServices.getChildCount(); i++) {
-            RelativeLayout ts = (RelativeLayout) listAllServices.getChildAt(i);
-            CheckBox cb = (CheckBox) ts.getChildAt(1);
+            LinearLayout ll = (LinearLayout) listAllServices.getChildAt(i);
+            CheckBox cb = (CheckBox) ll.getChildAt(0);
 
             service = allServices.get(i);
 
@@ -109,10 +128,7 @@ public class MyServices extends AppCompatActivity {
                 myServices.remove(service);
             }
 
-
-
         }
-
 
         Log.v("dbTAG", "Associating services: " + myServices.toString());
 
