@@ -1,10 +1,6 @@
 package ca.uottawa.service4u;
 
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-
-import java.util.ArrayList;
-import java.util.List;
+import android.util.Log;
 
 public class Service {
     private String id;
@@ -59,8 +55,17 @@ public class Service {
     }
 
     @Override
+    public boolean equals(Object o){
+        try {
+            Service s = (Service) o;
+            return (this.getId().equals(s.getId()));
+        } catch (Exception e){
+            return (this == o);
+        }
+    }
+
+    @Override
     public String toString(){
         return String.format("%s - %s",type,name);
     }
-
 }
