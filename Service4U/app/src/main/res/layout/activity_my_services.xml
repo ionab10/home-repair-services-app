@@ -18,7 +18,9 @@
             android:layout_height="match_parent"
             android:layout_weight="5"
             android:isScrollContainer="true"
-            android:scrollbars="vertical"/>
+            android:scrollbars="vertical">
+
+        </ListView>
 
         <Button
             android:id="@+id/button"
@@ -27,4 +29,5 @@
             android:text="Button"
             android:layout_weight="1"/>
     </LinearLayout>
+
 </android.support.constraint.ConstraintLayout>

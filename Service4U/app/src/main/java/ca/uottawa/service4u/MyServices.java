@@ -35,6 +35,7 @@ public class MyServices extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_my_services);
 
         listAllServices = (ListView) findViewById(R.id.listAllServices);
@@ -64,7 +65,8 @@ public class MyServices extends AppCompatActivity {
                     }
                     Log.d(dbTAG, "Services: " + myServices.toString());
 
-                    updateForm();
+
+
                 }
 
                 @Override
@@ -106,6 +108,7 @@ public class MyServices extends AppCompatActivity {
             } else {
                 myServices.remove(service);
             }
+
 
 
         }

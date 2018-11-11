@@ -37,6 +37,7 @@ public class ServicesActivity extends AppCompatActivity {
     private EditText sRateField;
 
     ListView listViewServices;
+    ListView listViewMyServices;
     DatabaseReference databaseServices;
     List<Service> services;
 
@@ -63,10 +64,12 @@ public class ServicesActivity extends AppCompatActivity {
         sTypeField = findViewById(R.id.typeField);
         sRateField = findViewById(R.id.rateField);
         listViewServices = (ListView) findViewById(R.id.listViewServices);
+        listViewMyServices = (ListView) findViewById(R.id.listAllServices);
 
         //Service Type spinner
         ArrayAdapter<CharSequence> serviceTypeAdapter = ArrayAdapter.createFromResource(this,
                 R.array.service_type_array, android.R.layout.simple_spinner_item);
+
         // Create an ArrayAdapter using the string array and a default spinner layout
         serviceTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         sTypeField.setAdapter(serviceTypeAdapter);
@@ -130,6 +133,7 @@ public class ServicesActivity extends AppCompatActivity {
                 return true;
             }
         });
+
     }
 
 
@@ -149,6 +153,10 @@ public class ServicesActivity extends AppCompatActivity {
 
                 ServiceList servicesAdapter = new ServiceList(ServicesActivity.this, services);
                 listViewServices.setAdapter(servicesAdapter);
+
+                ServiceList servicesAdapterTwo = new ServiceList(ServicesActivity.this, services);
+                listViewMyServices.setAdapter(servicesAdapterTwo);
+
             }
 
             @Override

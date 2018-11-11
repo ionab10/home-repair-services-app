@@ -154,6 +154,8 @@
                     android:text="@string/my_jobs" />
             </LinearLayout>
 
+
+
             <Button
                 android:id="@+id/servicesBtn"
                 style="@style/Widget.AppCompat.Button.Colored"
@@ -162,6 +164,7 @@
                 android:layout_weight="1.0"
                 android:text="@string/services"
                 android:theme="@style/ThemeOverlay.MyDarkButton" />
+
 
             <LinearLayout
                 android:layout_width="match_parent"

@@ -28,17 +28,29 @@ public class AllServicesList extends ArrayAdapter<Service> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         LayoutInflater inflater = context.getLayoutInflater();
-        View listViewItem = inflater.inflate(R.layout.layout_all_services_list, null, true);
 
+        View listViewItem = inflater.inflate(R.layout.layout_all_services_list, null, true);
         Service service = allServices.get(position);
+
+
 
         //TODO make text and checkboxes
 
+        CheckBox checkBox = (CheckBox) listViewItem.findViewById(R.id.checkBox);
+
+        checkBox.setText(service.getName());
+
         //TODO if myServices contains service, set checked to true, else, set checked to false
+
+        if (myServices != null) {
+            if (myServices.contains(service)) {
+                checkBox.setChecked(true);
+            }
+        } else {
+            checkBox.setChecked(false);
+        }
+
 
         return listViewItem;
     }
-
-
-
 }
