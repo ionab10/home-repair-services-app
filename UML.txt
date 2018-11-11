@@ -1,4 +1,4 @@
-class Account{
+﻿class Account {
   String id;
   String firstName;
   String lastName;
@@ -36,6 +36,7 @@ class ServiceProvider {
   1..* -- * Service;
   
   void updateAvailability (){};
+  
   void acceptJob (){};
 }
 
