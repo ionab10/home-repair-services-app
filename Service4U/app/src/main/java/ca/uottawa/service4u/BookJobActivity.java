@@ -1,6 +1,7 @@
 package ca.uottawa.service4u;
 
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -29,7 +30,6 @@ public class BookJobActivity extends AppCompatActivity {
 
     private Spinner serviceSpinner;
     private Spinner urgencySpinner;
-    private Spinner timeSpinner;
 
     FirebaseDatabase database;
     DatabaseReference databaseUsers;
@@ -37,7 +37,7 @@ public class BookJobActivity extends AppCompatActivity {
     List<ServiceProvider> serviceProviders;
     List<Service> allServices;
     List<String> serviceNames;
-    ArrayAdapter<CharSequence> serviceAdapter;
+    ArrayAdapter serviceAdapter;
     Service currentService;
     int currentUrgency;
     double timeLength;
@@ -53,19 +53,19 @@ public class BookJobActivity extends AppCompatActivity {
         databaseUsers = database.getReference("Users");
         databaseUsers.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 serviceProviders.clear();
 
                 for (DataSnapshot postSnapshot : dataSnapshot.getChildren()){
                     User appUser = postSnapshot.getValue(User.class);
-                    if (appUser.getuserType() == "service provider") {
+                    if (appUser != null && appUser.getuserType().equals("service provider")) {
                         serviceProviders.add((ServiceProvider) appUser);
                     }
                 }
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {
+            public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
         });
@@ -97,7 +97,7 @@ public class BookJobActivity extends AppCompatActivity {
         databaseServices = database.getReference("Services");
         databaseServices.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 allServices.clear();
                 serviceNames.clear();
 
@@ -125,7 +125,7 @@ public class BookJobActivity extends AppCompatActivity {
 
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {
+            public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
         });
@@ -155,7 +155,7 @@ public class BookJobActivity extends AppCompatActivity {
 
 
         //urgency spinner
-        timeSpinner = findViewById(R.id.timeSpinner);
+        Spinner timeSpinner = findViewById(R.id.timeSpinner);
         List<String> timeList = new ArrayList<String>();
         for (int i=0; i < 5; i++){
             timeList.add(String.valueOf(i*0.5));

@@ -34,6 +34,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 public class AvailabilityActivity extends AppCompatActivity {
@@ -55,7 +56,7 @@ public class AvailabilityActivity extends AppCompatActivity {
     ListView listTimeSlots;
     List<String> timeSlots;
 
-    List<TimeInterval> availability;
+    List<TimeInterval> myAvailability;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,7 +79,7 @@ public class AvailabilityActivity extends AppCompatActivity {
         timeSlots = Arrays.asList(getResources().getStringArray(R.array.time_slots));
 
         listTimeSlots = (ListView) findViewById(R.id.listTimeSlots);
-        TimeSlotList timeSlotAdapter = new TimeSlotList(AvailabilityActivity.this, timeSlots, availability, dateString);
+        TimeSlotList timeSlotAdapter = new TimeSlotList(AvailabilityActivity.this, timeSlots, myAvailability, dateString);
         listTimeSlots.setAdapter(timeSlotAdapter);
 
 
@@ -87,6 +88,7 @@ public class AvailabilityActivity extends AppCompatActivity {
         databaseUsers = database.getReference("Users");
 
         FirebaseUser user = mAuth.getCurrentUser();
+        myAvailability = new ArrayList<TimeInterval>();
 
         if (user != null) {
             //get userType
@@ -98,11 +100,11 @@ public class AvailabilityActivity extends AppCompatActivity {
                     ServiceProvider appUser = dataSnapshot.getValue(ServiceProvider.class);
 
                     if (appUser.availability != null) {
-                        availability = appUser.availability;
+                        myAvailability = appUser.availability;
                     } else {
-                        availability = new ArrayList<>();
+                        myAvailability = new ArrayList<TimeInterval>();
                     }
-                    Log.d(dbTAG, "Availability: " + availability);
+                    Log.d(dbTAG, "Availability: " + myAvailability);
 
                     updateForm();
 
@@ -126,7 +128,7 @@ public class AvailabilityActivity extends AppCompatActivity {
 
     private void updateForm(){
         Log.d("Form", "Updating form");
-        TimeSlotList timeSlotAdapter = new TimeSlotList(AvailabilityActivity.this, timeSlots, availability, dateString);
+        TimeSlotList timeSlotAdapter = new TimeSlotList(AvailabilityActivity.this, timeSlots, myAvailability, dateString);
         listTimeSlots.setAdapter(timeSlotAdapter);
 
     }
@@ -139,18 +141,17 @@ public class AvailabilityActivity extends AppCompatActivity {
         boolean a = false; //available
 
         //clear current date
-        for (TimeInterval ti : availability){
-            if (dateFormat.format(ti.start).equals(dateString)){
-                availability.remove(ti);
+        for (Iterator<TimeInterval> iterator = myAvailability.iterator(); iterator.hasNext();){
+            TimeInterval ti = iterator.next();
+            if (dateFormat.format(ti.start).equals(dateString)) {
+                iterator.remove();
             }
         }
 
-        //add availability for current date
+            //add availability for current date
         for (int i = 0; i < listTimeSlots.getChildCount(); i++) {
             RelativeLayout ts = (RelativeLayout) listTimeSlots.getChildAt(i);
             CheckBox cb = (CheckBox) ts.getChildAt(1);
-
-
 
             dtStr = String.format("%s %s", dateString, timeSlots.get(i));
             try {
@@ -163,7 +164,7 @@ public class AvailabilityActivity extends AppCompatActivity {
 
                 } else if (!cb.isChecked() && a) {
                     a = false;
-                    availability.add(new TimeInterval(start,dt));
+                    myAvailability.add(new TimeInterval(start,dt));
 
                 }
 
@@ -181,7 +182,7 @@ public class AvailabilityActivity extends AppCompatActivity {
             try {
                 dt = datetimeFormat.parse(dtStr).getTime();
 
-                availability.add(new TimeInterval(start,dt));
+                myAvailability.add(new TimeInterval(start,dt));
 
             } catch (ParseException e) {
                 e.printStackTrace();
@@ -190,10 +191,10 @@ public class AvailabilityActivity extends AppCompatActivity {
         }
 
 
-        Log.v("dbTAG", "Setting availability: " + availability.toString());
+        Log.v("dbTAG", "Setting availability: " + myAvailability.toString());
 
         FirebaseUser user = mAuth.getCurrentUser();
-        databaseUsers.child(user.getUid()).child("availability").setValue(availability);
+        databaseUsers.child(user.getUid()).child("availability").setValue(myAvailability);
 
         Intent intent = new Intent(getApplicationContext(), AvailabilityCalendar.class);
         startActivityForResult (intent,0);
