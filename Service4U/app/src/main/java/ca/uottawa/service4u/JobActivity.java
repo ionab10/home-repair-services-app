@@ -103,12 +103,18 @@ public class JobActivity extends AppCompatActivity {
         DatabaseReference dR = databaseJobs.child(jobID);
         dR.removeValue();
 
+        updateAvailability(jobID);
+
+        Toast.makeText(getApplicationContext(), "Job cancelled", Toast.LENGTH_LONG).show();
+        finish();
+    }
+
+    public void updateAvailability(String jobID){
+
         //todo cancel job
         // remove from provider_ID booked
         // add to provider_ID availability
 
-        Toast.makeText(getApplicationContext(), "Job cancelled", Toast.LENGTH_LONG).show();
-        finish();
     }
 
     public void updateServiceProviderRating(String serviceProviderID) {

@@ -33,6 +33,7 @@ import org.w3c.dom.Text;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class JobOptionsActivity extends AppCompatActivity {
 
@@ -171,9 +172,7 @@ public class JobOptionsActivity extends AppCompatActivity {
 
                     databaseJobs.child(id).setValue(job);
 
-                    // TODO book job
-                    // add to provider_ID booked
-                    // remove from provider_ID availability
+                    updateAvailability(job.serviceProviderID, job.startTime, job.endTime);
 
                 }
             });
@@ -181,7 +180,30 @@ public class JobOptionsActivity extends AppCompatActivity {
             return rootView;
         }
 
+        public void updateAvailability(String providerID, long startTime, long endTime){
+
+            // TODO book job
+            // add to provider_ID booked
+            // remove from provider_ID availability
+
+        }
+
+        public List<TimeInterval> union(List<TimeInterval> timeIntervalList, TimeInterval timeInterval){
+            List<TimeInterval> timeIntervals = new ArrayList<TimeInterval>();
+            return timeIntervals;
+
+            //TODO
+        }
+
+        public List<TimeInterval> difference(List<TimeInterval> timeIntervalList, TimeInterval timeInterval){
+            List<TimeInterval> timeIntervals = new ArrayList<TimeInterval>();
+            return timeIntervals;
+
+            //TODO
+        }
+
     }
+
 
 
     /**
