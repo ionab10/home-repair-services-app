@@ -4,7 +4,11 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -69,12 +73,15 @@ public class JobActivity extends AppCompatActivity {
 
                 //rating
                 RatingBar ratingBar = findViewById(R.id.jobRatingBar);
+                LinearLayout commentLayout = findViewById(R.id.commentLayout);
                 Date endTime = new Date(job.endTime);
                 Date now = new Date();
                 if (now.after(endTime)) {
                     ratingBar.setVisibility(View.VISIBLE);
+                    commentLayout.setVisibility(View.VISIBLE);
                 } else {
                     ratingBar.setVisibility(View.GONE);
+                    commentLayout.setVisibility(View.GONE);
                 }
 
                 ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
@@ -86,6 +93,25 @@ public class JobActivity extends AppCompatActivity {
                         //update service provider rating
                         updateServiceProviderRating(job.serviceProviderID);
 
+                    }
+                });
+
+                EditText commentField = findViewById(R.id.editComment);
+                commentField.addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                    }
+
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                    }
+
+                    @Override
+                    public void afterTextChanged(Editable s) {
+                        DatabaseReference dR = databaseJobs.child(jobID).child("notes");
+                        dR.setValue(s);
                     }
                 });
 

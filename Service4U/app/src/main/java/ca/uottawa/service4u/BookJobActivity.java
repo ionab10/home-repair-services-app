@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
+import android.widget.RatingBar;
 import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -195,6 +196,10 @@ public class BookJobActivity extends AppCompatActivity {
             }
         });
 
+
+        //TODO add minimum rating bar
+
+
     }
 
     public Date addDays(Date date, int n) {
@@ -204,11 +209,11 @@ public class BookJobActivity extends AppCompatActivity {
     }
 
 
-    public List<ServiceProvider> getAssociatedProviders(Service service){
+    public List<ServiceProvider> getAssociatedProviders(Service service, double rating){
         List<ServiceProvider> providers = new ArrayList<ServiceProvider>();
 
         for (ServiceProvider sp : serviceProviders){
-            if (sp.services!=null && sp.services.contains(service)){
+            if (sp.services!=null && sp.services.contains(service) && sp.rating >= rating){
                 providers.add(sp);
             }
         }
@@ -240,9 +245,9 @@ public class BookJobActivity extends AppCompatActivity {
         return timeIntervals;
     }
 
-    public ArrayList<PotentialJob> findProviders(Service service, Map<Integer,List<List<String>>> availability, double hours, String urgency){
+    public ArrayList<PotentialJob> findProviders(Service service, Map<Integer,List<List<String>>> availability, double hours, String urgency, double rating){
         ArrayList<PotentialJob> options = new ArrayList<PotentialJob>();
-        List<ServiceProvider> providers = getAssociatedProviders(service);
+        List<ServiceProvider> providers = getAssociatedProviders(service, rating);
 
         Date date = new Date(); //defaults to today
         long start = -1;
@@ -368,7 +373,8 @@ public class BookJobActivity extends AppCompatActivity {
         if (validateAvailability(availability,timeLength)) {
             availabilityErrorText.setVisibility(view.GONE);
 
-            ArrayList<PotentialJob> options = findProviders(currentService, availability, timeLength, currentUrgency);
+            double rating = ((RatingBar) findViewById(R.id.minRatingBar)).getRating();
+            ArrayList<PotentialJob> options = findProviders(currentService, availability, timeLength, currentUrgency, rating);
 
             Log.v("options", options.toString());
 
