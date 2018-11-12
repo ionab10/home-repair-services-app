@@ -23,6 +23,8 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.w3c.dom.Text;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -67,13 +69,20 @@ public class JobOptionsActivity extends AppCompatActivity {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        // Create the adapter that will return a fragment for each of the three
-        // primary sections of the activity.
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(), serviceName, serviceRate, timeLength, options);
 
-        // Set up the ViewPager with the sections adapter.
-        mViewPager = (ViewPager) findViewById(R.id.container);
-        mViewPager.setAdapter(mSectionsPagerAdapter);
+        TextView noOptionsText = findViewById(R.id.noOptionsText);
+        if (options.isEmpty()) {
+            noOptionsText.setVisibility(View.VISIBLE);
+        } else {
+            noOptionsText.setVisibility(View.GONE);
+            // Create the adapter that will return a fragment for each of the three
+            // primary sections of the activity.
+            mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(), serviceName, serviceRate, timeLength, options);
+
+            // Set up the ViewPager with the sections adapter.
+            mViewPager = (ViewPager) findViewById(R.id.container);
+            mViewPager.setAdapter(mSectionsPagerAdapter);
+        }
 
     }
 
@@ -118,7 +127,7 @@ public class JobOptionsActivity extends AppCompatActivity {
 
             ((TextView) rootView.findViewById(R.id.serviceTitleText)).setText(args.getString(SERVICE_NAME));
             ((TextView) rootView.findViewById(R.id.datetimeText)).setText(datetimeFormat.format(new Date(option.startTime)));
-            ((TextView) rootView.findViewById(R.id.timeLengthText)).setText(String.format("%.1f",args.getDouble(TIME_LENGTH)));
+            ((TextView) rootView.findViewById(R.id.timeLengthText)).setText(String.format("%.1f hours",args.getDouble(TIME_LENGTH)));
             double price = args.getDouble(SERVICE_RATE) * args.getDouble(TIME_LENGTH);
             ((TextView) rootView.findViewById(R.id.priceText)).setText(String.format("$%.2f",price));
             ((TextView) rootView.findViewById(R.id.providerNameText)).setText(String.format("%s %s", option.providerFirstName, option.providerLastName));

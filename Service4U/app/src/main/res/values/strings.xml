@@ -188,6 +188,8 @@
 
     <string name="title_activity_job_options">Booking Options</string>
     <string name="section_format">Hello World from section: %1$d</string>
+    <string name="cancel_job">cancel job</string>
+    <string name="no_job_options">There are no available service providers that match your request</string>
 
 
 </resources>

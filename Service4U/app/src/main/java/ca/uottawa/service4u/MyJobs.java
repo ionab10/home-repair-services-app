@@ -1,12 +1,17 @@
 package ca.uottawa.service4u;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -16,10 +21,14 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class MyJobs extends AppCompatActivity {
+
+    private static final SimpleDateFormat datetimeFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm");
 
     protected FirebaseAuth mAuth;
     protected FirebaseDatabase database;
@@ -95,5 +104,33 @@ public class MyJobs extends AppCompatActivity {
         Intent intent = new Intent(getApplicationContext(), JobActivity.class);
         intent.putExtra("jobID", jobID);
         startActivityForResult (intent,0);
+    }
+
+    public class JobList extends ArrayAdapter<Job> {
+
+        private Activity context;
+        List<Job> jobs;
+
+        public JobList(Activity context, List<Job> jobs) {
+            super(context, R.layout.layout_job_list, jobs);
+            this.context = context;
+            this.jobs = jobs;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            LayoutInflater inflater = context.getLayoutInflater();
+            View listViewItem = inflater.inflate(R.layout.layout_job_list, null, true);
+
+            TextView textViewJobName = (TextView) listViewItem.findViewById(R.id.jobNameText);
+            TextView textViewDate = (TextView) listViewItem.findViewById(R.id.jobDatetimeText);
+            TextView textViewHours = (TextView) listViewItem.findViewById(R.id.jobHoursText);
+
+            Job job = jobs.get(position);
+            textViewJobName.setText(job.title);
+            textViewDate.setText(String.valueOf(datetimeFormat.format(new Date(job.startTime))));
+            textViewHours.setText(String.valueOf((job.endTime - job.startTime)/60/60/1000));
+            return listViewItem;
+        }
     }
 }
