@@ -7,6 +7,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -64,9 +65,28 @@ public class MyAccountActivity extends AppCompatActivity {
                 ((TextView) findViewById(R.id.editAddress)).setText(appUser.getAddress());
 
                 if (appUser.getuserType().equals("service provider")){
+                    ServiceProvider sp = dataSnapshot.getValue(ServiceProvider.class);
+
+                    findViewById(R.id.companyNameLayout).setVisibility(View.VISIBLE);
+                    findViewById(R.id.licensedLayout).setVisibility(View.VISIBLE);
+                    findViewById(R.id.descriptionLayout).setVisibility(View.VISIBLE);
+
+                    ((CheckBox) findViewById(R.id.licensedCB)).setChecked(sp.licensed);
+                    if (sp.licensed){
+                        ((TextView) findViewById(R.id.licensed)).setText(String.format("Licensed: %s", "Yes"));
+                    } else {
+                        ((TextView) findViewById(R.id.licensed)).setText(String.format("Licensed: %s", "No"));
+                    }
+
+                    ((TextView) findViewById(R.id.companyName)).setText(String.format("Company: %s", sp.companyName));
+                    ((TextView) findViewById(R.id.description)).setText(String.format("%s", sp.description));
+
                     findViewById(R.id.availabilityBtn).setVisibility(View.VISIBLE);
                     findViewById(R.id.myServicesBtn).setVisibility(View.VISIBLE);
                 } else {
+                    findViewById(R.id.companyNameLayout).setVisibility(View.GONE);
+                    findViewById(R.id.licensedLayout).setVisibility(View.GONE);
+                    findViewById(R.id.descriptionLayout).setVisibility(View.GONE);
                     findViewById(R.id.availabilityBtn).setVisibility(View.GONE);
                     findViewById(R.id.myServicesBtn).setVisibility(View.GONE);
                 }
@@ -124,8 +144,7 @@ public class MyAccountActivity extends AppCompatActivity {
         // [END send_email_verification]
     }
     public void returnToMain(View view){
-        Intent i = new Intent(this, MainActivity.class); //dont write package context android will do that
-        startActivity(i);
+        finish();
     }
 
     public void myAvailability(View view){
@@ -148,13 +167,19 @@ public class MyAccountActivity extends AppCompatActivity {
 
             ((TextView) findViewById(R.id.firstName)).setText("First name:");
             ((TextView) findViewById(R.id.lastName)).setText("Last name:");
+            ((TextView) findViewById(R.id.companyName)).setText("Company:");
+            ((TextView) findViewById(R.id.licensed)).setText("Licensed:");
             ((TextView) findViewById(R.id.phoneNumber)).setText("Phone:");
             ((TextView) findViewById(R.id.address)).setText("Address:");
+            ((TextView) findViewById(R.id.description)).setText("");
 
             findViewById(R.id.editFirstName).setVisibility(View.VISIBLE);
             findViewById(R.id.editLastName).setVisibility(View.VISIBLE);
+            findViewById(R.id.editCompanyName).setVisibility(View.VISIBLE);
+            findViewById(R.id.licensedCB).setVisibility(View.VISIBLE);
             findViewById(R.id.editPhoneNumber).setVisibility(View.VISIBLE);
             findViewById(R.id.editAddress).setVisibility(View.VISIBLE);
+            findViewById(R.id.editDescription).setVisibility(View.VISIBLE);
 
             b.setText(R.string.done);
         }
@@ -166,29 +191,46 @@ public class MyAccountActivity extends AppCompatActivity {
                 return;
             }
 
-
             String firstName = ((EditText)findViewById(R.id.editFirstName)).getText().toString();
             String lastName = ((EditText)findViewById(R.id.editLastName)).getText().toString();
+            String companyName = ((EditText)findViewById(R.id.editCompanyName)).getText().toString();
+            boolean licensed = ((CheckBox)findViewById(R.id.licensedCB)).isChecked();
             String phoneNumber = ((EditText)findViewById(R.id.editPhoneNumber)).getText().toString();
             String address = ((EditText)findViewById(R.id.editAddress)).getText().toString();
+            String description = ((EditText)findViewById(R.id.editDescription)).getText().toString();
 
 
             FirebaseUser user = mAuth.getCurrentUser();
             DatabaseReference dR = databaseUsers.child(user.getUid());
             dR.child("firstName").setValue(firstName);
             dR.child("lastName").setValue(lastName);
+            dR.child("companyName").setValue(companyName);
             dR.child("phoneNumber").setValue(phoneNumber);
             dR.child("address").setValue(address);
+            dR.child("description").setValue(description);
 
             ((TextView) findViewById(R.id.firstName)).setText(String.format("First name: %s", firstName));
             ((TextView) findViewById(R.id.lastName)).setText(String.format("Last name: %s", lastName));
+            ((TextView) findViewById(R.id.companyName)).setText(String.format("Last name: %s", lastName));
             ((TextView) findViewById(R.id.phoneNumber)).setText(String.format("Phone: %s", phoneNumber));
             ((TextView) findViewById(R.id.address)).setText(String.format("Address: %s", address));
+            ((TextView) findViewById(R.id.description)).setText(String.format("%s", description));
+
+            if (licensed){
+                dR.child("licensed").setValue(true);
+                ((TextView) findViewById(R.id.licensed)).setText(String.format("Licensed: %s", "Yes"));
+            } else {
+                dR.child("licensed").setValue(false);
+                ((TextView) findViewById(R.id.licensed)).setText(String.format("Licensed: %s", "No"));
+            }
 
             findViewById(R.id.editFirstName).setVisibility(View.GONE);
             findViewById(R.id.editLastName).setVisibility(View.GONE);
+            findViewById(R.id.editCompanyName).setVisibility(View.GONE);
+            findViewById(R.id.licensedCB).setVisibility(View.GONE);
             findViewById(R.id.editPhoneNumber).setVisibility(View.GONE);
             findViewById(R.id.editAddress).setVisibility(View.GONE);
+            findViewById(R.id.editDescription).setVisibility(View.GONE);
 
             b.setText(R.string.edit_account);
         }
@@ -200,6 +242,7 @@ public class MyAccountActivity extends AppCompatActivity {
 
         String firstName = ((EditText)findViewById(R.id.editFirstName)).getText().toString();
         String lastName = ((EditText)findViewById(R.id.editLastName)).getText().toString();
+        String companyName = ((EditText)findViewById(R.id.editCompanyName)).getText().toString();
         String phoneNumber = ((EditText)findViewById(R.id.editPhoneNumber)).getText().toString();
         String address = ((EditText)findViewById(R.id.editAddress)).getText().toString();
         boolean validFlag = true;
@@ -214,13 +257,18 @@ public class MyAccountActivity extends AppCompatActivity {
             ((EditText)findViewById(R.id.editLastName)).setError("Required");
             validFlag = false;
         }
-        if(!firstName.matches("[a-zA-Z]+")){
+        if(!firstName.matches("[-a-zA-Z\\s]+")){
             ((EditText)findViewById(R.id.editFirstName)).setError("Invalid Name");
             validFlag = false;
         }
 
-        if(!lastName.matches("[a-zA-Z]+")){
+        if(!lastName.matches("[-a-zA-Z\\s]+")){
             ((EditText)findViewById(R.id.editLastName)).setError("Invalid Name");
+            validFlag = false;
+        }
+
+        if(!companyName.matches("[-a-zA-Z!.\\s]+")){
+            ((EditText)findViewById(R.id.editCompanyName)).setError("Invalid Name");
             validFlag = false;
         }
 
@@ -242,9 +290,6 @@ public class MyAccountActivity extends AppCompatActivity {
             ((EditText)findViewById(R.id.editAddress)).setError("Required");
             validFlag = false;
         }
-
-
-
 
         return validFlag;
     }

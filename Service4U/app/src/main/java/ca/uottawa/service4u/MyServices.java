@@ -1,13 +1,19 @@
 package ca.uottawa.service4u;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -27,6 +33,7 @@ public class MyServices extends AppCompatActivity {
     protected FirebaseAuth mAuth;
     protected FirebaseDatabase database;
     protected DatabaseReference databaseUsers;
+    protected DatabaseReference databaseServices;
 
     List<Service> myServices;
     List<Service> allServices;
@@ -39,12 +46,33 @@ public class MyServices extends AppCompatActivity {
 
         listAllServices = (ListView) findViewById(R.id.listAllServices);
 
-        AllServicesList servicesAdapter = new AllServicesList(MyServices.this, allServices, myServices);
-        listAllServices.setAdapter(servicesAdapter);
-
         mAuth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
         databaseUsers = database.getReference("Users");
+        databaseServices = database.getReference("Services");
+
+        allServices = new ArrayList<Service>();
+        myServices = new ArrayList<Service>();
+
+
+        databaseServices.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                allServices.clear();
+
+                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()){
+                    Service service = postSnapshot.getValue(Service.class);
+                    allServices.add(service);
+                }
+
+                updateForm();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
         FirebaseUser user = mAuth.getCurrentUser();
 
@@ -76,8 +104,6 @@ public class MyServices extends AppCompatActivity {
 
         }
 
-        updateForm();
-
     }
 
     private void updateForm(){
@@ -93,13 +119,12 @@ public class MyServices extends AppCompatActivity {
         Service service;
 
         for (int i = 0; i < listAllServices.getChildCount(); i++) {
-            RelativeLayout ts = (RelativeLayout) listAllServices.getChildAt(i);
-            CheckBox cb = (CheckBox) ts.getChildAt(1);
+            LinearLayout ll = (LinearLayout) listAllServices.getChildAt(i);
+            CheckBox cb = (CheckBox) ll.getChildAt(0);
 
             service = allServices.get(i);
 
             if (cb.isChecked()){
-
                 if (!myServices.contains(service)) {
                     myServices.add(service);
                 }
@@ -107,9 +132,7 @@ public class MyServices extends AppCompatActivity {
                 myServices.remove(service);
             }
 
-
         }
-
 
         Log.v("dbTAG", "Associating services: " + myServices.toString());
 
@@ -118,5 +141,46 @@ public class MyServices extends AppCompatActivity {
 
         Intent intent = new Intent(getApplicationContext(), MyAccountActivity.class);
         startActivityForResult (intent,0);
+    }
+
+    public class AllServicesList extends ArrayAdapter<Service> {
+        private Activity context;
+        private List<Service> allServices;
+        private List<Service> myServices;
+
+        public AllServicesList(Activity context, List<Service> allServices, List<Service> myServices) {
+            super(context, R.layout.layout_all_services_list, allServices);
+            this.context = context;
+            this.allServices = allServices;
+            this.myServices = myServices;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            LayoutInflater inflater = context.getLayoutInflater();
+
+            View listViewItem = inflater.inflate(R.layout.layout_all_services_list, null, true);
+            Service service = allServices.get(position);
+
+
+            CheckBox checkBox = (CheckBox) listViewItem.findViewById(R.id.serviceCB);
+            checkBox.setText(service.getName());
+
+            TextView serviceTypeText = (TextView) listViewItem.findViewById(R.id.serviceTypeText);
+            serviceTypeText.setText(service.getType());
+
+            TextView serviceRateText = (TextView) listViewItem.findViewById(R.id.serviceRateText);
+            serviceRateText.setText(String.valueOf(service.getRatePerHour()));
+
+            checkBox.setChecked(false);
+
+            if (myServices != null) {
+                if (myServices.contains(service)) {
+                    checkBox.setChecked(true);
+                }
+            }
+
+            return listViewItem;
+        }
     }
 }

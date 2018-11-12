@@ -1,26 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.widget.LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.widget.LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal">
 
-    <CheckBox
-        android:id="@+id/serviceCB"
+    <TextView
+        android:id="@+id/jobNameText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="0.5"
-        android:clickable="true" />
+        android:layout_weight="1"
+        android:text="TextView" />
+
 
     <TextView
-        android:id="@+id/serviceTypeText"
+        android:id="@+id/jobDatetimeText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1" />
+        android:layout_weight="1"
+        android:text="TextView" />
 
     <TextView
-        android:id="@+id/serviceRateText"
+        android:id="@+id/jobHoursText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1" />
+        android:layout_weight="1"
+        android:text="TextView" />
 
 </android.widget.LinearLayout>

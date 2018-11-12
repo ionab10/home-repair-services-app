@@ -38,6 +38,7 @@ public class MainActivity extends AppCompatActivity implements
     private TextView mDetailTextView;
     private EditText mEmailField;
     private EditText mPasswordField;
+    private TextView userTypeTextView;
 
     FirebaseAuth mAuth;
     FirebaseDatabase database;
@@ -54,6 +55,7 @@ public class MainActivity extends AppCompatActivity implements
         mDetailTextView = findViewById(R.id.detail);
         mEmailField = findViewById(R.id.fieldEmail);
         mPasswordField = findViewById(R.id.fieldPassword);
+        userTypeTextView = findViewById(R.id.userTypeText);
 
         // Buttons
         findViewById(R.id.emailSignInButton).setOnClickListener(this);
@@ -62,7 +64,7 @@ public class MainActivity extends AppCompatActivity implements
         findViewById(R.id.myAccountButton).setOnClickListener(this);
         findViewById(R.id.servicesBtn).setOnClickListener(this);
         findViewById(R.id.myJobsBtn).setOnClickListener(this);
-        findViewById(R.id.bookJobBtn).setOnClickListener(this);
+        findViewById(R.id.bookServiceBtn).setOnClickListener(this);
 
 
         // Initialize Firebase
@@ -82,7 +84,7 @@ public class MainActivity extends AppCompatActivity implements
 
         databaseUsers.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+            public void onDataChange(DataSnapshot dataSnapshot) {
                 allUsers.clear();
 
                 for (DataSnapshot postSnapshot : dataSnapshot.getChildren()){
@@ -102,7 +104,7 @@ public class MainActivity extends AppCompatActivity implements
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
+            public void onCancelled(DatabaseError databaseError) {
 
             }
         });
@@ -120,7 +122,7 @@ public class MainActivity extends AppCompatActivity implements
             //get userType
             databaseUsers.child(user.getUid()).addValueEventListener(new ValueEventListener() {
                 @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                public void onDataChange(DataSnapshot dataSnapshot) {
                     // This method is called once with the initial value and again
                     // whenever data at this location is updated.
                     User appUser = dataSnapshot.getValue(User.class);
@@ -131,7 +133,7 @@ public class MainActivity extends AppCompatActivity implements
                 }
 
                 @Override
-                public void onCancelled(@NonNull DatabaseError error) {
+                public void onCancelled(DatabaseError error) {
                     // Failed to read value
                     Log.w(dbTAG, "Failed to read value.", error.toException());
                 }
@@ -224,26 +226,28 @@ public class MainActivity extends AppCompatActivity implements
 
             mStatusTextView.setText(String.format("Hello %s %s", appUser.getfirstName(), appUser.getlastName()));
             mDetailTextView.setText(String.format("You are signed in as %s",appUser.getuserType()));
+            userTypeTextView.setText(appUser.getuserType());
+
 
             switch (appUser.getuserType()) {
                 case "admin":
                     findViewById(R.id.allUsersList).setVisibility(View.VISIBLE);
                     findViewById(R.id.servicesBtn).setVisibility(View.VISIBLE);
-                    findViewById(R.id.bookJobBtn).setVisibility(View.GONE);
+                    findViewById(R.id.bookServiceBtn).setVisibility(View.GONE);
                     findViewById(R.id.myJobsBtn).setVisibility(View.GONE);
 
                     break;
                 case "homeowner":
                     findViewById(R.id.allUsersList).setVisibility(View.GONE);
                     findViewById(R.id.servicesBtn).setVisibility(View.GONE);
-                    findViewById(R.id.bookJobBtn).setVisibility(View.VISIBLE);
+                    findViewById(R.id.bookServiceBtn).setVisibility(View.VISIBLE);
                     findViewById(R.id.myJobsBtn).setVisibility(View.VISIBLE);
 
                     break;
                 case "service provider":
                     findViewById(R.id.allUsersList).setVisibility(View.GONE);
                     findViewById(R.id.servicesBtn).setVisibility(View.GONE);
-                    findViewById(R.id.bookJobBtn).setVisibility(View.GONE);
+                    findViewById(R.id.bookServiceBtn).setVisibility(View.GONE);
                     findViewById(R.id.myJobsBtn).setVisibility(View.VISIBLE);
                     break;
             }
@@ -277,7 +281,8 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     public void bookJob(){
-        Intent intent = new Intent(getApplicationContext(), BookJob.class);
+        Intent intent = new Intent(getApplicationContext(), BookJobActivity.class);
+        intent.putExtra("userType", userTypeTextView.getText().toString());
         startActivityForResult (intent,0);
     }
 
@@ -294,7 +299,7 @@ public class MainActivity extends AppCompatActivity implements
             signOut();
         } else if (i == R.id.servicesBtn) {
             allServices();
-        } else if (i == R.id.bookJobBtn) {
+        } else if (i == R.id.bookServiceBtn) {
             bookJob();
         } else if (i == R.id.myJobsBtn) {
             myJobs();

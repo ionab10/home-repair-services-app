@@ -107,7 +107,8 @@
     <string name="services">Services</string>
     <string name="delete">Delete</string>
     <string name="update">update</string>
-    <string name="book_job">Book Service</string>
+    <string name="book_service">Book Service</string>
+    <string name="book_job">Book Job</string>
     <string name="my_jobs">My Jobs</string>
     <string name="edit_account">Edit account details</string>
     <string name="main_page">main page</string>
@@ -116,6 +117,10 @@
     <string name="my_services">My Services</string>
     <string name="update_availability">Update Availability</string>
     <string name="back">Back</string>
+    <string name="morning">morning</string>
+    <string name="afternoon">afternoon</string>
+    <string name="evening">evening</string>
+    <string name="find_a_provider">find a service provider</string>
 
     <string-array name="service_type_array">
         <item>Cable/Internet</item>
@@ -163,5 +168,28 @@
         <item>18:30</item>
         <item>19:00</item>
     </string-array>
+
+
+    <string-array name="urgency_array">
+        <item>24 hours</item>
+        <item>1 week</item>
+        <item>2 weeks</item>
+        <item>1 month</item>
+        <item>3 months</item>
+    </string-array>
+
+    <string-array name="times_array">
+        <item>06:00</item>
+        <item>11:00</item>
+        <item>16:00</item>
+        <item>19:00</item>
+    </string-array>
+
+
+    <string name="title_activity_job_options">Booking Options</string>
+    <string name="section_format">Hello World from section: %1$d</string>
+    <string name="cancel_job">cancel job</string>
+    <string name="no_job_options">There are no available service providers that match your request</string>
+
 
 </resources>

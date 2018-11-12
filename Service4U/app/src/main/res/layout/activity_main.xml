@@ -10,6 +10,12 @@
     android:weightSum="4">
 
 
+    <TextView
+        android:id="@+id/userTypeText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -140,11 +146,11 @@
                 android:orientation="horizontal">
 
                 <Button
-                    android:id="@+id/bookJobBtn"
+                    android:id="@+id/bookServiceBtn"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/book_job" />
+                    android:text="@string/book_service" />
 
                 <Button
                     android:id="@+id/myJobsBtn"

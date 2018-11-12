@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="cancel_job">cancel job</string>
+    <string name="no_job_options">There are no available service providers that match your request</string>
+</resources>

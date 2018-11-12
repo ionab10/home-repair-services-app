@@ -263,7 +263,7 @@ public class CreateAccountActivity extends AppCompatActivity {
         String address = ((EditText) findViewById(R.id.fieldAddress)).getText().toString();
 
         //add new user
-        User newUser = new User(firstName, lastName, userType, phoneNumber, address);
+        User newUser = new User(userid, firstName, lastName, userType, phoneNumber, address);
         databaseUsers.child(userid).setValue(newUser);
     }
 
