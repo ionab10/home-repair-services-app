@@ -197,9 +197,6 @@ public class BookJobActivity extends AppCompatActivity {
         });
 
 
-        //TODO add minimum rating bar
-
-
     }
 
     public Date addDays(Date date, int n) {
