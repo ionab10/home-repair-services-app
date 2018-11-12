@@ -23,6 +23,11 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import org.w3c.dom.Text;
 
 import java.text.SimpleDateFormat;
@@ -33,10 +38,12 @@ public class JobOptionsActivity extends AppCompatActivity {
 
     private static final String SERVICE_NAME = "service";
     private static final String SERVICE_RATE = "service_rate";
+    private static final String SERVICE_ID = "service_id";
     private static final String TIME_LENGTH = "time_length";
     private static final String JOB_OPTIONS = "options";
 
     private static final SimpleDateFormat datetimeFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm");
+
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -60,12 +67,14 @@ public class JobOptionsActivity extends AppCompatActivity {
 
         Intent myIntent = getIntent(); // gets the previously created intent
         String serviceName = myIntent.getStringExtra(SERVICE_NAME);
+        String serviceID = myIntent.getStringExtra(SERVICE_ID);
         double serviceRate = myIntent.getDoubleExtra(SERVICE_RATE,0);
         double timeLength = myIntent.getDoubleExtra(TIME_LENGTH,0);
         Log.v("timeLength", String.valueOf(timeLength));
         ArrayList<PotentialJob> options = myIntent.getParcelableArrayListExtra(JOB_OPTIONS);
 
         Log.d(JOB_OPTIONS, options.toString());
+
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -77,7 +86,7 @@ public class JobOptionsActivity extends AppCompatActivity {
             noOptionsText.setVisibility(View.GONE);
             // Create the adapter that will return a fragment for each of the three
             // primary sections of the activity.
-            mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(), serviceName, serviceRate, timeLength, options);
+            mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(), serviceID, serviceName, serviceRate, timeLength, options);
 
             // Set up the ViewPager with the sections adapter.
             mViewPager = (ViewPager) findViewById(R.id.container);
@@ -96,8 +105,10 @@ public class JobOptionsActivity extends AppCompatActivity {
          * fragment.
          */
         private static final String JOB_OPTION = "job_option";
-        String serviceName;
-        double serviceRate;
+
+        FirebaseAuth mAuth;
+        FirebaseDatabase database;
+        DatabaseReference databaseJobs;
 
         public PlaceholderFragment() {
         }
@@ -106,11 +117,12 @@ public class JobOptionsActivity extends AppCompatActivity {
          * Returns a new instance of this fragment for the given section
          * number.
          */
-        public static PlaceholderFragment newInstance(String serviceName, double serviceRate, double timeLength, PotentialJob jobOption) {
+        public static PlaceholderFragment newInstance(String serviceID, String serviceName, double serviceRate, double timeLength, PotentialJob jobOption) {
             PlaceholderFragment fragment = new PlaceholderFragment();
             Bundle args = new Bundle();
             args.putParcelable(JOB_OPTION, jobOption);
             args.putString(SERVICE_NAME,serviceName);
+            args.putString(SERVICE_ID,serviceID);
             args.putDouble(SERVICE_RATE, serviceRate);
             args.putDouble(TIME_LENGTH, timeLength);
             fragment.setArguments(args);
@@ -133,6 +145,10 @@ public class JobOptionsActivity extends AppCompatActivity {
             ((TextView) rootView.findViewById(R.id.providerNameText)).setText(String.format("%s %s", option.providerFirstName, option.providerLastName));
             ((RatingBar) rootView.findViewById(R.id.providerRatingBar)).setRating((float) option.providerRating);
 
+            database = FirebaseDatabase.getInstance();
+            databaseJobs = database.getReference("Jobs");
+            mAuth = FirebaseAuth.getInstance();
+            FirebaseUser user = mAuth.getCurrentUser();
 
             //TODO Make this prettier
 
@@ -142,13 +158,22 @@ public class JobOptionsActivity extends AppCompatActivity {
                 {
                     Job job = new Job();
 
-                    //TODO add job
+                    String id = databaseJobs.push().getKey();
 
-                /*
-                String id = databaseJobs.push().getKey();
-                job.setId(id);
-                databaseJobs.child(id).setValue(job);
-                */
+                    job.id = id;
+                    job.homewownerID = user.getUid();
+                    job.serviceProviderID = option.providerID;
+                    job.startTime = option.startTime;
+                    job.endTime = option.endTime;
+                    job.totalPrice = price;
+                    job.serviceID = args.getString(SERVICE_ID);
+                    job.title = args.getString(SERVICE_NAME);
+
+                    databaseJobs.child(id).setValue(job);
+
+                    // TODO book job
+                    // add to provider_ID booked
+                    // remove from provider_ID availability
 
                 }
             });
@@ -167,27 +192,29 @@ public class JobOptionsActivity extends AppCompatActivity {
 
         ArrayList<PotentialJob> options;
         String serviceName;
+        String serviceID;
         double serviceRate;
         double timeLength;
 
-        public SectionsPagerAdapter(FragmentManager fm, String serviceName, double serviceRate, double timeLength, ArrayList<PotentialJob> options) {
+        public SectionsPagerAdapter(FragmentManager fm, String serviceID, String serviceName, double serviceRate, double timeLength, ArrayList<PotentialJob> options) {
             super(fm);
             this.options = options;
             this.serviceName = serviceName;
+            this.serviceID = serviceID;
             this.serviceRate = serviceRate;
             this.timeLength = timeLength;
+
         }
 
         @Override
         public Fragment getItem(int position) {
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
-            return PlaceholderFragment.newInstance(serviceName, serviceRate, timeLength, options.get(position));
+            return PlaceholderFragment.newInstance(serviceID, serviceName, serviceRate, timeLength, options.get(position));
         }
 
         @Override
         public int getCount() {
-            // Show 3 total pages.
             return options.size();
         }
     }

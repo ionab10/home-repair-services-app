@@ -12,20 +12,24 @@ public class ServiceProvider extends User {
 
     List<Service> services;
     List<TimeInterval> availability;
+    List<TimeInterval> booked;
     double rating;
 
-    public ServiceProvider(String firstName,
+    public ServiceProvider(String id,
+                           String firstName,
                            String lastName,
                            String userType,
                            String phoneNumber,
                            String address,
                            List<Service> services,
                            List<TimeInterval> availability,
+                           List<TimeInterval> booked,
                            double rating) {
-        super(firstName, lastName, userType, phoneNumber, address);
+        super(id, firstName, lastName, userType, phoneNumber, address);
 
         this.services = services;
         this.availability = availability;
+        this.booked = booked;
         this.rating = rating;
     }
 
@@ -33,6 +37,7 @@ public class ServiceProvider extends User {
         super();
         this.services = null;
         this.availability = null;
+        this.booked = null;
         this.rating = 0;
     }
 

@@ -57,6 +57,7 @@ public class AvailabilityActivity extends AppCompatActivity {
     List<String> timeSlots;
 
     List<TimeInterval> myAvailability;
+    List<TimeInterval> myBooked;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,9 +80,6 @@ public class AvailabilityActivity extends AppCompatActivity {
         timeSlots = Arrays.asList(getResources().getStringArray(R.array.time_slots));
 
         listTimeSlots = (ListView) findViewById(R.id.listTimeSlots);
-        TimeSlotList timeSlotAdapter = new TimeSlotList(AvailabilityActivity.this, timeSlots, myAvailability, dateString);
-        listTimeSlots.setAdapter(timeSlotAdapter);
-
 
         mAuth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
@@ -106,6 +104,13 @@ public class AvailabilityActivity extends AppCompatActivity {
                     }
                     Log.d(dbTAG, "Availability: " + myAvailability);
 
+                    if (appUser.booked != null) {
+                        myBooked = appUser.booked;
+                    } else {
+                        myBooked = new ArrayList<TimeInterval>();
+                    }
+                    Log.d(dbTAG, "Booked: " + myBooked);
+
                     updateForm();
 
                 }
@@ -128,7 +133,7 @@ public class AvailabilityActivity extends AppCompatActivity {
 
     private void updateForm(){
         Log.d("Form", "Updating form");
-        TimeSlotList timeSlotAdapter = new TimeSlotList(AvailabilityActivity.this, timeSlots, myAvailability, dateString);
+        TimeSlotList timeSlotAdapter = new TimeSlotList(AvailabilityActivity.this, timeSlots, myAvailability, myBooked, dateString);
         listTimeSlots.setAdapter(timeSlotAdapter);
 
     }
@@ -206,15 +211,17 @@ public class AvailabilityActivity extends AppCompatActivity {
         private Activity context;
         private List<String> timeSlots;
         private List<TimeInterval> availability;
+        private List<TimeInterval> booked;
         private String dateString;
         private List<String> timeIntervals;
 
 
-        public TimeSlotList(Activity context, List<String> timeSlots, List<TimeInterval> availability, String dateString) {
+        public TimeSlotList(Activity context, List<String> timeSlots, List<TimeInterval> availability, List<TimeInterval> booked, String dateString) {
             super(context, R.layout.layout_timeslot_list, timeSlots.subList(0,timeSlots.size()-1));
             this.context = context;
             this.timeSlots = timeSlots;
             this.availability = availability;
+            this.booked = booked;
             this.dateString = dateString;
 
             timeIntervals = new ArrayList<String>();
@@ -245,6 +252,16 @@ public class AvailabilityActivity extends AppCompatActivity {
                     if (ti.contains(dt)){
                         //Log.v("Form", "available " + ti);
                         cb.setChecked(true);
+                        cb.setEnabled(true);
+                    }
+                }
+
+                //don't allow editing of availability for times aready booked
+                for (TimeInterval ti : booked){
+                    if (ti.contains(dt)){
+                        //Log.v("Form", "booked " + ti);
+                        cb.setChecked(true);
+                        cb.setEnabled(false);
                     }
                 }
 

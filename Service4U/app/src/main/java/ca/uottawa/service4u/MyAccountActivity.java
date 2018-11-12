@@ -124,8 +124,7 @@ public class MyAccountActivity extends AppCompatActivity {
         // [END send_email_verification]
     }
     public void returnToMain(View view){
-        Intent i = new Intent(this, MainActivity.class); //dont write package context android will do that
-        startActivity(i);
+        finish();
     }
 
     public void myAvailability(View view){

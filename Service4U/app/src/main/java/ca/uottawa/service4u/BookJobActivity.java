@@ -280,6 +280,7 @@ public class BookJobActivity extends AppCompatActivity {
                     PotentialJob option = new PotentialJob(start, (long) (start + hours*60*60*1000),
                             p.getfirstName(),
                             p.getlastName(),
+                            p.getId(),
                             p.rating);
                     options.add(option);
                 }
@@ -373,6 +374,7 @@ public class BookJobActivity extends AppCompatActivity {
 
             Intent intent = new Intent(getApplicationContext(), JobOptionsActivity.class);
             intent.putExtra("service",currentService.toString());
+            intent.putExtra("service_id",currentService.getId());
             intent.putExtra("service_rate", currentService.getRatePerHour());
             intent.putExtra("time_length", timeLength);
             intent.putParcelableArrayListExtra("options",options);

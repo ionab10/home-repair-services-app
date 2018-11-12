@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -43,6 +44,8 @@ public class JobActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 Job job = dataSnapshot.getValue(Job.class);
+
+                //TODO Make this prettier
 
                 ((TextView) findViewById(R.id.serviceTitleText)).setText(job.title);
                 ((TextView) findViewById(R.id.datetimeText)).setText(datetimeFormat.format(new Date(job.startTime)));
@@ -96,8 +99,16 @@ public class JobActivity extends AppCompatActivity {
 
     }
 
-    public void cancelJob() {
+    public void cancelJob(View view) {
+        DatabaseReference dR = databaseJobs.child(jobID);
+        dR.removeValue();
+
         //todo cancel job
+        // remove from provider_ID booked
+        // add to provider_ID availability
+
+        Toast.makeText(getApplicationContext(), "Job cancelled", Toast.LENGTH_LONG).show();
+        finish();
     }
 
     public void updateServiceProviderRating(String serviceProviderID) {

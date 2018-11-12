@@ -1,6 +1,7 @@
 package ca.uottawa.service4u;
 
 public class User{
+	private String id;
 	private String firstName;
 	private String lastName;
 	private String userType;
@@ -8,6 +9,7 @@ public class User{
     private String address;
 
 	public User(){
+		this.id = "";
 		this.firstName = "";
 		this.lastName = "";
 		this.userType = null;
@@ -15,7 +17,8 @@ public class User{
         this.address = "";
 	}
 
-	public User(String firstName, String lastName, String userType, String phoneNumber, String address){
+	public User(String id, String firstName, String lastName, String userType, String phoneNumber, String address){
+		this.id = id;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.userType = userType;
@@ -23,6 +26,13 @@ public class User{
         this.address = address;
 	}
 
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
 
 	public String getfirstName(){
 		return firstName;

@@ -8,13 +8,15 @@ class PotentialJob implements Parcelable{
     public long endTime;
     public String providerFirstName;
     public String providerLastName;
+    public String providerID;
     public double providerRating;
 
-    public PotentialJob(long startTime, long endTime, String providerFirstName, String providerLastName, double providerRating) {
+    public PotentialJob(long startTime, long endTime, String providerFirstName, String providerLastName, String providerID,  double providerRating) {
         this.startTime = startTime;
         this.endTime = endTime;
         this.providerFirstName = providerFirstName;
         this.providerLastName = providerLastName;
+        this.providerID = providerID;
         this.providerRating = providerRating;
     }
 
@@ -37,6 +39,7 @@ class PotentialJob implements Parcelable{
         this.endTime = in.readLong();
         this.providerFirstName = in.readString();
         this.providerLastName = in.readString();
+        this.providerID = in.readString();
         this.providerRating = in.readDouble();
     }
 
@@ -51,6 +54,7 @@ class PotentialJob implements Parcelable{
         dest.writeLong(endTime);
         dest.writeString(providerFirstName);
         dest.writeString(providerLastName);
+        dest.writeString(providerID);
         dest.writeDouble(providerRating);
     }
 }
