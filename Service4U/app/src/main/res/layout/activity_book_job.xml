@@ -30,17 +30,80 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="3" />
+
+
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/textView5"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Availability" />
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textView5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Availability" />
+
+            <TextView
+                android:id="@+id/availabilityErrorText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/holo_red_dark"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/morningText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Morning :" />
+
+            <TextView
+                android:id="@+id/afternoonText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Afternoon" />
+
+            <TextView
+                android:id="@+id/eveningText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Evening" />
+        </LinearLayout>
 
         <TableLayout
+            android:id="@+id/availTable"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/sunday"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Sunday" />
+
+                <CheckBox
+                    android:id="@+id/sundayMorningCB"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/morning" />
+
+                <CheckBox
+                    android:id="@+id/sundayAfternoonCB"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/afternoon" />
+
+                <CheckBox
+                    android:id="@+id/sundayEveningCB"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/evening" />
+            </TableRow>
 
             <TableRow
                 android:layout_width="match_parent"
@@ -216,34 +279,6 @@
                     android:text="@string/evening" />
             </TableRow>
 
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <TextView
-                    android:id="@+id/sunday"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Sunday" />
-
-                <CheckBox
-                    android:id="@+id/sundayMorningCB"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/morning" />
-
-                <CheckBox
-                    android:id="@+id/sundayAfternoonCB"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/afternoon" />
-
-                <CheckBox
-                    android:id="@+id/sundayEveningCB"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/evening" />
-            </TableRow>
         </TableLayout>
 
         <LinearLayout

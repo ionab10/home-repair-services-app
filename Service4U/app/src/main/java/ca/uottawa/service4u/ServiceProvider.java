@@ -1,6 +1,7 @@
 package ca.uottawa.service4u;
 
 import android.icu.util.DateInterval;
+import android.os.Parcelable;
 
 import java.sql.Time;
 import java.util.Date;
@@ -11,6 +12,7 @@ public class ServiceProvider extends User {
 
     List<Service> services;
     List<TimeInterval> availability;
+    double rating;
 
     public ServiceProvider(String firstName,
                            String lastName,
@@ -18,17 +20,20 @@ public class ServiceProvider extends User {
                            String phoneNumber,
                            String address,
                            List<Service> services,
-                           List<TimeInterval> availability) {
+                           List<TimeInterval> availability,
+                           double rating) {
         super(firstName, lastName, userType, phoneNumber, address);
 
         this.services = services;
         this.availability = availability;
+        this.rating = rating;
     }
 
     public ServiceProvider(){
         super();
         this.services = null;
         this.availability = null;
+        this.rating = 0;
     }
 
 

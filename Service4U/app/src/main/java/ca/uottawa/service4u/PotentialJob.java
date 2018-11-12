@@ -6,18 +6,19 @@ import android.os.Parcelable;
 class PotentialJob implements Parcelable{
     public long startTime;
     public long endTime;
-    public ServiceProvider provider;
+    public String providerFirstName;
+    public String providerLastName;
+    public double providerRating;
 
-    public PotentialJob(long startTime, long endTime, ServiceProvider provider) {
+    public PotentialJob(long startTime, long endTime, String providerFirstName, String providerLastName, double providerRating) {
         this.startTime = startTime;
         this.endTime = endTime;
-        this.provider = provider;
+        this.providerFirstName = providerFirstName;
+        this.providerLastName = providerLastName;
+        this.providerRating = providerRating;
     }
 
-    protected PotentialJob(Parcel in) {
-        startTime = in.readLong();
-        endTime = in.readLong();
-    }
+
 
     public static final Creator<PotentialJob> CREATOR = new Creator<PotentialJob>() {
         @Override
@@ -31,6 +32,14 @@ class PotentialJob implements Parcelable{
         }
     };
 
+    public PotentialJob(Parcel in) {
+        this.startTime = in.readLong();
+        this.endTime = in.readLong();
+        this.providerFirstName = in.readString();
+        this.providerLastName = in.readString();
+        this.providerRating = in.readDouble();
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -40,5 +49,8 @@ class PotentialJob implements Parcelable{
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeLong(startTime);
         dest.writeLong(endTime);
+        dest.writeString(providerFirstName);
+        dest.writeString(providerLastName);
+        dest.writeDouble(providerRating);
     }
 }

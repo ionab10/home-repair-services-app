@@ -8,7 +8,11 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
 import android.widget.Spinner;
+import android.widget.TableLayout;
+import android.widget.TableRow;
+import android.widget.TextView;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -16,7 +20,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
@@ -25,6 +32,9 @@ import java.util.List;
 import java.util.Map;
 
 public class BookJobActivity extends AppCompatActivity {
+    private static final SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
+    private static final SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+    private static final SimpleDateFormat datetimeFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm");
 
     Calendar calendar = Calendar.getInstance();
 
@@ -39,13 +49,20 @@ public class BookJobActivity extends AppCompatActivity {
     List<String> serviceNames;
     ArrayAdapter serviceAdapter;
     Service currentService;
-    int currentUrgency;
+    String currentUrgency;
     double timeLength;
+
+    String[] times;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book_job);
+
+        times = getResources().getStringArray(R.array.times_array);
+        ((TextView)findViewById(R.id.morningText)).setText(String.format("Morning: %s - %s", times[0], times[1]));
+        ((TextView)findViewById(R.id.afternoonText)).setText(String.format("Afternoon: %s - %s", times[1], times[2]));
+        ((TextView)findViewById(R.id.eveningText)).setText(String.format("Evening: %s - %s", times[2], times[3]));
 
         database = FirebaseDatabase.getInstance();
 
@@ -57,7 +74,7 @@ public class BookJobActivity extends AppCompatActivity {
                 serviceProviders.clear();
 
                 for (DataSnapshot postSnapshot : dataSnapshot.getChildren()){
-                    User appUser = postSnapshot.getValue(User.class);
+                    ServiceProvider appUser = postSnapshot.getValue(ServiceProvider.class);
                     if (appUser != null && appUser.getuserType().equals("service provider")) {
                         serviceProviders.add((ServiceProvider) appUser);
                     }
@@ -138,13 +155,13 @@ public class BookJobActivity extends AppCompatActivity {
         // Create an ArrayAdapter using the string array and a default spinner layout
         urgencyAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         urgencySpinner.setAdapter(urgencyAdapter);
-        currentUrgency = 0;
+        currentUrgency = urgencyAdapter.getItem(0).toString();
         urgencySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view,
                                        int position, long id) {
                 Log.v("urgency", (String) parent.getItemAtPosition(position));
-                currentUrgency = position;
+                currentUrgency = (String) parent.getItemAtPosition(position);
             }
 
             @Override
@@ -157,7 +174,7 @@ public class BookJobActivity extends AppCompatActivity {
         //urgency spinner
         Spinner timeSpinner = findViewById(R.id.timeSpinner);
         List<String> timeList = new ArrayList<String>();
-        for (int i=0; i < 5; i++){
+        for (int i=1; i < 5; i++){
             timeList.add(String.valueOf(i*0.5));
         }
         ArrayAdapter<CharSequence> timeAdapter = new ArrayAdapter(this,android.R.layout.simple_spinner_item, timeList);
@@ -191,10 +208,11 @@ public class BookJobActivity extends AppCompatActivity {
         List<ServiceProvider> providers = new ArrayList<ServiceProvider>();
 
         for (ServiceProvider sp : serviceProviders){
-            if (sp.services.contains(service)){
+            if (sp.services!=null && sp.services.contains(service)){
                 providers.add(sp);
             }
         }
+
         return providers;
     }
 
@@ -202,42 +220,67 @@ public class BookJobActivity extends AppCompatActivity {
         List<TimeInterval> timeIntervals = new ArrayList<TimeInterval>();
         long start;
         long end;
-        String dtStr;
+        String dtStr = dateFormat.format(date);
 
         calendar.setTime(date);
         List<List<String>> timeSlots = availability.get(calendar.get(Calendar.DAY_OF_WEEK));   //get availability for day of week
 
-        for (List<String> ts : timeSlots){
-
-            calendar.set(Calendar.HOUR_OF_DAY, Integer.parseInt(ts.get(0).split(":")[0]));
-            calendar.set(Calendar.MINUTE, Integer.parseInt(ts.get(0).split(":")[1]));
-            start = calendar.getTime().getTime();
-            calendar.set(Calendar.HOUR_OF_DAY, Integer.parseInt(ts.get(1).split(":")[0]));
-            calendar.set(Calendar.MINUTE, Integer.parseInt(ts.get(1).split(":")[1]));
-            end = calendar.getTime().getTime();
-
-            timeIntervals.add(new TimeInterval(start, end));
+        if (timeSlots!=null) {
+            for (List<String> ts : timeSlots) {
+                try {
+                    start = datetimeFormat.parse(String.format("%s %s", dtStr, ts.get(0))).getTime();
+                    end = datetimeFormat.parse(String.format("%s %s", dtStr, ts.get(1))).getTime();
+                    timeIntervals.add(new TimeInterval(start, end));
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+            }
         }
-
+        Log.d("timeIntervals", timeIntervals.toString());
         return timeIntervals;
     }
 
-    public List<PotentialJob> findProviders(Service service, Map<Integer,List<List<String>>> availability, double hours, int urgency){
-        List<PotentialJob> options = new ArrayList<PotentialJob>();
+    public ArrayList<PotentialJob> findProviders(Service service, Map<Integer,List<List<String>>> availability, double hours, String urgency){
+        ArrayList<PotentialJob> options = new ArrayList<PotentialJob>();
         List<ServiceProvider> providers = getAssociatedProviders(service);
 
         Date date = new Date(); //defaults to today
         long start = -1;
         List<TimeInterval> timeIntervals;
 
-        for (int i=0; i< urgency; i++) {
+        calendar.setTime(date);
+        switch (urgency){
+            case "24 hours":
+                calendar.add(Calendar.DAY_OF_YEAR, 1);
+                break;
+            case "1 week":
+                calendar.add(Calendar.WEEK_OF_YEAR, 1);
+                break;
+            case "2 weeks":
+                calendar.add(Calendar.WEEK_OF_YEAR, 2);
+                break;
+            case "1 month":
+                calendar.add(Calendar.MONTH, 1);
+                break;
+            case "3 months":
+                calendar.add(Calendar.MONTH, 3);
+                break;
+
+        }
+        Date lastDate = calendar.getTime();
+
+        while (date.before(lastDate)) {
 
             timeIntervals = getTimeIntervalsForDate(date,availability);
 
             for (ServiceProvider p : providers) {
                 start = p.available(timeIntervals,hours);
+                Log.d("start", p.toString()+ " " + String.valueOf(start));
                 if (start >= 0) {
-                    PotentialJob option = new PotentialJob(start, (long) (start + hours*60*60*1000), p);
+                    PotentialJob option = new PotentialJob(start, (long) (start + hours*60*60*1000),
+                            p.getfirstName(),
+                            p.getlastName(),
+                            p.rating);
                     options.add(option);
                 }
             }
@@ -248,17 +291,96 @@ public class BookJobActivity extends AppCompatActivity {
         return options;
     }
 
+    public Map<Integer,List<List<String>>> readAvailability(){
+
+        Map<Integer,List<List<String>>> availability = new HashMap<Integer, List<List<String>>>();
+
+        TableLayout availTable = findViewById(R.id.availTable);
+        List<List<String>> availabilityForDay;
+        List<String> timeTuple;
+        TableRow row;
+        CheckBox cb;
+
+        for (int i = 0; i< availTable.getChildCount(); i++){
+            row = (TableRow) availTable.getChildAt(i);
+
+            availabilityForDay = new ArrayList<List<String>>();
+            timeTuple = new ArrayList<String>(2);
+            boolean a = false;
+
+            for (int j = 1; j < 4; j++){
+                cb = (CheckBox) row.getChildAt(j);
+                if (cb.isChecked() && !a){
+                    timeTuple.add(times[j-1]);
+                    a = true;
+                } else if (!cb.isChecked() && a){
+                    timeTuple.add(times[j-1]);
+                    a = false;
+                    availabilityForDay.add(timeTuple);
+                    timeTuple = new ArrayList<String>(2);
+                }
+            }
+
+            if (a){
+                timeTuple.add(times[3]);
+                a = false;
+                availabilityForDay.add(timeTuple);
+                timeTuple = new ArrayList<String>(2);
+            }
+
+            availability.put(i+1,availabilityForDay);
+
+        }
+
+        Log.d("availability", availability.toString());
+        return availability;
+    }
+
+
+    public double timeDiff(String t0, String t1){
+        double td = 0;
+        try {
+            td = timeFormat.parse(t1).getTime() - timeFormat.parse(t0).getTime();
+            td = td/60/60/1000;
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return td;
+    }
+
+    public boolean validateAvailability(Map<Integer,List<List<String>>> availability, double timeLength){
+        for (List<List<String>> availabilityForDay : availability.values()){
+            for (List<String> timeTuple : availabilityForDay){
+                if (timeDiff(timeTuple.get(0), timeTuple.get(1)) >= timeLength){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
     public void handleForm(View view){
 
-        Map<Integer,List<List<String>>> availability = new HashMap<>();
+        Map<Integer,List<List<String>>> availability = readAvailability();
+        TextView availabilityErrorText = findViewById(R.id.availabilityErrorText);
 
-        //TODO
+        if (validateAvailability(availability,timeLength)) {
+            availabilityErrorText.setVisibility(view.GONE);
 
-        //List<PotentialJob> options = findProviders(currentService,availability,timeLength,currentUrgency);
+            ArrayList<PotentialJob> options = findProviders(currentService, availability, timeLength, currentUrgency);
 
-        Intent intent = new Intent(getApplicationContext(), JobOptionsActivity.class);
-        //intent.putExtra("options", options); //TODO
-        startActivityForResult (intent,0);
+            Log.v("options", options.toString());
+
+            Intent intent = new Intent(getApplicationContext(), JobOptionsActivity.class);
+            intent.putExtra("service",currentService.toString());
+            intent.putExtra("service_rate", currentService.getRatePerHour());
+            intent.putExtra("time_length", timeLength);
+            intent.putParcelableArrayListExtra("options",options);
+            startActivityForResult(intent, 0);
+        } else {
+            availabilityErrorText.setText(String.format("You must be available for at least %.1f hours", timeLength));
+            availabilityErrorText.setVisibility(view.VISIBLE);
+        }
 
     }
 }

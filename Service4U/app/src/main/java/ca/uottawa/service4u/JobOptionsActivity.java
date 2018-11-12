@@ -11,6 +11,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -18,10 +19,22 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import android.widget.Button;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+
 public class JobOptionsActivity extends AppCompatActivity {
+
+    private static final String SERVICE_NAME = "service";
+    private static final String SERVICE_RATE = "service_rate";
+    private static final String TIME_LENGTH = "time_length";
+    private static final String JOB_OPTIONS = "options";
+
+    private static final SimpleDateFormat datetimeFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm");
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -44,51 +57,26 @@ public class JobOptionsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_job_options);
 
         Intent myIntent = getIntent(); // gets the previously created intent
-        //myIntent.getExtra();
+        String serviceName = myIntent.getStringExtra(SERVICE_NAME);
+        double serviceRate = myIntent.getDoubleExtra(SERVICE_RATE,0);
+        double timeLength = myIntent.getDoubleExtra(TIME_LENGTH,0);
+        Log.v("timeLength", String.valueOf(timeLength));
+        ArrayList<PotentialJob> options = myIntent.getParcelableArrayListExtra(JOB_OPTIONS);
+
+        Log.d(JOB_OPTIONS, options.toString());
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(), serviceName, serviceRate, timeLength, options);
 
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-
     }
 
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_job_options, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
 
     /**
      * A placeholder fragment containing a simple view.
@@ -98,7 +86,9 @@ public class JobOptionsActivity extends AppCompatActivity {
          * The fragment argument representing the section number for this
          * fragment.
          */
-        private static final String ARG_SECTION_NUMBER = "section_number";
+        private static final String JOB_OPTION = "job_option";
+        String serviceName;
+        double serviceRate;
 
         public PlaceholderFragment() {
         }
@@ -107,10 +97,13 @@ public class JobOptionsActivity extends AppCompatActivity {
          * Returns a new instance of this fragment for the given section
          * number.
          */
-        public static PlaceholderFragment newInstance(int sectionNumber) {
+        public static PlaceholderFragment newInstance(String serviceName, double serviceRate, double timeLength, PotentialJob jobOption) {
             PlaceholderFragment fragment = new PlaceholderFragment();
             Bundle args = new Bundle();
-            args.putInt(ARG_SECTION_NUMBER, sectionNumber);
+            args.putParcelable(JOB_OPTION, jobOption);
+            args.putString(SERVICE_NAME,serviceName);
+            args.putDouble(SERVICE_RATE, serviceRate);
+            args.putDouble(TIME_LENGTH, timeLength);
             fragment.setArguments(args);
             return fragment;
         }
@@ -119,13 +112,20 @@ public class JobOptionsActivity extends AppCompatActivity {
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_job_options, container, false);
-            TextView textView = (TextView) rootView.findViewById(R.id.section_label);
-            textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
+            Bundle args = getArguments();
+
+            PotentialJob option = args.getParcelable(JOB_OPTION);
+
+            ((TextView) rootView.findViewById(R.id.serviceTitleText)).setText(args.getString(SERVICE_NAME));
+            ((TextView) rootView.findViewById(R.id.datetimeText)).setText(datetimeFormat.format(new Date(option.startTime)));
+            ((TextView) rootView.findViewById(R.id.timeLengthText)).setText(String.format("%.1f",args.getDouble(TIME_LENGTH)));
+            double price = args.getDouble(SERVICE_RATE) * args.getDouble(TIME_LENGTH);
+            ((TextView) rootView.findViewById(R.id.priceText)).setText(String.format("$%.2f",price));
+            ((TextView) rootView.findViewById(R.id.providerNameText)).setText(String.format("%s %s", option.providerFirstName, option.providerLastName));
+            ((RatingBar) rootView.findViewById(R.id.providerRatingBar)).setRating((float) option.providerRating);
 
 
-            //TODO job deez nuts
-
-
+            //TODO Make this prettier
 
             rootView.findViewById(R.id.bookJobBtn).setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -156,21 +156,30 @@ public class JobOptionsActivity extends AppCompatActivity {
      */
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
-        public SectionsPagerAdapter(FragmentManager fm) {
+        ArrayList<PotentialJob> options;
+        String serviceName;
+        double serviceRate;
+        double timeLength;
+
+        public SectionsPagerAdapter(FragmentManager fm, String serviceName, double serviceRate, double timeLength, ArrayList<PotentialJob> options) {
             super(fm);
+            this.options = options;
+            this.serviceName = serviceName;
+            this.serviceRate = serviceRate;
+            this.timeLength = timeLength;
         }
 
         @Override
         public Fragment getItem(int position) {
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
-            return PlaceholderFragment.newInstance(position + 1);
+            return PlaceholderFragment.newInstance(serviceName, serviceRate, timeLength, options.get(position));
         }
 
         @Override
         public int getCount() {
             // Show 3 total pages.
-            return 3;
+            return options.size();
         }
     }
 }
