@@ -13,24 +13,33 @@ public class ServiceProvider extends User {
     List<Service> services;
     List<TimeInterval> availability;
     List<TimeInterval> booked;
+    String companyName;
     double rating;
+    String description;
+    boolean licensed;
 
     public ServiceProvider(String id,
                            String firstName,
                            String lastName,
                            String userType,
+                           String companyName,
                            String phoneNumber,
                            String address,
                            List<Service> services,
                            List<TimeInterval> availability,
                            List<TimeInterval> booked,
-                           double rating) {
+                           double rating,
+                           String description,
+                           boolean licensed) {
         super(id, firstName, lastName, userType, phoneNumber, address);
 
         this.services = services;
         this.availability = availability;
         this.booked = booked;
         this.rating = rating;
+        this.description = description;
+        this.licensed = licensed;
+        this.companyName = companyName;
     }
 
     public ServiceProvider(){
@@ -39,6 +48,10 @@ public class ServiceProvider extends User {
         this.availability = null;
         this.booked = null;
         this.rating = 0;
+        this.description = "";
+        this.licensed = false;
+        this.companyName = "";
+
     }
 
 

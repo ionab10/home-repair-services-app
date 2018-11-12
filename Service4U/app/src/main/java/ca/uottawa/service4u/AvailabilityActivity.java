@@ -241,10 +241,12 @@ public class AvailabilityActivity extends AppCompatActivity {
 
             CheckBox cb = (CheckBox) listViewItem.findViewById(R.id.timeSlotCheckBox);
             long dt;
+            Date date;
 
             String dtStr = String.format("%s %s", dateString, timeSlots.get(position));
             try{
-                dt = datetimeFormat.parse(dtStr).getTime();
+                date = datetimeFormat.parse(dtStr);
+                dt = date.getTime();
 
                 cb.setChecked(false);
 
@@ -263,6 +265,11 @@ public class AvailabilityActivity extends AppCompatActivity {
                         cb.setChecked(true);
                         cb.setEnabled(false);
                     }
+                }
+
+                //cannot change availability for past
+                if (date.before(new Date())){
+                    cb.setEnabled(false);
                 }
 
             } catch (Exception e){

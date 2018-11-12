@@ -111,7 +111,7 @@ public class JobActivity extends AppCompatActivity {
 
     public void updateAvailability(String jobID){
 
-        //todo cancel job
+        //todo updateAvailability
         // remove from provider_ID booked
         // add to provider_ID availability
 

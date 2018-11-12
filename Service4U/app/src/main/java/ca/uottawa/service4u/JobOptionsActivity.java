@@ -182,7 +182,7 @@ public class JobOptionsActivity extends AppCompatActivity {
 
         public void updateAvailability(String providerID, long startTime, long endTime){
 
-            // TODO book job
+            // TODO updateAvailability
             // add to provider_ID booked
             // remove from provider_ID availability
 
