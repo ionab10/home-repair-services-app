@@ -277,6 +277,7 @@ public class MainActivity extends AppCompatActivity implements
 
     public void myJobs(){
         Intent intent = new Intent(getApplicationContext(), MyJobs.class);
+        intent.putExtra("userType", userTypeTextView.getText().toString());
         startActivityForResult (intent,0);
     }
 

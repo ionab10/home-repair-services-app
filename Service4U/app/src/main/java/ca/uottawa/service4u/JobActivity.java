@@ -31,6 +31,7 @@ public class JobActivity extends AppCompatActivity {
     DatabaseReference databaseUsers;
 
     String jobID;
+    String userType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +40,7 @@ public class JobActivity extends AppCompatActivity {
 
         Intent myIntent = getIntent(); // gets the previously created intent
         jobID = myIntent.getStringExtra("jobID");
+        userType = myIntent.getStringExtra("userType");
 
         database = FirebaseDatabase.getInstance();
         databaseUsers = database.getReference("Users");
@@ -53,27 +55,19 @@ public class JobActivity extends AppCompatActivity {
 
                 ((TextView) findViewById(R.id.serviceTitleText)).setText(job.title);
                 ((TextView) findViewById(R.id.datetimeText)).setText(datetimeFormat.format(new Date(job.startTime)));
-                double timeLength = (job.endTime - job.startTime)/1000/60/60;
+                double timeLength = ((double)(job.endTime - job.startTime))/1000/60/60;
                 ((TextView) findViewById(R.id.timeLengthText)).setText(String.format("%.1f hours", timeLength));
                 ((TextView) findViewById(R.id.priceText)).setText(String.format("$%.2f",job.totalPrice));
 
-
-                databaseUsers.child(job.serviceProviderID).addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        ServiceProvider sp = dataSnapshot.getValue(ServiceProvider.class);
-                        ((TextView) findViewById(R.id.providerNameText)).setText(String.format("%s %s", sp.getfirstName(), sp.getlastName()));
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                    }
-                });
-
-                //rating
+                TextView nameText = findViewById(R.id.nameText);
+                TextView phoneText = findViewById(R.id.phoneText);
+                TextView addressText = findViewById(R.id.addressText);
                 RatingBar ratingBar = findViewById(R.id.jobRatingBar);
                 LinearLayout commentLayout = findViewById(R.id.commentLayout);
+                TextView commentText = findViewById(R.id.commentText);
+                EditText commentField = findViewById(R.id.editComment);
+
+
                 Date endTime = new Date(job.endTime);
                 Date now = new Date();
                 if (now.after(endTime)) {
@@ -83,37 +77,89 @@ public class JobActivity extends AppCompatActivity {
                     ratingBar.setVisibility(View.GONE);
                     commentLayout.setVisibility(View.GONE);
                 }
+                ratingBar.setRating((float) job.rating);
 
-                ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+                databaseUsers.child(job.serviceProviderID).addValueEventListener(new ValueEventListener() {
                     @Override
-                    public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
-                        DatabaseReference dR = databaseJobs.child(jobID).child("rating");
-                        dR.setValue(rating);
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        ServiceProvider sp = dataSnapshot.getValue(ServiceProvider.class);
 
-                        //update service provider rating
-                        updateServiceProviderRating(job.serviceProviderID);
+                        if (userType.equals("homeowner")) {
+                            nameText.setText(String.format("%s %s", sp.getfirstName(), sp.getlastName()));
+                            phoneText.setText(String.format("%s", sp.getphoneNumber()));
+                            addressText.setText(String.format("%s", sp.getAddress()));
+                        }
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
 
                     }
                 });
 
-                EditText commentField = findViewById(R.id.editComment);
-                commentField.addTextChangedListener(new TextWatcher() {
+                databaseUsers.child(job.homewownerID).addValueEventListener(new ValueEventListener() {
                     @Override
-                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        User appUser = dataSnapshot.getValue(User.class);
 
+                        if (userType.equals("service provider")) {
+                            nameText.setText(String.format("%s %s", appUser.getfirstName(), appUser.getlastName()));
+                            phoneText.setText(String.format("%s", appUser.getphoneNumber()));
+                            addressText.setText(String.format("%s", appUser.getAddress()));
+                        }
                     }
 
                     @Override
-                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
 
-                    }
-
-                    @Override
-                    public void afterTextChanged(Editable s) {
-                        DatabaseReference dR = databaseJobs.child(jobID).child("notes");
-                        dR.setValue(s);
                     }
                 });
+
+                if (userType.equals("homeowner")) {
+                    ratingBar.setIsIndicator(false);
+                    ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+                        @Override
+                        public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
+                            DatabaseReference dR = databaseJobs.child(jobID).child("rating");
+                            dR.setValue(rating);
+
+                            //update service provider rating
+                            updateServiceProviderRating(job.serviceProviderID);
+
+                        }
+                    });
+
+                    commentText.setText("Comments:");
+
+                    commentField.setVisibility(View.VISIBLE);
+                    commentField.addTextChangedListener(new TextWatcher() {
+                        @Override
+                        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                        }
+
+                        @Override
+                        public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                        }
+
+                        @Override
+                        public void afterTextChanged(Editable s) {
+                            DatabaseReference dR = databaseJobs.child(jobID).child("notes");
+                            dR.setValue(s);
+                        }
+                    });
+
+                } else if (userType.equals("service provider")){
+                    ratingBar.setIsIndicator(true);
+                    commentText.setText(String.format("Comments: %s", job.notes));
+                    commentField.setVisibility(View.GONE);
+
+
+                }
+
+
 
             }
 

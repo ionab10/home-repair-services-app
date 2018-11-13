@@ -71,12 +71,14 @@ public class MyJobs extends AppCompatActivity {
 
                 for (DataSnapshot postSnapshot : dataSnapshot.getChildren()){
                     Job job = postSnapshot.getValue(Job.class);
-                    if ((userType == "service provider") && (job.serviceProviderID == user.getUid())) {
+                    if ((userType.equals("service provider")) && (job.serviceProviderID.equals(user.getUid()))) {
                         jobs.add(job);
-                    } else if ((userType == "homeowner") && (job.homewownerID == user.getUid())) {
+                    } else if ((userType.equals("homeowner")) && (job.homewownerID.equals(user.getUid()))) {
                         jobs.add(job);
                     }
                 }
+
+                Log.d("jobs", jobs.toString());
 
                 jobAdapter = new JobList(MyJobs.this, jobs);
                 listMyJobs.setAdapter(jobAdapter);
@@ -103,6 +105,7 @@ public class MyJobs extends AppCompatActivity {
     public void jobDetails(String jobID){
         Intent intent = new Intent(getApplicationContext(), JobActivity.class);
         intent.putExtra("jobID", jobID);
+        intent.putExtra("userType", userType);
         startActivityForResult (intent,0);
     }
 
@@ -129,7 +132,7 @@ public class MyJobs extends AppCompatActivity {
             Job job = jobs.get(position);
             textViewJobName.setText(job.title);
             textViewDate.setText(String.valueOf(datetimeFormat.format(new Date(job.startTime))));
-            textViewHours.setText(String.valueOf((job.endTime - job.startTime)/60/60/1000));
+            textViewHours.setText(String.valueOf(((double)(job.endTime - job.startTime))/1000/60/60));
             return listViewItem;
         }
     }
