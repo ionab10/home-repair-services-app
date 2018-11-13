@@ -20,7 +20,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class JobActivity extends AppCompatActivity {
 
@@ -172,20 +174,66 @@ public class JobActivity extends AppCompatActivity {
     }
 
     public void cancelJob(View view) {
+
+        databaseJobs.child(jobID).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Job job = dataSnapshot.getValue(Job.class);
+                updateAvailability(job.serviceProviderID, job.startTime, job.endTime);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
         DatabaseReference dR = databaseJobs.child(jobID);
         dR.removeValue();
 
-        updateAvailability(jobID);
 
         Toast.makeText(getApplicationContext(), "Job cancelled", Toast.LENGTH_LONG).show();
         finish();
     }
 
-    public void updateAvailability(String jobID){
+    public void updateAvailability(String providerID, long startTime, long endTime){
 
-        //todo updateAvailability
-        // remove from provider_ID booked
-        // add to provider_ID availability
+        databaseUsers.child(providerID).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                ServiceProvider appUser = dataSnapshot.getValue(ServiceProvider.class);
+                List<TimeInterval> myAvailability;
+                List<TimeInterval> myBooked;
+
+                if (appUser.booked != null) {
+                    myBooked = appUser.booked;
+                } else {
+                    myBooked = new ArrayList<TimeInterval>();
+                }
+
+                // remove from provider_ID booked
+                myBooked = new TimeInterval(startTime,endTime).difference(myBooked);
+                databaseUsers.child(providerID).child("availability").setValue(myBooked);
+
+
+                if (appUser.availability != null) {
+                    myAvailability = appUser.availability;
+                } else {
+                    myAvailability = new ArrayList<TimeInterval>();
+                }
+
+                // add to provider_ID availability
+                myAvailability = new TimeInterval(startTime,endTime).union(myAvailability);
+                databaseUsers.child(providerID).child("availability").setValue(myAvailability);
+
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
 
     }
 

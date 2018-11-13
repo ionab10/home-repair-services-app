@@ -1,6 +1,7 @@
 package ca.uottawa.service4u;
 
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -25,8 +26,11 @@ import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import org.w3c.dom.Text;
 
@@ -110,6 +114,8 @@ public class JobOptionsActivity extends AppCompatActivity {
         FirebaseAuth mAuth;
         FirebaseDatabase database;
         DatabaseReference databaseJobs;
+        DatabaseReference databaseUsers;
+        FirebaseUser user;
 
         public PlaceholderFragment() {
         }
@@ -149,7 +155,7 @@ public class JobOptionsActivity extends AppCompatActivity {
             database = FirebaseDatabase.getInstance();
             databaseJobs = database.getReference("Jobs");
             mAuth = FirebaseAuth.getInstance();
-            FirebaseUser user = mAuth.getCurrentUser();
+            user = mAuth.getCurrentUser();
 
             //TODO Make this prettier
 
@@ -182,25 +188,47 @@ public class JobOptionsActivity extends AppCompatActivity {
 
         public void updateAvailability(String providerID, long startTime, long endTime){
 
-            // TODO updateAvailability
-            // add to provider_ID booked
-            // remove from provider_ID availability
+            databaseUsers = database.getReference("Users");
+
+            databaseUsers.child(providerID).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    ServiceProvider appUser = dataSnapshot.getValue(ServiceProvider.class);
+                    List<TimeInterval> myAvailability;
+                    List<TimeInterval> myBooked;
+
+                    if (appUser.booked != null) {
+                        myBooked = appUser.booked;
+                    } else {
+                        myBooked = new ArrayList<TimeInterval>();
+                    }
+
+                    // add to provider_ID booked
+                    myBooked = new TimeInterval(startTime,endTime).union(myBooked);
+                    databaseUsers.child(providerID).child("availability").setValue(myBooked);
+
+
+                    if (appUser.availability != null) {
+                        myAvailability = appUser.availability;
+                    } else {
+                        myAvailability = new ArrayList<TimeInterval>();
+                    }
+
+                    // remove from provider_ID availability
+                    myAvailability = new TimeInterval(startTime,endTime).difference(myAvailability);
+                    databaseUsers.child(providerID).child("availability").setValue(myAvailability);
+
+
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
 
         }
 
-        public List<TimeInterval> union(List<TimeInterval> timeIntervalList, TimeInterval timeInterval){
-            List<TimeInterval> timeIntervals = new ArrayList<TimeInterval>();
-            return timeIntervals;
-
-            //TODO
-        }
-
-        public List<TimeInterval> difference(List<TimeInterval> timeIntervalList, TimeInterval timeInterval){
-            List<TimeInterval> timeIntervals = new ArrayList<TimeInterval>();
-            return timeIntervals;
-
-            //TODO
-        }
 
     }
 

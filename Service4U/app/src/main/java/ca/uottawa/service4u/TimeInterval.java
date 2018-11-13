@@ -37,11 +37,51 @@ public class TimeInterval {
         long s1 = ti.start;
         long e1 = ti.end;
 
-        return new TimeInterval(Math.max(start,s1), Math.min(end, e1));
+        return new TimeInterval(Math.max(this.start,s1), Math.min(this.end, e1));
     }
 
     public long length(){
         return end - start;
+    }
+
+
+    public List<TimeInterval> union(List<TimeInterval> timeIntervalList){
+        List<TimeInterval> timeIntervals = new ArrayList<TimeInterval>();
+        long start = this.start;
+        long end = this.end;
+
+        for (TimeInterval ti: timeIntervalList){
+            if (((ti.start <= this.start) && (ti.end >= this.start))
+                    || ((ti.start <= this.end) && (ti.end >= this.end))){
+                start = Math.min(start, ti.start);
+                end = Math.max(end, ti.end);
+            } else if ((ti.end < this.start) || (ti.start > this.end)){
+                timeIntervals.add(ti);
+            }
+        }
+
+        timeIntervals.add(new TimeInterval(start,end));
+
+        return timeIntervals;
+    }
+
+    public List<TimeInterval> difference(List<TimeInterval> timeIntervalList){
+        List<TimeInterval> timeIntervals = new ArrayList<TimeInterval>();
+
+        for (TimeInterval ti: timeIntervalList){
+            if ((ti.start <= this.start) && (ti.end >= this.start)){
+                timeIntervals.add(new TimeInterval(ti.start,this.start));
+            }
+            if ((ti.start <= this.end) && (ti.end >= this.end)) {
+                timeIntervals.add(new TimeInterval(ti.end,this.end));
+            }
+            if (this.intersection(ti).length()<=0){
+                timeIntervals.add(ti);
+            }
+        }
+
+        return timeIntervals;
+
     }
 
 }
