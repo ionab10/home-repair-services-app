@@ -23,6 +23,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -79,6 +80,10 @@ public class MyJobs extends AppCompatActivity {
                 }
 
                 Log.d("jobs", jobs.toString());
+
+
+                Collections.sort(jobs, (Job j1, Job j2) -> (Long.compare(j1.startTime, j2.startTime)));
+
 
                 jobAdapter = new JobList(MyJobs.this, jobs);
                 listMyJobs.setAdapter(jobAdapter);

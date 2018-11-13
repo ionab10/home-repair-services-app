@@ -29,6 +29,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class ServicesActivity extends AppCompatActivity {
@@ -148,6 +149,10 @@ public class ServicesActivity extends AppCompatActivity {
                     Service service = postSnapshot.getValue(Service.class);
                     services.add(service);
                 }
+
+                Collections.sort(services, (Service s1, Service s2) ->{
+                    return s1.toString().compareToIgnoreCase(s2.toString());
+                });
 
                 ServiceList servicesAdapter = new ServiceList(ServicesActivity.this, services);
                 listViewServices.setAdapter(servicesAdapter);
