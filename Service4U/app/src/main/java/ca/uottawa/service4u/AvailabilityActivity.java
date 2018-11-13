@@ -201,8 +201,7 @@ public class AvailabilityActivity extends AppCompatActivity {
         FirebaseUser user = mAuth.getCurrentUser();
         databaseUsers.child(user.getUid()).child("availability").setValue(myAvailability);
 
-        Intent intent = new Intent(getApplicationContext(), AvailabilityCalendar.class);
-        startActivityForResult (intent,0);
+        finish();
     }
 
     public class TimeSlotList extends ArrayAdapter<String> {

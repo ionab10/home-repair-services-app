@@ -144,8 +144,7 @@ public class MyServices extends AppCompatActivity {
         FirebaseUser user = mAuth.getCurrentUser();
         databaseUsers.child(user.getUid()).child("services").setValue(myServices);
 
-        Intent intent = new Intent(getApplicationContext(), MyAccountActivity.class);
-        startActivityForResult (intent,0);
+        finish();
     }
 
     public class AllServicesList extends ArrayAdapter<Service> {
