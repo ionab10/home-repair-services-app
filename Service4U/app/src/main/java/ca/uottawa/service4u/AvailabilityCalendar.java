@@ -88,7 +88,6 @@ public class AvailabilityCalendar extends AppCompatActivity {
     }
 
     public void back(View view) {
-        Intent intent = new Intent(getApplicationContext(), MyAccountActivity.class);
-        startActivityForResult (intent,0);
+        finish();
     }
 }
