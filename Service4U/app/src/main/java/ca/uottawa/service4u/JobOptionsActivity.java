@@ -205,7 +205,7 @@ public class JobOptionsActivity extends AppCompatActivity {
 
                     // add to provider_ID booked
                     myBooked = new TimeInterval(startTime,endTime).union(myBooked);
-                    databaseUsers.child(providerID).child("availability").setValue(myBooked);
+                    databaseUsers.child(providerID).child("booked").setValue(myBooked);
 
 
                     if (appUser.availability != null) {

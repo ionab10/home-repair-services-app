@@ -213,7 +213,7 @@ public class JobActivity extends AppCompatActivity {
 
                 // remove from provider_ID booked
                 myBooked = new TimeInterval(startTime,endTime).difference(myBooked);
-                databaseUsers.child(providerID).child("availability").setValue(myBooked);
+                databaseUsers.child(providerID).child("booked").setValue(myBooked);
 
 
                 if (appUser.availability != null) {
