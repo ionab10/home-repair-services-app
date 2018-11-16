@@ -30,16 +30,7 @@ public class MainTest {
         onView(withId(R.id.fieldPassword)).perform(typeText("password"), closeSoftKeyboard());
         onView(withId(R.id.emailSignInButton)).perform(click()); //should fail
         //onView(withText("john smith")).check(matches(isDisplayed()));
-    }/*
-    // @Rule
-    // public ActivityTestRule<ca.uottawa.service4u.MainActivity> signInTestV= new ActivityTestRule<>(MainActivity.class);
-    @Test
-    public void validSignInTest() { //example of valid sign in not necessary so commented out
-        onView(withId(R.id.fieldEmail)).perform(typeText("johnsmith@hotmail.com"), closeSoftKeyboard());
-        onView(withId(R.id.fieldPassword)).perform(typeText("password"), closeSoftKeyboard());
-        onView(withId(R.id.emailSignInButton)).perform(click()); //should pass
-        // onView(withText("john smith")).check(matches(isDisplayed()));
-    }*/
+    }
 
 }
 
