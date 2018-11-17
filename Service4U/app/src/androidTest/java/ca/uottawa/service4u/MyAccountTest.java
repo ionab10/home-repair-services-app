@@ -21,9 +21,9 @@ public class MyAccountTest {
     public ActivityTestRule<MyAccountActivity> accountActivityTestI = new ActivityTestRule<>(MyAccountActivity.class);
 
     @Test
-    public void AccountTest() {
+    public void AccountTest() { //signed in as service provider
         onView(withId(R.id.editAccountBtn)).perform(click());
-        onView(withId(R.id.editPhoneNumber)).perform(typeText("1"), closeSoftKeyboard());
+        onView(withId(R.id.editPhoneNumber)).perform(typeText("1"), closeSoftKeyboard()); //adds too many numbers to phone number
         onView(withId(R.id.editAccountBtn)).perform(click());
       /*
         onData(anything()).inAdapterView(withId(R.id.listAllServices)) // Specify the explicit id of the ListView
