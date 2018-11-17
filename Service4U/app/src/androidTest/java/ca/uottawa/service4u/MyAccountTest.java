@@ -18,13 +18,19 @@ import static org.hamcrest.CoreMatchers.anything;
 
 public class MyAccountTest {
     @Rule
-    public ActivityTestRule<MyServices> accountActivityTestI = new ActivityTestRule<>(MyServices.class);
+    public ActivityTestRule<MyAccountActivity> accountActivityTestI = new ActivityTestRule<>(MyAccountActivity.class);
 
     @Test
     public void AccountTest() {
+        onView(withId(R.id.editAccountBtn)).perform(click());
+        onView(withId(R.id.editPhoneNumber)).perform(typeText("1"), closeSoftKeyboard());
+        onView(withId(R.id.editAccountBtn)).perform(click());
+      /*
         onData(anything()).inAdapterView(withId(R.id.listAllServices)) // Specify the explicit id of the ListView
                 .atPosition(2) // Explicitly specify the adapter item to use
                 .perform(click());
-       // onView(R.id.button).perform(click());
+       // onView(R.id.button).perform(click());*/
     }
+
+
 }
