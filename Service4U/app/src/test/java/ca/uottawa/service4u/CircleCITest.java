@@ -15,8 +15,11 @@ public class CircleCITest {
         assertEquals("Checking id", "1", aS.getId());
     }
 
-    public void userTest(){
-        User u1=new User("John","Smith", "customer", "1-234-567-8910", "23 lane road");
-        assertEquals("Checking user's firstname", "John", u1.getfirstName());
+    public void UserTest(){
+
+        User u1=new User("10000", "John", "Smith", "customer", "12345678910", "23 lane road");
+        assertEquals("Checking phone number", "12345678910", u1.getphoneNumber());
     }
+
+
 }
