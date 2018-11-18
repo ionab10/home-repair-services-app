@@ -72,8 +72,14 @@ public class AvailabilityCalendar extends AppCompatActivity {
                     }
 
                     String upcomingAvailability = "Upcoming Availability: \n";
-
-                    //TODO display availability for the next few days using myAvailability
+                    long todayTime = new java.util.Date().getTime();
+                    long FiveDays = 432000000;
+                    
+                    for(int i =0; i< myAvailability.size(); i++){
+                       if((myAvailability.get(i).start >= todayTime) && (myAvailability.get(i).start<= todayTime + FiveDays))  {
+                           upcomingAvailability = upcomingAvailability + myAvailability.get(i).toString() + "\n" ;
+                       }
+                    }
 
                     upcomingAvailabilityText.setText(upcomingAvailability);
 
