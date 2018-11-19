@@ -30,6 +30,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/title_bottom_margin"
             android:text="@string/welcome"
+            android:textAllCaps="false"
             android:theme="@style/ThemeOverlay.MyTitleText" />
 
         <ImageView
