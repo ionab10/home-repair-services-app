@@ -41,4 +41,8 @@ public class Job {
         this.title = title;
     }
 
+    public double getTotalPrice(){
+        return totalPrice;
+    }
+
 }
