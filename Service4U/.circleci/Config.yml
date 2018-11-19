@@ -1,7 +1,7 @@
 version: 2
 jobs:
   build:
-    working_directory: ~/Service4U
+    working_directory: Service4U
     docker:
       - image: circleci/android:api-28-alpha
     environment:
