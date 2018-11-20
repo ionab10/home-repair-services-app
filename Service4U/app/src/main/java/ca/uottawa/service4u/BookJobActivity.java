@@ -381,6 +381,7 @@ public class BookJobActivity extends AppCompatActivity {
             intent.putExtra("service_rate", currentService.getRatePerHour());
             intent.putExtra("time_length", timeLength);
             intent.putParcelableArrayListExtra("options",options);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
             startActivityForResult(intent, 0);
         } else {
             availabilityErrorText.setText(String.format("You must be available for at least %.1f hours", timeLength));

@@ -148,8 +148,10 @@ public class AvailabilityActivity extends AppCompatActivity {
         //clear current date
         for (Iterator<TimeInterval> iterator = myAvailability.iterator(); iterator.hasNext();){
             TimeInterval ti = iterator.next();
-            if (dateFormat.format(ti.start).equals(dateString)) {
-                iterator.remove();
+            if (ti != null) {
+                if (dateFormat.format(ti.start).equals(dateString)) {
+                    iterator.remove();
+                }
             }
         }
 

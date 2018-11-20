@@ -45,6 +45,7 @@ public class TimeInterval {
     }
 
 
+    //TODO
     public List<TimeInterval> union(List<TimeInterval> timeIntervalList){
         List<TimeInterval> timeIntervals = new ArrayList<TimeInterval>();
         long start = this.start;
@@ -65,17 +66,18 @@ public class TimeInterval {
         return timeIntervals;
     }
 
+    //TODO
     public List<TimeInterval> difference(List<TimeInterval> timeIntervalList){
         List<TimeInterval> timeIntervals = new ArrayList<TimeInterval>();
 
         for (TimeInterval ti: timeIntervalList){
-            if ((ti.start <= this.start) && (ti.end >= this.start)){
+            if ((ti.start <= this.start) && (ti.end >= this.start) && (ti.start != this.start)){
                 timeIntervals.add(new TimeInterval(ti.start,this.start));
             }
-            if ((ti.start <= this.end) && (ti.end >= this.end)) {
-                timeIntervals.add(new TimeInterval(ti.end,this.end));
+            if ((ti.start <= this.end) && (ti.end >= this.end) && (ti.end != this.end)) {
+                timeIntervals.add(new TimeInterval(this.end,ti.end));
             }
-            if (this.intersection(ti).length()<=0){
+            if ((ti.start > this.end) || (ti.end < this.start)){
                 timeIntervals.add(ti);
             }
         }

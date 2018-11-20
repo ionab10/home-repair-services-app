@@ -1,5 +1,6 @@
 package ca.uottawa.service4u;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -49,7 +50,6 @@ public class JobOptionsActivity extends AppCompatActivity {
 
     private static final SimpleDateFormat datetimeFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm");
 
-
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
      * fragments for each of the sections. We use a
@@ -79,10 +79,6 @@ public class JobOptionsActivity extends AppCompatActivity {
         ArrayList<PotentialJob> options = myIntent.getParcelableArrayListExtra(JOB_OPTIONS);
 
         Log.d(JOB_OPTIONS, options.toString());
-
-
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
         TextView noOptionsText = findViewById(R.id.noOptionsText);
         if (options.isEmpty()) {
@@ -145,19 +141,17 @@ public class JobOptionsActivity extends AppCompatActivity {
             PotentialJob option = args.getParcelable(JOB_OPTION);
 
             ((TextView) rootView.findViewById(R.id.serviceTitleText)).setText(args.getString(SERVICE_NAME));
-            ((TextView) rootView.findViewById(R.id.datetimeText)).setText(datetimeFormat.format(new Date(option.startTime)));
-            ((TextView) rootView.findViewById(R.id.timeLengthText)).setText(String.format("%.1f hours",args.getDouble(TIME_LENGTH)));
+            ((TextView) rootView.findViewById(R.id.datetimeText)).setText("Date: " + datetimeFormat.format(new Date(option.startTime)));
+            ((TextView) rootView.findViewById(R.id.timeLengthText)).setText(String.format("Time: %.1f hours",args.getDouble(TIME_LENGTH)));
             double price = args.getDouble(SERVICE_RATE) * args.getDouble(TIME_LENGTH);
-            ((TextView) rootView.findViewById(R.id.priceText)).setText(String.format("$%.2f",price));
-            ((TextView) rootView.findViewById(R.id.providerNameText)).setText(String.format("%s %s", option.providerFirstName, option.providerLastName));
+            ((TextView) rootView.findViewById(R.id.priceText)).setText(String.format("Price: $%.2f",price));
+            ((TextView) rootView.findViewById(R.id.providerNameText)).setText(String.format("Name: %s %s", option.providerFirstName, option.providerLastName));
             ((RatingBar) rootView.findViewById(R.id.providerRatingBar)).setRating((float) option.providerRating);
 
             database = FirebaseDatabase.getInstance();
             databaseJobs = database.getReference("Jobs");
             mAuth = FirebaseAuth.getInstance();
             user = mAuth.getCurrentUser();
-
-            //TODO Make this prettier
 
             rootView.findViewById(R.id.bookJobBtn).setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -179,6 +173,10 @@ public class JobOptionsActivity extends AppCompatActivity {
                     databaseJobs.child(id).setValue(job);
 
                     updateAvailability(job.serviceProviderID, job.startTime, job.endTime);
+
+                    Intent intent = new Intent(v.getContext(), MyJobs.class);
+                    intent.putExtra("userType", "homeowner");
+                    startActivityForResult (intent,0);
 
                 }
             });
@@ -231,7 +229,6 @@ public class JobOptionsActivity extends AppCompatActivity {
 
 
     }
-
 
 
     /**

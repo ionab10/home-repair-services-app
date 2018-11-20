@@ -75,10 +75,12 @@ public class AvailabilityCalendar extends AppCompatActivity {
                     long todayTime = new java.util.Date().getTime();
                     long FiveDays = 432000000;
                     
-                    for(int i =0; i< myAvailability.size(); i++){
-                       if((myAvailability.get(i).start >= todayTime) && (myAvailability.get(i).start<= todayTime + FiveDays))  {
-                           upcomingAvailability = upcomingAvailability + myAvailability.get(i).toString() + "\n" ;
-                       }
+                    for(TimeInterval a: myAvailability){
+                        if(a != null) {
+                            if ((a.start >= todayTime) && (a.start <= todayTime + FiveDays)) {
+                                upcomingAvailability = upcomingAvailability + a.toString() + "\n";
+                            }
+                        }
                     }
 
                     upcomingAvailabilityText.setText(upcomingAvailability);

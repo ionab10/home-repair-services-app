@@ -28,7 +28,7 @@ public class Job {
         this.title = "";
     }
 
-    public Job(String id,String title, String homewownerID, String serviceProviderID, int year, int month, int day, long startTime, long endTime, int rating, double totalPrice, String serviceID, String notes) {
+    public Job(String id,String title, String homewownerID, String serviceProviderID, long startTime, long endTime, int rating, double totalPrice, String serviceID, String notes) {
         this.id = id;
         this.homewownerID = homewownerID;
         this.serviceProviderID = serviceProviderID;

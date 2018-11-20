@@ -48,7 +48,7 @@ public class JobActivity extends AppCompatActivity {
         databaseUsers = database.getReference("Users");
 
         databaseJobs = database.getReference("Jobs");
-        databaseJobs.child(jobID).addValueEventListener(new ValueEventListener() {
+        databaseJobs.child(jobID).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 Job job = dataSnapshot.getValue(Job.class);
@@ -81,7 +81,7 @@ public class JobActivity extends AppCompatActivity {
                 }
                 ratingBar.setRating((float) job.rating);
 
-                databaseUsers.child(job.serviceProviderID).addValueEventListener(new ValueEventListener() {
+                databaseUsers.child(job.serviceProviderID).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         ServiceProvider sp = dataSnapshot.getValue(ServiceProvider.class);
@@ -124,7 +124,7 @@ public class JobActivity extends AppCompatActivity {
                         @Override
                         public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
                             DatabaseReference dR = databaseJobs.child(jobID).child("rating");
-                            dR.setValue(rating);
+                            //dR.setValue(rating); TODO uncomment when stuff is working
 
                             //update service provider rating
                             updateServiceProviderRating(job.serviceProviderID);
@@ -243,7 +243,7 @@ public class JobActivity extends AppCompatActivity {
         rating = 0; //todo: find all jobs for serviceProviderID and calculate average rating
 
         DatabaseReference dR = databaseUsers.child(serviceProviderID).child("rating");
-        dR.setValue(rating);
+        //dR.setValue(rating);
     }
 
 }

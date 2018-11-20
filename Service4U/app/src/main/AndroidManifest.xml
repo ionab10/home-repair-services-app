@@ -42,8 +42,7 @@
         <activity android:name=".AvailabilityActivity" />
         <activity
             android:name=".JobOptionsActivity"
-            android:label="@string/title_activity_job_options"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:label="@string/title_activity_job_options"/>
         <activity
             android:name=".JobActivity"
             android:theme="@style/AppTheme.NoActionBar" ></activity>

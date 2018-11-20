@@ -58,11 +58,13 @@ public class ServiceProvider extends User {
     public long available(List<TimeInterval> homeownerAvailability, double hours){
 
         for (TimeInterval homeownerTI : homeownerAvailability){
-            for (TimeInterval serviceProviderTI : availability){
-                TimeInterval inter = homeownerTI.intersection(serviceProviderTI);
+            if (availability != null) {
+                for (TimeInterval serviceProviderTI : availability) {
+                    TimeInterval inter = homeownerTI.intersection(serviceProviderTI);
 
-                if (inter.length()/60/60/1000 >= hours){
-                    return inter.start;
+                    if (inter.length() / 60 / 60 / 1000 >= hours) {
+                        return inter.start;
+                    }
                 }
             }
         }

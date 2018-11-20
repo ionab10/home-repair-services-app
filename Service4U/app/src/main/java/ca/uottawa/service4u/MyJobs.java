@@ -52,6 +52,7 @@ public class MyJobs extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_jobs);
 
+
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
 
@@ -106,6 +107,7 @@ public class MyJobs extends AppCompatActivity {
         });
 
     }
+
 
     public void jobDetails(String jobID){
         Intent intent = new Intent(getApplicationContext(), JobActivity.class);

@@ -22,11 +22,16 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 
 public class MyAccountActivity extends AppCompatActivity {
 
     private static final String TAG = "EmailPassword";
     private static final String dbTAG = "Database";
+
+    private static final SimpleDateFormat datetimeFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm");
 
     // [START declare_auth]
     FirebaseAuth mAuth;
@@ -59,10 +64,10 @@ public class MyAccountActivity extends AppCompatActivity {
                 ((TextView) findViewById(R.id.phoneNumber)).setText(String.format("Phone: %s", appUser.getphoneNumber()));
                 ((TextView) findViewById(R.id.address)).setText(String.format("Address: %s", appUser.getAddress()));
 
-                ((TextView) findViewById(R.id.editFirstName)).setText(appUser.getfirstName());
-                ((TextView) findViewById(R.id.editLastName)).setText(appUser.getlastName());
-                ((TextView) findViewById(R.id.editPhoneNumber)).setText(appUser.getphoneNumber());
-                ((TextView) findViewById(R.id.editAddress)).setText(appUser.getAddress());
+                ((EditText) findViewById(R.id.editFirstName)).setText(appUser.getfirstName());
+                ((EditText) findViewById(R.id.editLastName)).setText(appUser.getlastName());
+                ((EditText) findViewById(R.id.editPhoneNumber)).setText(appUser.getphoneNumber());
+                ((EditText) findViewById(R.id.editAddress)).setText(appUser.getAddress());
 
                 if (appUser.getuserType().equals("service provider")){
                     ServiceProvider sp = dataSnapshot.getValue(ServiceProvider.class);
@@ -80,6 +85,9 @@ public class MyAccountActivity extends AppCompatActivity {
 
                     ((TextView) findViewById(R.id.companyName)).setText(String.format("Company: %s", sp.companyName));
                     ((TextView) findViewById(R.id.description)).setText(String.format("%s", sp.description));
+
+                    ((EditText) findViewById(R.id.editCompanyName)).setText(sp.companyName);
+                    ((EditText) findViewById(R.id.editDescription)).setText(sp.description);
 
                     findViewById(R.id.availabilityBtn).setVisibility(View.VISIBLE);
                     findViewById(R.id.myServicesBtn).setVisibility(View.VISIBLE);
@@ -104,7 +112,8 @@ public class MyAccountActivity extends AppCompatActivity {
         ((TextView) findViewById(R.id.emailVerified)).setText(getString(R.string.emailpassword_status_fmt,
                 user.getEmail(), user.isEmailVerified()));
         ((TextView) findViewById(R.id.firebaseUID)).setText(getString(R.string.firebase_status_fmt, user.getUid()));
-        ((TextView) findViewById(R.id.dateCreated)).setText(getString(R.string.meta_firebase_ui,Long.toString(user.getMetadata().getCreationTimestamp())));
+        ((TextView) findViewById(R.id.dateCreated)).setText(getString(R.string.meta_firebase_ui,
+                datetimeFormat.format(new Date(user.getMetadata().getCreationTimestamp()))));
     }
 
 
@@ -184,12 +193,12 @@ public class MyAccountActivity extends AppCompatActivity {
             b.setText(R.string.done);
         }
         else if (b.getText().toString().equals(getString(R.string.done))) {
-            Log.w("debug", "done editing account");
-
 
             if (!validateFields()) {
                 return;
             }
+
+            Log.w("debug", "done editing account");
 
             String firstName = ((EditText)findViewById(R.id.editFirstName)).getText().toString();
             String lastName = ((EditText)findViewById(R.id.editLastName)).getText().toString();
@@ -211,7 +220,7 @@ public class MyAccountActivity extends AppCompatActivity {
 
             ((TextView) findViewById(R.id.firstName)).setText(String.format("First name: %s", firstName));
             ((TextView) findViewById(R.id.lastName)).setText(String.format("Last name: %s", lastName));
-            ((TextView) findViewById(R.id.companyName)).setText(String.format("Last name: %s", lastName));
+            ((TextView) findViewById(R.id.companyName)).setText(String.format("Company name: %s", companyName));
             ((TextView) findViewById(R.id.phoneNumber)).setText(String.format("Phone: %s", phoneNumber));
             ((TextView) findViewById(R.id.address)).setText(String.format("Address: %s", address));
             ((TextView) findViewById(R.id.description)).setText(String.format("%s", description));
@@ -251,44 +260,48 @@ public class MyAccountActivity extends AppCompatActivity {
         if(TextUtils.isEmpty(firstName)){
             ((EditText)findViewById(R.id.editFirstName)).setError("Required");
             validFlag = false;
+        } else if(!firstName.matches("[-a-zA-Z\\s]+")){
+            ((EditText)findViewById(R.id.editFirstName)).setError("Invalid Name");
+            validFlag = false;
+        } else {
+            ((EditText)findViewById(R.id.editFirstName)).setError(null);
         }
 
         if(TextUtils.isEmpty(lastName)){
             ((EditText)findViewById(R.id.editLastName)).setError("Required");
             validFlag = false;
-        }
-        if(!firstName.matches("[-a-zA-Z\\s]+")){
-            ((EditText)findViewById(R.id.editFirstName)).setError("Invalid Name");
+        } else if(!lastName.matches("[-a-zA-Z\\s]+")) {
+            ((EditText) findViewById(R.id.editLastName)).setError("Invalid Name");
             validFlag = false;
+        } else {
+            ((EditText)findViewById(R.id.editLastName)).setError(null);
         }
 
-        if(!lastName.matches("[-a-zA-Z\\s]+")){
-            ((EditText)findViewById(R.id.editLastName)).setError("Invalid Name");
-            validFlag = false;
-        }
-
-        if(!companyName.matches("[-a-zA-Z!.\\s]+")){
+        if(!companyName.matches("[-a-zA-Z!.\\s]+") && findViewById(R.id.companyNameLayout).getVisibility() == View.VISIBLE){
             ((EditText)findViewById(R.id.editCompanyName)).setError("Invalid Name");
             validFlag = false;
+        } else {
+            ((EditText)findViewById(R.id.editCompanyName)).setError(null);
         }
 
         if(TextUtils.isEmpty(phoneNumber)){
             ((EditText)findViewById(R.id.editPhoneNumber)).setError("Required");
             validFlag = false;
-        }
-        if(phoneNumber.length() != 10){
+        } else if(phoneNumber.length() != 10){
             ((EditText)findViewById(R.id.editPhoneNumber)).setError("Invalid length");
             validFlag = false;
-        }
-
-        if(!phoneNumber.matches("[0-9]+") ){
+        } else if(!phoneNumber.matches("[0-9]+") ){
             ((EditText)findViewById(R.id.editPhoneNumber)).setError("Invalid Phone Number");
             validFlag = false;
+        } else {
+            ((EditText)findViewById(R.id.editPhoneNumber)).setError(null);
         }
 
         if(TextUtils.isEmpty(address)){
             ((EditText)findViewById(R.id.editAddress)).setError("Required");
             validFlag = false;
+        } else {
+            ((EditText)findViewById(R.id.editAddress)).setError(null);
         }
 
         return validFlag;
