@@ -53,13 +53,11 @@ public class JobActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 Job job = dataSnapshot.getValue(Job.class);
 
-                //TODO Make this prettier
-
                 ((TextView) findViewById(R.id.serviceTitleText)).setText(job.title);
-                ((TextView) findViewById(R.id.datetimeText)).setText(datetimeFormat.format(new Date(job.startTime)));
+                ((TextView) findViewById(R.id.datetimeText)).setText("Date: " + datetimeFormat.format(new Date(job.startTime)));
                 double timeLength = ((double)(job.endTime - job.startTime))/1000/60/60;
-                ((TextView) findViewById(R.id.timeLengthText)).setText(String.format("%.1f hours", timeLength));
-                ((TextView) findViewById(R.id.priceText)).setText(String.format("$%.2f",job.totalPrice));
+                ((TextView) findViewById(R.id.timeLengthText)).setText(String.format("Time: %.1f hours", timeLength));
+                ((TextView) findViewById(R.id.priceText)).setText(String.format("Price: $%.2f",job.totalPrice));
 
                 TextView nameText = findViewById(R.id.nameText);
                 TextView phoneText = findViewById(R.id.phoneText);
@@ -243,7 +241,7 @@ public class JobActivity extends AppCompatActivity {
         rating = 0; //todo: find all jobs for serviceProviderID and calculate average rating
 
         DatabaseReference dR = databaseUsers.child(serviceProviderID).child("rating");
-        //dR.setValue(rating);
+        //dR.setValue(rating); uncomment when stuff is working
     }
 
 }

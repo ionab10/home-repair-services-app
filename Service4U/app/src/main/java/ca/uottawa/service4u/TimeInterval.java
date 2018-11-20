@@ -45,7 +45,7 @@ public class TimeInterval {
     }
 
 
-    //TODO
+    //TODO Iona
     public List<TimeInterval> union(List<TimeInterval> timeIntervalList){
         List<TimeInterval> timeIntervals = new ArrayList<TimeInterval>();
         long start = this.start;
@@ -66,7 +66,7 @@ public class TimeInterval {
         return timeIntervals;
     }
 
-    //TODO
+    //TODO Iona
     public List<TimeInterval> difference(List<TimeInterval> timeIntervalList){
         List<TimeInterval> timeIntervals = new ArrayList<TimeInterval>();
 
