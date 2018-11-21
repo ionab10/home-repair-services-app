@@ -3,8 +3,10 @@ package ca.uottawa.service4u;
 import android.icu.util.DateInterval;
 import android.os.Parcelable;
 import android.support.annotation.Keep;
+import android.util.Log;
 
 import java.sql.Time;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -116,10 +118,12 @@ public class ServiceProvider extends User {
 
         for (TimeInterval homeownerTI : homeownerAvailability){
             if (availability != null) {
+
                 for (TimeInterval serviceProviderTI : availability) {
                     TimeInterval inter = homeownerTI.intersection(serviceProviderTI);
 
-                    if (inter.length() / 60 / 60 / 1000 >= hours) {
+                    Log.d("interLength", homeownerTI.toString() + " " + serviceProviderTI.toString() + " " + String.valueOf((float) inter.length() / 60 / 60 / 1000));
+                    if ((float) inter.length() / 60 / 60 / 1000 >= hours) {
                         return inter.start;
                     }
                 }

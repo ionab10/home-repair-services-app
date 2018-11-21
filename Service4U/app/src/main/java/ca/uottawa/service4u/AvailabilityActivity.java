@@ -33,6 +33,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -197,6 +198,7 @@ public class AvailabilityActivity extends AppCompatActivity {
 
         }
 
+        Collections.sort(myAvailability, (TimeInterval ti1, TimeInterval ti2) -> (Long.compare(ti1.start, ti2.start)));
 
         Log.v("dbTAG", "Setting availability: " + myAvailability.toString());
 

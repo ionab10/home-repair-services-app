@@ -3,6 +3,7 @@ package ca.uottawa.service4u;
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -63,6 +64,8 @@ public class TimeInterval {
 
         timeIntervals.add(new TimeInterval(start,end));
 
+        Collections.sort(timeIntervals, (TimeInterval ti1, TimeInterval ti2) -> (Long.compare(ti1.start, ti2.start)));
+
         return timeIntervals;
     }
 
@@ -81,6 +84,8 @@ public class TimeInterval {
                 timeIntervals.add(ti);
             }
         }
+
+        Collections.sort(timeIntervals, (TimeInterval ti1, TimeInterval ti2) -> (Long.compare(ti1.start, ti2.start)));
 
         return timeIntervals;
 

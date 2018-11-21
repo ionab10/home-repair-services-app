@@ -253,7 +253,7 @@ public class BookJobActivity extends AppCompatActivity {
         calendar.setTime(date);
         switch (urgency){
             case "24 hours":
-                calendar.add(Calendar.DAY_OF_YEAR, 1);
+                calendar.add(Calendar.HOUR_OF_DAY, 24);
                 break;
             case "1 week":
                 calendar.add(Calendar.WEEK_OF_YEAR, 1);
@@ -271,7 +271,7 @@ public class BookJobActivity extends AppCompatActivity {
         }
         Date lastDate = calendar.getTime();
 
-        while (date.before(lastDate)) {
+        while (date.before(lastDate) || date.equals(lastDate)) {
 
             timeIntervals = getTimeIntervalsForDate(date,availability);
 
@@ -288,7 +288,9 @@ public class BookJobActivity extends AppCompatActivity {
                 }
             }
 
-            date = addDays(date, 1);
+            calendar.setTime(date);
+            calendar.add(Calendar.HOUR_OF_DAY, 24);
+            date = calendar.getTime();
         }
 
         return options;
