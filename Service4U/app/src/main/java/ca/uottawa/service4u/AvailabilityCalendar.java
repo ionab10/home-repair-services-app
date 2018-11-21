@@ -78,7 +78,7 @@ public class AvailabilityCalendar extends AppCompatActivity {
                     for(TimeInterval a: myAvailability){
                         if(a != null) {
                             if ((a.start >= todayTime) && (a.start <= todayTime + FiveDays)) {
-                                upcomingAvailability = upcomingAvailability + a.toString() + "\n";
+                                upcomingAvailability = upcomingAvailability + a.toShortString() + "\n";
                             }
                         }
                     }

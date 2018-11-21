@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -121,11 +122,17 @@ public class JobActivity extends AppCompatActivity {
                     ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
                         @Override
                         public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
-                            DatabaseReference dR = databaseJobs.child(jobID).child("rating");
-                            //dR.setValue(rating); TODO uncomment when stuff is working
+                            Log.d("rating",jobID + " " + String.valueOf(rating));
 
-                            //update service provider rating
-                            updateServiceProviderRating(job.serviceProviderID);
+                            if (!jobID.isEmpty()) {
+                                DatabaseReference dR = databaseJobs.child(jobID).child("rating");
+                                dR.setValue(rating);
+
+                                        //update service provider rating
+                                if (!job.serviceProviderID.isEmpty()) {
+                                    updateServiceProviderRating(job.serviceProviderID);
+                                }
+                            }
 
                         }
                     });
@@ -241,7 +248,7 @@ public class JobActivity extends AppCompatActivity {
         rating = 0; //todo: find all jobs for serviceProviderID and calculate average rating
 
         DatabaseReference dR = databaseUsers.child(serviceProviderID).child("rating");
-        //dR.setValue(rating); uncomment when stuff is working
+        dR.setValue(rating);
     }
 
 }

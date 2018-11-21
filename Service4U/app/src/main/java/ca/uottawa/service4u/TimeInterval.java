@@ -1,6 +1,7 @@
 package ca.uottawa.service4u;
 
 import java.sql.Time;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -10,6 +11,10 @@ import java.util.List;
 public class TimeInterval {
     public long start;
     public long end;
+
+    private static final SimpleDateFormat startTimeFormat = new SimpleDateFormat("EEE, MMM d HH:mm");
+    private static final SimpleDateFormat endTimeFormat = new SimpleDateFormat("HH:mm");
+
 
     public TimeInterval() {
     }
@@ -31,7 +36,11 @@ public class TimeInterval {
 
     @Override
     public String toString(){
-        return String.format("(%s,%s)", new Date(start).toString(), new Date(end).toString());
+        return String.format("(%s, %s)", new Date(start).toString(), new Date(end).toString());
+    }
+
+    public String toShortString(){
+        return String.format("%s to %s", startTimeFormat.format(new Date(start)), endTimeFormat.format(new Date(end)));
     }
 
     public TimeInterval intersection(TimeInterval ti){
@@ -46,7 +55,6 @@ public class TimeInterval {
     }
 
 
-    //TODO Iona
     public List<TimeInterval> union(List<TimeInterval> timeIntervalList){
         List<TimeInterval> timeIntervals = new ArrayList<TimeInterval>();
         long start = this.start;
@@ -69,7 +77,6 @@ public class TimeInterval {
         return timeIntervals;
     }
 
-    //TODO Iona
     public List<TimeInterval> difference(List<TimeInterval> timeIntervalList){
         List<TimeInterval> timeIntervals = new ArrayList<TimeInterval>();
 
