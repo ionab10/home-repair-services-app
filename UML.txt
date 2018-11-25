@@ -1,18 +1,20 @@
-﻿class Account {
+class Account {
   String id;
   String firstName;
   String lastName;
   String username;
+  String userType;
   String password;
   String dateCreated;
   String email;
   String type;
+  void editAccountDetails (){}
 }
 
 class Administrator {
   isA Account;
-  
-  void addServiceß(){};
+  List users (){};
+  void addService(){};
   void updateService(){};
   void deleteService(){}
 
@@ -26,22 +28,25 @@ class Homeowner {
   List findService (){};
   void bookService (){};
   void rateJob (){};
+  
 }
 
 class ServiceProvider {
   isA Account;
   int rating;
   List availability;
+  String companyName;
   String phoneNum;
   1..* -- * Service;
   
-  void updateAvailability (){};
-  
-  void acceptJob (){};
+  void updateAvailability (){}; 
+  void acceptJob (){}; 
+  void cancelJob (){};
 }
 
 class Job {
   Date date;
+  double length;
   double fee;
   int rating;
   * -- 1 Homeowner;
