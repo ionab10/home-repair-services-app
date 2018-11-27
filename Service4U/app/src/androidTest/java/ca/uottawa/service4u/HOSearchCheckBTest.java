@@ -13,20 +13,20 @@ import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
+import static android.support.test.espresso.matcher.ViewMatchers.withSpinnerText;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.CoreMatchers.anything;
+import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.CoreMatchers.instanceOf;
 
-public class MyAccountTest {
+public class HOSearchCheckBTest {
     @Rule
-    public ActivityTestRule<MyAccountActivity> accountActivityTestI = new ActivityTestRule<>(MyAccountActivity.class);
+    public ActivityTestRule<BookJobActivity> checkButton= new ActivityTestRule<>(BookJobActivity.class);
 
     @Test
-    public void AccountTest() { //signed in as service provider
-        onView(withId(R.id.editAccountBtn)).perform(click());
-        onView(withId(R.id.editPhoneNumber)).perform(typeText("1"), closeSoftKeyboard()); //adds too many numbers to phone number
-        onView(withId(R.id.editAccountBtn)).perform(click());
-
+    public void CheckButtonTest(){
+        onView(withId(R.id.sundayMorningCB)).perform(click()); //checks if there is a service provider available sunday or monday morning
+        onView(withId(R.id.mondayMorningCB)).perform(click());
+        onView(withId(R.id.findAProviderBtn)).perform(click());
     }
-
-
 }
