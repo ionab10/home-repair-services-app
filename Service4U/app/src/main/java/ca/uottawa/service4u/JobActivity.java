@@ -36,6 +36,7 @@ public class JobActivity extends AppCompatActivity {
     String jobID;
     String userType;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -128,7 +129,7 @@ public class JobActivity extends AppCompatActivity {
                                 DatabaseReference dR = databaseJobs.child(jobID).child("rating");
                                 dR.setValue(rating);
 
-                                        //update service provider rating
+                                //update service provider rating
                                 if (!job.serviceProviderID.isEmpty()) {
                                     updateServiceProviderRating(job.serviceProviderID);
                                 }
@@ -243,12 +244,36 @@ public class JobActivity extends AppCompatActivity {
     }
 
     public void updateServiceProviderRating(String serviceProviderID) {
-        double rating;
 
-        rating = 0; //todo: find all jobs for serviceProviderID and calculate average rating
+        databaseJobs.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                double rating = 0;
+                int count = 0;
 
-        DatabaseReference dR = databaseUsers.child(serviceProviderID).child("rating");
-        dR.setValue(rating);
+                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()){
+                    Job job = postSnapshot.getValue(Job.class);
+                    if (job.serviceProviderID.equals(serviceProviderID)){
+                        rating += job.rating;
+                        count += 1;
+                    }
+                }
+
+                rating = ((float)rating)/count;
+
+                Log.d("rating",String.valueOf(rating) + " " + String.valueOf(count) + " " + serviceProviderID);
+
+                DatabaseReference dR = databaseUsers.child(serviceProviderID).child("rating");
+                dR.setValue(rating);
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
     }
 
 }

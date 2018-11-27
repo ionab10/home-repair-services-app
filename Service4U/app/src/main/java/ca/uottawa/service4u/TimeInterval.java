@@ -12,8 +12,8 @@ public class TimeInterval {
     public long start;
     public long end;
 
-    private static final SimpleDateFormat startTimeFormat = new SimpleDateFormat("EEE, MMM d HH:mm");
-    private static final SimpleDateFormat endTimeFormat = new SimpleDateFormat("HH:mm");
+    private static final SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, MMM d");
+    private static final SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
 
 
     public TimeInterval() {
@@ -40,7 +40,7 @@ public class TimeInterval {
     }
 
     public String toShortString(){
-        return String.format("%s to %s", startTimeFormat.format(new Date(start)), endTimeFormat.format(new Date(end)));
+        return String.format("%s %c%s to %s", dateFormat.format(new Date(start)), '\t', timeFormat.format(new Date(start)), timeFormat.format(new Date(end)));
     }
 
     public TimeInterval intersection(TimeInterval ti){
