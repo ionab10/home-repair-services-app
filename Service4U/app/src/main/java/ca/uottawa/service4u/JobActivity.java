@@ -8,6 +8,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
@@ -68,6 +69,7 @@ public class JobActivity extends AppCompatActivity {
                 LinearLayout commentLayout = findViewById(R.id.commentLayout);
                 TextView commentText = findViewById(R.id.commentText);
                 EditText commentField = findViewById(R.id.editComment);
+                Button cancelJob = findViewById(R.id.cancelJobBtn);
 
 
                 Date endTime = new Date(job.endTime);
@@ -75,9 +77,11 @@ public class JobActivity extends AppCompatActivity {
                 if (now.after(endTime)) {
                     ratingBar.setVisibility(View.VISIBLE);
                     commentLayout.setVisibility(View.VISIBLE);
+                    cancelJob.setVisibility(View.GONE);
                 } else {
                     ratingBar.setVisibility(View.GONE);
                     commentLayout.setVisibility(View.GONE);
+                    cancelJob.setVisibility(View.VISIBLE);
                 }
                 ratingBar.setRating((float) job.rating);
 
@@ -87,8 +91,8 @@ public class JobActivity extends AppCompatActivity {
                         ServiceProvider sp = dataSnapshot.getValue(ServiceProvider.class);
 
                         if (userType.equals("homeowner")) {
-                            nameText.setText(String.format("%s %s", sp.getfirstName(), sp.getlastName()));
-                            phoneText.setText(String.format("%s", sp.getphoneNumber()));
+                            nameText.setText(String.format("Name: %s %s", sp.getfirstName(), sp.getlastName()));
+                            phoneText.setText(String.format("Phone #: %s", sp.getphoneNumber()));
                             addressText.setText(String.format("%s", sp.getAddress()));
                         }
 
@@ -106,8 +110,8 @@ public class JobActivity extends AppCompatActivity {
                         User appUser = dataSnapshot.getValue(User.class);
 
                         if (userType.equals("service provider")) {
-                            nameText.setText(String.format("%s %s", appUser.getfirstName(), appUser.getlastName()));
-                            phoneText.setText(String.format("%s", appUser.getphoneNumber()));
+                            nameText.setText(String.format("Name: %s %s", appUser.getfirstName(), appUser.getlastName()));
+                            phoneText.setText(String.format("Phone #: %s", appUser.getphoneNumber()));
                             addressText.setText(String.format("%s", appUser.getAddress()));
                         }
                     }
@@ -141,6 +145,7 @@ public class JobActivity extends AppCompatActivity {
                     commentText.setText("Comments:");
 
                     commentField.setVisibility(View.VISIBLE);
+                    commentField.setText(job.notes);
                     commentField.addTextChangedListener(new TextWatcher() {
                         @Override
                         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -155,7 +160,7 @@ public class JobActivity extends AppCompatActivity {
                         @Override
                         public void afterTextChanged(Editable s) {
                             DatabaseReference dR = databaseJobs.child(jobID).child("notes");
-                            dR.setValue(s);
+                            dR.setValue(s.toString());
                         }
                     });
 
