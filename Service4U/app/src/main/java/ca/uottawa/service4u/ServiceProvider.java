@@ -120,6 +120,7 @@ public class ServiceProvider extends User {
             if (availability != null) {
 
                 for (TimeInterval serviceProviderTI : availability) {
+                    serviceProviderTI.start = Math.max(serviceProviderTI.start,new Date().getTime());
                     TimeInterval inter = homeownerTI.intersection(serviceProviderTI);
 
                     Log.d("interLength", homeownerTI.toString() + " " + serviceProviderTI.toString() + " " + String.valueOf((float) inter.length() / 60 / 60 / 1000));
