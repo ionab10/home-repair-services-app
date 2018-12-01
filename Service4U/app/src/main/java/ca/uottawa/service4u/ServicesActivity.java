@@ -147,7 +147,9 @@ public class ServicesActivity extends AppCompatActivity {
 
                 for (DataSnapshot postSnapshot : dataSnapshot.getChildren()){
                     Service service = postSnapshot.getValue(Service.class);
-                    services.add(service);
+                    if (service.isOffered()) {
+                        services.add(service);
+                    }
                 }
 
                 Collections.sort(services, (Service s1, Service s2) ->{
@@ -231,8 +233,8 @@ public class ServicesActivity extends AppCompatActivity {
     }
 
     private void deleteService(String id) {
-        DatabaseReference dR = databaseServices.child(id);
-        dR.removeValue();
+        DatabaseReference dR = databaseServices.child(id).child("offered");
+        dR.setValue(false);
 
         Toast.makeText(getApplicationContext(), "Service deleted", Toast.LENGTH_LONG).show();
         doneEdit();

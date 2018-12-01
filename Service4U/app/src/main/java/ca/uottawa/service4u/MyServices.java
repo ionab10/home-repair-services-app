@@ -63,7 +63,9 @@ public class MyServices extends AppCompatActivity {
 
                 for (DataSnapshot postSnapshot : dataSnapshot.getChildren()){
                     Service service = postSnapshot.getValue(Service.class);
-                    allServices.add(service);
+                    if (service.isOffered()) {
+                        allServices.add(service);
+                    }
                 }
 
                 Collections.sort(allServices, (Service s1, Service s2) ->{

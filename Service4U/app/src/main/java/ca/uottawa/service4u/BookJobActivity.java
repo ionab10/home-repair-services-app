@@ -121,7 +121,9 @@ public class BookJobActivity extends AppCompatActivity {
 
                 for (DataSnapshot postSnapshot : dataSnapshot.getChildren()){
                     Service s = postSnapshot.getValue(Service.class);
-                    allServices.add(s);
+                    if (s.isOffered()) {
+                        allServices.add(s);
+                    }
 
                 }
 

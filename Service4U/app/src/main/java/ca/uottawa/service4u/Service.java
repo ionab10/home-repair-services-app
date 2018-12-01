@@ -7,19 +7,22 @@ public class Service {
     private String name;
     private String type;
     private double ratePerHour;
+    private boolean offered;
 
     public Service(){
         this.id = "";
         this.name = "";
         this.type = "";
         this.ratePerHour = 0;
+        this.offered = true;
     }
 
-    public Service(String id, String name, String type, double ratePerHour){
+    public Service(String id, String name, String type, double ratePerHour, boolean offered){
         this.id = id;
         this.name = name;
         this.type = type;
         this.ratePerHour = ratePerHour;
+        this.offered = offered;
     }
 
     public String getId() {
@@ -52,6 +55,14 @@ public class Service {
 
     public void setRatePerHour(double ratePerHour) {
         this.ratePerHour = ratePerHour;
+    }
+
+    public boolean isOffered() {
+        return offered;
+    }
+
+    public void setOffered(boolean offered) {
+        this.offered = offered;
     }
 
     @Override
