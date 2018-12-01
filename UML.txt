@@ -1,4 +1,4 @@
-class Account {
+class User {
   String id;
   String firstName;
   String lastName;
@@ -7,12 +7,14 @@ class Account {
   String password;
   String dateCreated;
   String email;
+  String address;
+  String phoneNum;
   String type;
   void editAccountDetails (){}
 }
 
 class Administrator {
-  isA Account;
+  isA User;
   List users (){};
   void addService(){};
   void updateService(){};
@@ -21,36 +23,42 @@ class Administrator {
 }
 
 class Homeowner {
-  isA Account;
-  String address;
-  String phoneNum;
+  isA User;
   
-  List findService (){};
-  void bookService (){};
+  List findJob (){};
+  void bookJob (){};
+  void cancelJob (){};
   void rateJob (){};
   
 }
 
 class ServiceProvider {
-  isA Account;
-  int rating;
+  isA User;
   List availability;
+  List booked;
   String companyName;
   String phoneNum;
+  double rating;
+  String description;
+  boolean licensed;
   1..* -- * Service;
   
   void updateAvailability (){}; 
-  void acceptJob (){}; 
   void cancelJob (){};
 }
 
 class Job {
-  Date date;
+  String title;
   double length;
   double fee;
   int rating;
+  Date startTime;
+  Date endTime;
+  double totalPrice;
+  String notes;
   * -- 1 Homeowner;
   * -- 1 ServiceProvider;
+  * -- 1 Service;
 }
 
 class Service {
@@ -59,5 +67,3 @@ class Service {
   double ratePerHour;
   10..* -- 1 Administrator creates;
 }
-
-
