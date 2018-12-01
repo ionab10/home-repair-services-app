@@ -40,7 +40,7 @@ public class CircleCITest {
     public void PotentialJobMethodTest(){
 
         PotentialJob pj1=new PotentialJob(10000000L, 15000000L, "John", "Doe", "12345", 5.0);
-        assertEquals("Checking describeContents", "0", Double.toString(pj1.describeContents()));
+        assertEquals("Checking start time is before end time", true, pj1.startTime < pj1.endTime);
 
 
     }
