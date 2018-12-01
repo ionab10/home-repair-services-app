@@ -159,8 +159,10 @@ public class JobActivity extends AppCompatActivity {
 
                         @Override
                         public void afterTextChanged(Editable s) {
-                            DatabaseReference dR = databaseJobs.child(jobID).child("notes");
-                            dR.setValue(s.toString());
+                            if (!jobID.isEmpty()) {
+                                DatabaseReference dR = databaseJobs.child(job.id).child("notes");
+                                dR.setValue(s.toString());
+                            }
                         }
                     });
 

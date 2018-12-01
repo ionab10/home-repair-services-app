@@ -3,7 +3,7 @@ package ca.uottawa.service4u;
 import java.util.Date;
 
 public class Job {
-    String id;
+    public String id;
     public String homewownerID;
     public String serviceProviderID;
     public long startTime;
