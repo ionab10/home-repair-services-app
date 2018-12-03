@@ -186,7 +186,6 @@ public class ServicesActivity extends AppCompatActivity {
         boolean validFlag = true;
         String name = sNameField.getText().toString();
         String rateasString = sRateField.getText().toString();
-        double rate = Double.parseDouble(sRateField.getText().toString());
 
         if(TextUtils.isEmpty(name)){
             sNameField.setError("Required");
@@ -196,10 +195,12 @@ public class ServicesActivity extends AppCompatActivity {
         if(TextUtils.isEmpty(rateasString)){
             sRateField.setError("Required");
             validFlag = false;
-        }
-        if(rate<min || rate>max ){
+        } else {
+            double rate = Double.parseDouble(sRateField.getText().toString());
+            if(rate<min || rate>max ) {
             sRateField.setError("Out of range");
             validFlag = false;
+            }
         }
 
         if(addType ==0){
