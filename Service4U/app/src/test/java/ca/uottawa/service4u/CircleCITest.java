@@ -29,12 +29,12 @@ public class CircleCITest {
         assertEquals("Checking super-firstName of user", "", sp1.getfirstName());
     }
 
-    /*
+
     public void JobTest(){
 
-        Job j1= new Job("123", "Painting", "321", "567", 2018, 06, 19, 60000066321L, 600000023452L, 5, 13.50, "91011", "Bring pizza");
+        Job j1= new Job("123", "Painting", "321", "567", 60000066321L, 600000023452L, 5, 13.50, "91011", "Bring pizza");
         assertEquals("Checking price", "13.50", Double.toString(j1.getTotalPrice()));
-    }*/
+    }
 
     @Test
     public void PotentialJobMethodTest(){
