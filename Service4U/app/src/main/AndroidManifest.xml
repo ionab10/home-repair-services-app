@@ -27,8 +27,7 @@
             android:label="My Account" />
         <activity
             android:name=".ServicesActivity"
-            android:label="@string/title_activity_services"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:label="@string/title_activity_services"/>
         <activity
             android:name=".AvailabilityCalendar"
             android:label="My Availability" />

@@ -19,8 +19,12 @@
 
         <TextView
             android:id="@+id/upcomingAvailabilityText"
+            style="?attr/textAppearanceListItem"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:isScrollContainer="true"
+            android:scrollbars="vertical" />
 
         <Button
             android:id="@+id/backToMyAccountBtn"

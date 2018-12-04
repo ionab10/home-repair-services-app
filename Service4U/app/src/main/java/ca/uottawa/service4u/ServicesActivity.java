@@ -53,8 +53,6 @@ public class ServicesActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_services);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
         databaseServices = FirebaseDatabase.getInstance().getReference("Services");
 
@@ -304,7 +302,7 @@ public class ServicesActivity extends AppCompatActivity {
             Service service = services.get(position);
             textViewName.setText(service.getName());
             textViewType.setText(service.getType());
-            textViewRate.setText(String.valueOf(service.getRatePerHour()));
+            textViewRate.setText(String.format("%.2f",service.getRatePerHour()));
             return listViewItem;
         }
     }

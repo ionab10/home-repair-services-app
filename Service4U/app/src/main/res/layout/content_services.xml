@@ -12,13 +12,19 @@
         android:id="@+id/listServicesLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="0dp">
 
         <TextView
-            android:id="@+id/servicesTitleText"
+            android:id="@+id/longClick2edit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/services" />
+            android:gravity="center_horizontal"
+            android:text="Long click on a service to edit/delete"
+            android:visibility="visible" />
 
         <android.widget.LinearLayout
             android:layout_width="match_parent"
@@ -27,13 +33,15 @@
 
             <TextView
                 android:id="@+id/serviceNameTitle"
+                style="@style/TextAppearance.AppCompat.Headline"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.5"
+                android:layout_weight="0.75"
                 android:text="Name" />
 
             <TextView
                 android:id="@+id/serviceTypeTitle"
+                style="@style/TextAppearance.AppCompat.Headline"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -41,10 +49,12 @@
 
             <TextView
                 android:id="@+id/serviceRateTitle"
+                style="@style/TextAppearance.AppCompat.Headline"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Rate per hour ($)" />
+                android:gravity="right"
+                android:text="$/hr" />
         </android.widget.LinearLayout>
 
         <ListView
@@ -69,7 +79,8 @@
             android:id="@+id/serviceNameText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/name" />
+            android:text="@string/name"
+            android:theme="@style/ThemeOverlay.MyTextDetail"/>
 
         <EditText
             android:id="@+id/nameField"
@@ -83,7 +94,8 @@
             android:id="@+id/textView3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Type" />
+            android:text="Type"
+            android:theme="@style/ThemeOverlay.MyTextDetail"/>
 
         <Spinner
             android:id="@+id/typeField"
@@ -94,7 +106,8 @@
             android:id="@+id/textView4"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Rate ($/hr)" />
+            android:text="Rate ($/hr)"
+            android:theme="@style/ThemeOverlay.MyTextDetail"/>
 
         <EditText
             android:id="@+id/rateField"

@@ -29,11 +29,13 @@
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:fadeScrollbars">true</item>
-        <item name="android:gravity">center</item>
+        <item name="android:gravity">left</item>
         <item name="android:maxLines">5</item>
         <item name="android:padding">4dp</item>
+        <item name="android:layout_margin">10dp</item>
         <item name="android:scrollbars">vertical</item>
-        <item name="android:textSize">14sp</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/common_google_signin_btn_text_dark_focused</item>
     </style>
 
     <style name="ThemeOverlay.FirebaseIcon" parent="AppTheme">

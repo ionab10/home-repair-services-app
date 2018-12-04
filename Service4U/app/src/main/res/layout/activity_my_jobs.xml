@@ -19,23 +19,32 @@
 
             <TextView
                 android:id="@+id/textView2"
+                style="@style/TextAppearance.AppCompat.Headline"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight="0.5"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
                 android:text="Job" />
 
             <TextView
                 android:id="@+id/textView6"
+                style="@style/TextAppearance.AppCompat.Headline"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight="0.5"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
                 android:text="Date" />
 
             <TextView
                 android:id="@+id/textView7"
+                style="@style/TextAppearance.AppCompat.Headline"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight="0.6"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
                 android:text="Hours" />
 
         </LinearLayout>

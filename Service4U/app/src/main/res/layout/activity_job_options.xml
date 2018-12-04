@@ -16,6 +16,7 @@
         android:layout_weight="1"
         android:gravity="center"
         android:text="@string/no_job_options"
+        android:textSize="20dp"
         android:visibility="gone" />
 
     <LinearLayout

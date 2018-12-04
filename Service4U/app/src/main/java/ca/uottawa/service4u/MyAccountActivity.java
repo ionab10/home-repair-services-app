@@ -72,8 +72,10 @@ public class MyAccountActivity extends AppCompatActivity {
                 if (appUser.getuserType().equals("service provider")){
                     ServiceProvider sp = dataSnapshot.getValue(ServiceProvider.class);
 
+                    findViewById(R.id.scroll2edit).setVisibility(View.VISIBLE);
                     findViewById(R.id.companyNameLayout).setVisibility(View.VISIBLE);
                     findViewById(R.id.licensedLayout).setVisibility(View.VISIBLE);
+                    findViewById(R.id.rating).setVisibility(View.VISIBLE);
                     findViewById(R.id.descriptionLayout).setVisibility(View.VISIBLE);
 
                     ((CheckBox) findViewById(R.id.licensedCB)).setChecked(sp.licensed);
@@ -84,7 +86,8 @@ public class MyAccountActivity extends AppCompatActivity {
                     }
 
                     ((TextView) findViewById(R.id.companyName)).setText(String.format("Company: %s", sp.companyName));
-                    ((TextView) findViewById(R.id.description)).setText(String.format("%s", sp.description));
+                    ((TextView) findViewById(R.id.rating)).setText(String.format("Rating: %.1f", sp.rating));
+                    ((TextView) findViewById(R.id.description)).setText(String.format("\"%s\"", sp.description));
 
                     ((EditText) findViewById(R.id.editCompanyName)).setText(sp.companyName);
                     ((EditText) findViewById(R.id.editDescription)).setText(sp.description);
@@ -92,8 +95,10 @@ public class MyAccountActivity extends AppCompatActivity {
                     findViewById(R.id.availabilityBtn).setVisibility(View.VISIBLE);
                     findViewById(R.id.myServicesBtn).setVisibility(View.VISIBLE);
                 } else {
+                    findViewById(R.id.scroll2edit).setVisibility(View.GONE);
                     findViewById(R.id.companyNameLayout).setVisibility(View.GONE);
                     findViewById(R.id.licensedLayout).setVisibility(View.GONE);
+                    findViewById(R.id.rating).setVisibility(View.GONE);
                     findViewById(R.id.descriptionLayout).setVisibility(View.GONE);
                     findViewById(R.id.availabilityBtn).setVisibility(View.GONE);
                     findViewById(R.id.myServicesBtn).setVisibility(View.GONE);
@@ -180,7 +185,7 @@ public class MyAccountActivity extends AppCompatActivity {
             ((TextView) findViewById(R.id.licensed)).setText("Licensed:");
             ((TextView) findViewById(R.id.phoneNumber)).setText("Phone:");
             ((TextView) findViewById(R.id.address)).setText("Address:");
-            ((TextView) findViewById(R.id.description)).setText("");
+            ((TextView) findViewById(R.id.description)).setText("Description: ");
 
             findViewById(R.id.editFirstName).setVisibility(View.VISIBLE);
             findViewById(R.id.editLastName).setVisibility(View.VISIBLE);
