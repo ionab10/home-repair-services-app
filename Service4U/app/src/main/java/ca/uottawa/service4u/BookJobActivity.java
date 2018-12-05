@@ -77,7 +77,7 @@ public class BookJobActivity extends AppCompatActivity {
                 for (DataSnapshot postSnapshot : dataSnapshot.getChildren()){
                     ServiceProvider appUser = postSnapshot.getValue(ServiceProvider.class);
                     if (appUser != null && appUser.getuserType().equals("service provider")) {
-                        serviceProviders.add((ServiceProvider) appUser);
+                        serviceProviders.add(appUser);
                     }
                 }
             }
@@ -172,7 +172,7 @@ public class BookJobActivity extends AppCompatActivity {
         });
 
 
-        //urgency spinner
+        //time spinner
         Spinner timeSpinner = findViewById(R.id.timeSpinner);
         List<String> timeList = new ArrayList<String>();
         for (int i=1; i < 5; i++){
@@ -247,7 +247,7 @@ public class BookJobActivity extends AppCompatActivity {
         List<ServiceProvider> providers = getAssociatedProviders(service, rating);
 
         Date date = new Date(); //defaults to today
-        long start = -1;
+        long start;
         List<TimeInterval> timeIntervals;
 
         calendar.setTime(date);
@@ -370,7 +370,7 @@ public class BookJobActivity extends AppCompatActivity {
         TextView availabilityErrorText = findViewById(R.id.availabilityErrorText);
 
         if (validateAvailability(availability,timeLength)) {
-            availabilityErrorText.setVisibility(view.GONE);
+            availabilityErrorText.setVisibility(View.GONE);
 
             double rating = ((RatingBar) findViewById(R.id.minRatingBar)).getRating();
             ArrayList<PotentialJob> options = findProviders(currentService, availability, timeLength, currentUrgency, rating);
@@ -387,7 +387,7 @@ public class BookJobActivity extends AppCompatActivity {
             startActivityForResult(intent, 0);
         } else {
             availabilityErrorText.setText(String.format("You must be available for at least %.1f hours", timeLength));
-            availabilityErrorText.setVisibility(view.VISIBLE);
+            availabilityErrorText.setVisibility(View.VISIBLE);
         }
 
     }

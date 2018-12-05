@@ -110,8 +110,7 @@ public class CreateAccountActivity extends AppCompatActivity {
 
                             addUserToDatabase(user);
 
-                            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                            startActivityForResult (intent,0);
+                            finish();
 
                             Toast.makeText(CreateAccountActivity.this, "Account creation complete.",
                                     Toast.LENGTH_SHORT).show();

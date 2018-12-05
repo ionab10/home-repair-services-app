@@ -22,6 +22,8 @@ import java.util.List;
 
 public class AvailabilityCalendar extends AppCompatActivity {
 
+    public static final long FIVE_DAYS = 432000000;
+
     FirebaseAuth mAuth;
     FirebaseDatabase database;
     DatabaseReference databaseUsers;
@@ -71,13 +73,13 @@ public class AvailabilityCalendar extends AppCompatActivity {
                         myAvailability = new ArrayList<TimeInterval>();
                     }
 
-                    String upcomingAvailability = "Upcoming Availability: \n";
+                    String upcomingAvailability = "Upcoming Availability (next 5 days): \n";
                     long todayTime = new java.util.Date().getTime();
-                    long FiveDays = 432000000;
+
                     
                     for(TimeInterval a: myAvailability){
                         if(a != null) {
-                            if ((a.start >= todayTime) && (a.start <= todayTime + FiveDays)) {
+                            if ((a.start >= todayTime) && (a.start <= todayTime + FIVE_DAYS)) {
                                 upcomingAvailability = upcomingAvailability + a.toShortString() + "\n";
                             }
                         }
